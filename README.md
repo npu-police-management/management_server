@@ -4,7 +4,7 @@
 Structrue
 ```
 |—— src/main
-    |—— java/com/enterprise/forum
+    |—— java/com/nwpu/management-server
         |—— aspect
         |—— component
         |—— config
