@@ -9,11 +9,10 @@ DROP TABLE IF EXISTS `prison`;
 
 /*
     账号，供警员，监所管理员，超级管理员登录的账号表
-    role 取值：警员(0)，监所管理员(1)，超级管理员(2)
 */
 CREATE TABLE `account` (
     `id`                BIGINT          NOT NULL,   -- 账号id
-    `account_number`    VARCHAR(50)     NOT NULL,   -- 账号
+    `account_number`    VARCHAR(20)     NOT NULL,   -- 账号
     `password`          CHAR(60)        NOT NULL,   -- 密码
     `role`              TINYINT         NOT NULL,   -- 角色
 
@@ -29,7 +28,8 @@ CREATE TABLE `prison` (
     `id`                BIGINT          NOT NULL,   -- 监所id
     `name`              VARCHAR(20)     NOT NULL,   -- 监所名称
 
-    PRIMARY KEY(`id`)
+    PRIMARY KEY(`id`),
+    UNIQUE(`name`)  -- 监所不能重名
 );
 
 /*
@@ -37,13 +37,12 @@ CREATE TABLE `prison` (
 */
 CREATE TABLE `police` (
     `id`                BIGINT          NOT NULL,   -- 警员id
-    `account_id`        BIGINT          NOT NULL,   -- 账号id
     `name`              VARCHAR(20)     NOT NULL,   -- 警员姓名
+    `image_url`         VARCHAR(200)    NOT NULL,   -- 头像url(没有url时值为空字符串)
     `prison_id`         BIGINT          NOT NULL,   -- 所属监所id
+    `account_id`        BIGINT          NOT NULL,   -- 账号id
 
-    PRIMARY KEY(`id`),
-    foreign key (account_id) references account(id) on delete cascade, -- 联级删除，以删除账号的方式进行管理员的删除删除账号的话，直接将详细警员信息删除，也就是以删除账号的方式进行警员删除；同时也是使用删除账号的方式进行管理员的删除
-    foreign key (prison_id) references prison(id) on delete cascade    -- 联级删除，以删除账号的方式进行管理员的删除删除监狱的话，也就是监狱放弃使用该训练系统，此时将该监狱的警擦都移出本系统，正在登录态的警员请求信息时应该给予用户不存在的提示
+    PRIMARY KEY(`id`)
 );
 
 
@@ -52,24 +51,21 @@ CREATE TABLE `police` (
 */
 CREATE TABLE `prison_admin` (
     `id`                BIGINT          NOT NULL,   -- 监所管理员id
-    `account_id`        BIGINT          NOT NULL,   -- 账号id
     `nickname`          VARCHAR(20)     NOT NULL,   -- 昵称
+    `account_id`        BIGINT          NOT NULL,   -- 账号id
     `prison_id`         BIGINT          NOT NULL,   -- 所属监所id
 
-    PRIMARY KEY(`id`),
-    foreign key (account_id) references account(id) on delete cascade, -- 联级删除，同警员，以删除账号的方式进行管理员的删除
-    foreign key (prison_id) references prison(id) on delete cascade   -- 联机删除，删除监狱的话，也就是监狱放弃使用该训练系统，管理员自然应该被移除
+    PRIMARY KEY(`id`)
 );
 /*
     平台管理员，超级管理员
 */
 CREATE TABLE `admin` (
     `id`                BIGINT          NOT NULL,   -- 超级管理员id
-    `account_id`        BIGINT          NOT NULL,   -- 账号id
     `nickname`          VARCHAR(20)     NOT NULL,   -- 昵称
+    `account_id`        BIGINT          NOT NULL,   -- 账号id
 
-    PRIMARY KEY(`id`),
-    foreign key (account_id) references account(id) on delete cascade -- 联级删除，同警员，以删除账号的方式进行管理员的删除
+    PRIMARY KEY(`id`)
 );
 
 /*
@@ -95,12 +91,9 @@ CREATE TABLE `police_training` (
     `start_time`        DATETIME        NOT NULL,   -- 训练开始时间
     `end_time`          DATETIME        NOT NULL,   -- 训练结束时间
     `status`            TINYINT         NOT NULL,   -- 状态
-    `result`            VARCHAR(200)    NOT NULL,   -- 评估结果
+    `result`            VARCHAR(200),               -- 评估结果
 
-    PRIMARY KEY(`id`),
-    foreign key (police_id) references police(id) on delete cascade, -- 联级删除，当删除警员时，该警员的训练记录自然没了价值
-    foreign key (model_id) references training_model(id) -- 不联带删除，删除model之前，将所有训练记录表中的外键model_id设置为-1，查询拼接model名字时对查不出来的设为“已删除模型”
-
+    PRIMARY KEY(`id`)
 );
 
 /*
@@ -112,6 +105,26 @@ CREATE TABLE `access_record` (
     `account_id`        BIGINT          NOT NULL,   -- 访问账号id
     `content`           VARCHAR(200)    NOT NULL,   -- 内容
 
-    PRIMARY KEY(`id`),
-    foreign key (account_id) references training_model(id) on delete cascade -- 级联删除，如果一个警员已经移除该系统，那也没必要保留他的访问记录了
+    PRIMARY KEY(`id`)
+);
+
+/*
+   监所管理员开启训练模型的记录
+ */
+CREATE TABLE `prison_model`(
+    `id`                BIGINT          PRIMARY KEY,
+    `prison_id`         BIGINT          NOT NULL,
+    `model_id`          BIGINT          NOT NULL
+);
+
+/*
+ 综合评估
+ */
+CREATE TABLE `total_assess` (
+    `id`                BIGINT          PRIMARY KEY,
+    `police_id`         BIGINT          NOT NULL,   -- 综合评估的对象
+    `mental_state`      VARCHAR(100)    NOT NULL,   -- 心理状态
+    `press_type`        VARCHAR(100)    NOT NULL,   -- 压力类型
+    `create_time`       DATETIME        NOT NULL,   -- 创建时间
+    `update_time`       DATETIME                    -- 更新时间
 );
