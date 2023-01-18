@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nwpu.managementserver.mapper.AccessRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.nwpu.managementserver.domain.AccessRecord">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="accessTime" column="access_time" jdbcType="TIMESTAMP"/>
+            <result property="accountId" column="account_id" jdbcType="BIGINT"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,access_time,account_id,
+        content
+    </sql>
+</mapper>

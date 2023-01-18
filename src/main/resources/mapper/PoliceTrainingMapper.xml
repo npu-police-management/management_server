@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nwpu.managementserver.mapper.PoliceTrainingMapper">
+
+    <resultMap id="BaseResultMap" type="com.nwpu.managementserver.domain.PoliceTraining">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="policeId" column="police_id" jdbcType="BIGINT"/>
+            <result property="modelId" column="model_id" jdbcType="BIGINT"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="result" column="result" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,police_id,model_id,
+        start_time,end_time,status,
+        result
+    </sql>
+</mapper>

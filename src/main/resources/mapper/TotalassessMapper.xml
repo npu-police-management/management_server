@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nwpu.managementserver.mapper.TotalassessMapper">
+
+    <resultMap id="BaseResultMap" type="com.nwpu.managementserver.domain.Totalassess">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="policeId" column="police_id" jdbcType="BIGINT"/>
+            <result property="mentalState" column="mental_state" jdbcType="VARCHAR"/>
+            <result property="pressType" column="press_type" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,police_id,mental_state,
+        press_type,create_time,update_time
+    </sql>
+</mapper>
