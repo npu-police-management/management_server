@@ -1,14 +1,15 @@
 package com.nwpu.managementserver.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import lombok.Data;
 
 /**
  * 
- * @TableName prison_mode
+ * @TableName prison_model
  */
 @Data
-public class PrisonMode implements Serializable {
+public class PrisonModel implements Serializable {
     /**
      * 
      */
@@ -22,7 +23,8 @@ public class PrisonMode implements Serializable {
     /**
      * 
      */
-    private Long modeId;
+    private Long modelId;
 
+    @Serial
     private static final long serialVersionUID = 1L;
 }

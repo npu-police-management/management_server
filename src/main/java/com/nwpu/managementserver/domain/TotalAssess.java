@@ -1,15 +1,16 @@
 package com.nwpu.managementserver.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
  * 
- * @TableName totalAssess
+ * @TableName total_assess
  */
 @Data
-public class Totalassess implements Serializable {
+public class TotalAssess implements Serializable {
     /**
      * 
      */
@@ -40,5 +41,6 @@ public class Totalassess implements Serializable {
      */
     private LocalDateTime updateTime;
 
+    @Serial
     private static final long serialVersionUID = 1L;
 }

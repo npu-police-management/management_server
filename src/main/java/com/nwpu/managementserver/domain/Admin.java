@@ -1,5 +1,6 @@
 package com.nwpu.managementserver.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import lombok.Data;
 
@@ -24,5 +25,6 @@ public class Admin implements Serializable {
      */
     private Long accountId;
 
+    @Serial
     private static final long serialVersionUID = 1L;
 }

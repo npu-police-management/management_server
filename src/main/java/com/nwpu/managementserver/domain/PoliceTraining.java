@@ -1,5 +1,6 @@
 package com.nwpu.managementserver.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Data;
@@ -45,5 +46,6 @@ public class PoliceTraining implements Serializable {
      */
     private String result;
 
+    @Serial
     private static final long serialVersionUID = 1L;
 }
