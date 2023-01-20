@@ -15,4 +15,9 @@
         id,account_number,password,
         role
     </sql>
+    <select id="selectOneByAccountNumber" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from account
+        where account_number = #{accountNumber,jdbcType=VARCHAR}
+    </select>
 </mapper>

@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS `refresh_token`;
 
 /*
     账号，供警员，监所管理员，超级管理员登录的账号表
+    警员（0），监所管理员（1），超级管理员（2）
 */
 CREATE TABLE `account` (
     `id`                BIGINT          NOT NULL,   -- 账号id

@@ -15,6 +15,15 @@ var:
       host: 127.0.0.1
       port: 6379
       password: p
+  # Snowflake id
+  snowflake:
+    worker-id: 15
+    datacenter-id: 15
+  # Jwt Strings
+  jwt:
+    secret: s71uE1N861fVWFi8pjZqHwG15Ma4l5vCGq09Cb4w10tTtY7gWPwXyM_cQaSCdMid
+    access-token-expiration: 600000 # 10 minutes
+    refresh-token-expiration: 3000000 # 60 minutes
 
 spring:
   data:
