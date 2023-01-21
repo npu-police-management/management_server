@@ -1,11 +1,14 @@
-DROP TABLE IF EXISTS `police_training`;
-DROP TABLE IF EXISTS `access_record`;
+DROP TABLE IF EXISTS `account`;
+DROP TABLE IF EXISTS `prison`;
 DROP TABLE IF EXISTS `police`;
 DROP TABLE IF EXISTS `prison_admin`;
 DROP TABLE IF EXISTS `admin`;
 DROP TABLE IF EXISTS `training_model`;
-DROP TABLE IF EXISTS `account`;
-DROP TABLE IF EXISTS `prison`;
+DROP TABLE IF EXISTS `police_training`;
+DROP TABLE IF EXISTS `access_record`;
+DROP TABLE IF EXISTS `prison_model`;
+DROP TABLE IF EXISTS `total_assess`;
+DROP TABLE IF EXISTS `refresh_token`;
 
 /*
     账号，供警员，监所管理员，超级管理员登录的账号表
@@ -127,4 +130,14 @@ CREATE TABLE `total_assess` (
     `press_type`        VARCHAR(100)    NOT NULL,   -- 压力类型
     `create_time`       DATETIME        NOT NULL,   -- 创建时间
     `update_time`       DATETIME                    -- 更新时间
+);
+
+/*
+    刷新令牌
+*/
+CREATE TABLE `refresh_token` (
+    `id`                BIGINT          NOT NULL,   -- id
+    `token`             VARCHAR(255)    NOT NULL,   -- refresh-token内容
+
+    PRIMARY KEY(`id`)
 );
