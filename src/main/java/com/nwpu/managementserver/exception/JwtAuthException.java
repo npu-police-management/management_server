@@ -1,6 +1,8 @@
 package com.nwpu.managementserver.exception;
 
-import org.springframework.http.HttpStatus;
+import com.nwpu.managementserver.constant.CodeEnum;
+
+import static com.nwpu.managementserver.constant.CodeEnum.*;
 
 /**
  * @author Jiayi Zhu
@@ -9,25 +11,24 @@ import org.springframework.http.HttpStatus;
 public class JwtAuthException extends ManagementException {
 
     public static JwtAuthException RefreshTokenNotFound
-            = new JwtAuthException(HttpStatus.BAD_REQUEST, "Refresh Token Not Found");
+            = new JwtAuthException(NotFound, "Refresh Token Not Found");
 
     public static JwtAuthException RefreshTokenNotMatch
-            = new JwtAuthException(HttpStatus.BAD_REQUEST, "Refresh Token Not Match");
+            = new JwtAuthException(RequestError, "Refresh Token Not Match");
 
-    public static JwtAuthException RefreshTokenExpired
-            = new JwtAuthException(HttpStatus.BAD_REQUEST, "Refresh Token is Expired");
+    private final CodeEnum code;
 
-    private final HttpStatus status;
+    //private final HttpStatus status;
     
-    public JwtAuthException(HttpStatus status, String message) {
+    public JwtAuthException(CodeEnum code, String message) {
         
-        super(status.value(), message);
-        this.status = status;
+        super(message);
+        this.code = code;
     }
 
     @Override
-    public HttpStatus getStatus() {
+    public int getCode() {
 
-        return status;
+        return code.getValue();
     }
 }

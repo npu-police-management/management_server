@@ -8,13 +8,15 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.function.Function;
+
+import static com.nwpu.managementserver.constant.CodeEnum.*;
 
 /**
  * @author Jiayi Zhu
@@ -123,15 +125,20 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
         }
         catch (SecurityException e){
-            throw new JwtAuthException(HttpStatus.BAD_REQUEST, "Invalid JWT signature");
+            throw new JwtAuthException(RequestError, "Invalid JWT signature");
         } catch (MalformedJwtException e) {
-            throw new JwtAuthException(HttpStatus.BAD_REQUEST, "Invalid JWT token");
+            throw new JwtAuthException(RequestError, "Invalid JWT token");
         } catch (ExpiredJwtException e) {
-            throw new JwtAuthException(HttpStatus.BAD_REQUEST, "Expired JWT token");
+            if (StringUtils.hasText(fromToken(token, Claims::getId))) {
+                throw new JwtAuthException(AccessTokenExpiredError, "Expired JWT access-token");
+            }
+            else {
+                throw new JwtAuthException(RefreshTokenExpiredError, "Expired JWT refresh-token");
+            }
         } catch (UnsupportedJwtException e) {
-            throw new JwtAuthException(HttpStatus.BAD_REQUEST, "Unsupported JWT token");
+            throw new JwtAuthException(RequestError, "Unsupported JWT token");
         } catch (IllegalArgumentException e) {
-            throw new JwtAuthException(HttpStatus.BAD_REQUEST, "JWT claims string is empty.");
+            throw new JwtAuthException(RequestError, "JWT claims string is empty.");
         }
     }
 

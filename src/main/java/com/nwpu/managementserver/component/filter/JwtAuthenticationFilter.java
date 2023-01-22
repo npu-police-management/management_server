@@ -19,6 +19,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static com.nwpu.managementserver.constant.RequestAttributeConstant.Token;
+
 /**
  * @author Jiayi Zhu
  * 2023/1/20
@@ -58,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 try {
                     tokenProvider.checkRefreshToken(token);
                     TokenDTO tokenDTO = tokenProvider.generateToken(token);
-                    request.setAttribute("token", tokenDTO);
+                    request.setAttribute(Token, tokenDTO);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
@@ -84,7 +86,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // Bearer <accessToken>
+    // Bearer <token>
     private String getJwtFromRequest(HttpServletRequest request) {
 
         String bearerToken = request.getHeader("Authorization");

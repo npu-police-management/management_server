@@ -1,6 +1,7 @@
 package com.nwpu.managementserver.service.impl;
 
 import com.nwpu.managementserver.domain.RefreshToken;
+import com.nwpu.managementserver.exception.JwtAuthException;
 import com.nwpu.managementserver.mapper.RefreshTokenMapper;
 import com.nwpu.managementserver.service.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public String getRefreshTokenById(long id) {
+    public String getRefreshTokenById(long id) throws JwtAuthException {
 
-        return refreshTokenMapper.getById(id).getToken();
+        String token = refreshTokenMapper.getById(id).getToken();
+        if (token == null) {
+            throw JwtAuthException.RefreshTokenNotFound;
+        }
+        return token;
     }
 }

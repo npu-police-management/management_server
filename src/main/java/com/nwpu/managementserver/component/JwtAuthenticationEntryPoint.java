@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import static com.nwpu.managementserver.constant.CodeEnum.UserUnauthenticated;
+
 /**
  * @author Jiayi Zhu
  * 2023/1/20
@@ -30,7 +32,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
 
-        String content = mapper.writeValueAsString(CommonResult.unauthorized(authException.getMessage()));
+        String content = mapper.writeValueAsString(
+                CommonResult.unauthorized(UserUnauthenticated, authException.getMessage()));
         response.setContentType("application/json");
         response.getWriter().write(content);
     }

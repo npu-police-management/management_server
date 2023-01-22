@@ -13,20 +13,20 @@ public enum RoleEnum {
     /**
      * 警员
      */
-    @JsonProperty("POLICE")
-    POLICE(0),
+    @JsonProperty("Police")
+    Police(0),
 
     /**
      * 监所管理员
      */
-    @JsonProperty("PRISON")
-    PRISON(1),
+    @JsonProperty("PrisonAdmin")
+    PrisonAdmin(1),
 
     /**
      * 平台运维
      */
-    @JsonProperty("ADMIN")
-    ADMIN(2);
+    @JsonProperty("Admin")
+    Admin(2);
 
     RoleEnum(int value) {
 

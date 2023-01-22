@@ -1,25 +1,22 @@
 package com.nwpu.managementserver.exception;
 
-import com.nwpu.managementserver.commen.ResultCodeEnum;
+import com.nwpu.managementserver.constant.CodeEnum;
 
-public class BusinessException extends RuntimeException {
+/**
+ * 处理service层各种异常
+ */
+public class BusinessException extends ManagementException {
 
     private final int code;
 
-    public BusinessException(ResultCodeEnum resultCodeEnum) {
-        super(resultCodeEnum.getMessage());
-        this.code = resultCodeEnum.getCode();
-    }
-
-
-    public BusinessException(ResultCodeEnum resultCodeEnum, String message) {
+    public BusinessException(CodeEnum code, String message) {
         super(message);
-        this.code = resultCodeEnum.getCode();
+        this.code = code.getValue();
     }
+
 
     public int getCode() {
         return code;
     }
-
 
 }

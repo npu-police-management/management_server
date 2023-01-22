@@ -38,8 +38,8 @@ public class ExceptionFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (ManagementException e) {
 
-            //LogUtils.logError(log, e);
-            String content = mapper.writeValueAsString(CommonResult.failure(e.getMessage()));
+            log.error(e.getMessage());
+            String content = mapper.writeValueAsString(CommonResult.failure(e));
             response.setContentType("application/json");
             response.getWriter().write(content);
         }

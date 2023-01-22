@@ -1,20 +1,19 @@
 package com.nwpu.managementserver.exception;
 
-import org.springframework.http.HttpStatus;
+import lombok.Getter;
 
 /**
  * @author Jiayi Zhu
  * 2023/1/20
  */
+@Getter
 public abstract class ManagementException extends RuntimeException {
 
-    private final int code;
 
-    public ManagementException(int code, String message) {
+    public ManagementException(String message) {
 
         super(message);
-        this.code = code;
     }
 
-    public abstract HttpStatus getStatus();
+    public abstract int getCode();
 }
