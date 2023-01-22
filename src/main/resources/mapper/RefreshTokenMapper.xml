@@ -12,4 +12,14 @@
     <sql id="Base_Column_List">
         id,token
     </sql>
+    <insert id="insert">
+        insert into refresh_token
+        (id, token)
+        values (#{id,jdbcType=BIGINT}, #{token,jdbcType=VARCHAR})
+    </insert>
+    <select id="getById" resultType="com.nwpu.managementserver.domain.RefreshToken">
+        select <include refid="Base_Column_List" />
+        from refresh_token
+        where id = #{id,jdbcType=BIGINT}
+    </select>
 </mapper>

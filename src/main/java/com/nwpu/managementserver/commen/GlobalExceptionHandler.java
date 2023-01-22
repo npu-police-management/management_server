@@ -1,8 +1,8 @@
 package com.nwpu.managementserver.commen;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nwpu.managementserver.exception.BusinessException;
 import com.nwpu.managementserver.exception.IllegalOperationException;
+import com.nwpu.managementserver.exception.ManagementException;
 import com.nwpu.managementserver.exception.NotFoundException;
 import com.nwpu.managementserver.vo.CommonResult;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +28,8 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 
+import static com.nwpu.managementserver.constant.CodeEnum.*;
+
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -46,7 +48,7 @@ public class GlobalExceptionHandler {
     public CommonResult handleBindException(BindException e, HttpServletRequest request) {
         String message = formatBindException(e);
         log.warn(formatException(e, request, message, false));
-        return CommonResult.failure(ResultCodeEnum.PARAM_VALIDATE_FAILED.getCode(), message);
+        return CommonResult.badRequest(RequestError, message);
     }
 
 
@@ -57,7 +59,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public CommonResult handleMethodNotAllowed(Exception e, HttpServletRequest request) {
         log.warn(formatException(e, request, null, false));
-        return CommonResult.failure("请求方式不支持");
+        return CommonResult.badRequest(RequestError, "请求方式不支持");
     }
 
 
@@ -68,7 +70,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ServletRequestBindingException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public CommonResult handleBadRequest(Exception e, HttpServletRequest request) {
         log.warn(formatException(e, request, null, false));
-        return CommonResult.failure("请求格式不对");
+        return CommonResult.badRequest(RequestError, "请求格式不对");
     }
 
 
@@ -79,7 +81,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalOperationException.class)
     public CommonResult handleIllegalOperationException(Exception e, HttpServletRequest request) {
         log.warn(formatException(e, request, null, false));
-        return CommonResult.forbidden(e.getMessage());
+        return CommonResult.forbidden(Forbidden, e.getMessage());
     }
 
     /**
@@ -89,32 +91,32 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     public CommonResult handleNotFoundException(NoHandlerFoundException e, HttpServletRequest request) {
         log.warn(formatException(e, request, null, false));
-        return CommonResult.failure("请求URL不存在");
+        return CommonResult.notFound(NotFound, "请求URL不存在");
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public CommonResult handleResourceNotFoundException(NotFoundException e, HttpServletRequest request) {
         log.warn(formatException(e, request, null, false));
-        return CommonResult.failure(404, e.getMessage());
+        return CommonResult.notFound(NotFound, e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
     public CommonResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
         log.warn(formatException(e, request, null, false));
-        return CommonResult.forbidden(403, e.getMessage());
+        return CommonResult.forbidden(Forbidden, e.getMessage());
     }
 
     /**
      * 参数校验失败异常处理
      * */
     @ExceptionHandler(ValidationException.class)
-    public CommonResult handleValidationException(ValidationException e, HttpServletRequest request) {
+    public CommonResult handleValidationException(ValidationException e) {
         log.warn("参数校验出错，错误信息：{}", e.getMessage());
         String msg = e.getMessage();
         msg = msg.substring(msg.indexOf(".") + 1);
-        return CommonResult.failure(ResultCodeEnum.PARAM_VALIDATE_FAILED.getCode(), msg);
+        return CommonResult.badRequest(RequestError, msg);
     }
 
     /**
@@ -122,11 +124,14 @@ public class GlobalExceptionHandler {
      * */
     private String validation(BindingResult bindingResult) {
         List<ObjectError> errors = bindingResult.getAllErrors();
-        StringBuilder sb = new StringBuilder("");
+        StringBuilder sb = new StringBuilder();
         if (!CollectionUtils.isEmpty(errors)) {
             for (ObjectError error : errors) {
                 FieldError fieldError = (FieldError) error;
-                sb.append(fieldError.getField() + fieldError.getDefaultMessage() + ",");
+                sb
+                        .append(fieldError.getField())
+                        .append(fieldError.getDefaultMessage())
+                        .append(",");
             }
         }
         return sb.length()>0?sb.substring(0,sb.length()-1):sb.toString();
@@ -135,10 +140,10 @@ public class GlobalExceptionHandler {
     /**
      * 业务异常，可细分为多种情况，可见ResultCodeEnum
      */
-    @ExceptionHandler(BusinessException.class)
-    public CommonResult handleBusinessException(BusinessException e, HttpServletRequest request) {
+    @ExceptionHandler(ManagementException.class)
+    public CommonResult handleBusinessException(ManagementException e, HttpServletRequest request) {
         log.warn(formatException(e, request, null, true));
-        return CommonResult.failure(e.getCode(), e.getMessage());
+        return CommonResult.failure(e);
     }
 
 
@@ -150,7 +155,7 @@ public class GlobalExceptionHandler {
     public CommonResult handleException(Exception e, HttpServletRequest request) {
         log.warn(formatException(e, request, null, true));
 //        e.printStackTrace();
-        return CommonResult.failure("服务器内部错误");
+        return CommonResult.internalServerError(ServerError, "服务器内部错误");
     }
 
 
