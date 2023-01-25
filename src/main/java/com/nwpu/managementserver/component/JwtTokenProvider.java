@@ -1,5 +1,7 @@
 package com.nwpu.managementserver.component;
 
+import cn.hutool.jwt.JWTPayload;
+import cn.hutool.jwt.JWTUtil;
 import com.nwpu.managementserver.dto.TokenDTO;
 import com.nwpu.managementserver.exception.JwtAuthException;
 import com.nwpu.managementserver.service.RefreshTokenService;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -88,6 +89,7 @@ public class JwtTokenProvider {
                 .setIssuedAt(currentTime)
                 .setExpiration(expireTime)
                 .setId(String.valueOf(id))
+                .setAudience("Refresh")
                 .signWith(getKey())
                 .compact();
         refreshTokenService.saveRefreshToken(id, username, refreshToken);
@@ -116,7 +118,7 @@ public class JwtTokenProvider {
     }
 
     // validate JWT token
-    public void validateToken(String token) {
+    public void validateToken(String token) throws JwtAuthException {
 
         try {
             Jwts.parserBuilder()
@@ -129,7 +131,9 @@ public class JwtTokenProvider {
         } catch (MalformedJwtException e) {
             throw new JwtAuthException(RequestError, "Invalid JWT token");
         } catch (ExpiredJwtException e) {
-            if (StringUtils.hasText(fromToken(token, Claims::getId))) {
+            JWTPayload jwtPayload = JWTUtil.parseToken(token).getPayload();
+            Object jti = jwtPayload.getClaimsJson().get("jti");
+            if (jti == null) {
                 throw new JwtAuthException(AccessTokenExpiredError, "Expired JWT access-token");
             }
             else {

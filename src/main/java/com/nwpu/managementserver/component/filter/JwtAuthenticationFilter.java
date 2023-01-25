@@ -62,9 +62,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // get JWT (token) from request
         String token = getJwtFromRequest(request);
+
+        // check is logout
+        if (accessTokenService.existInBlacklist(token)) {
+            throw new JwtAuthException(UserUnauthenticated, "用户未登录");
+        }
+
         // validate token
         if (StringUtils.hasText(token)) {
-
             tokenProvider.validateToken(token);
 
             // is-refresh-token
@@ -78,10 +83,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
             else {
-                if (accessTokenService.existInBlacklist(token)) {
-                    throw new JwtAuthException(UserUnauthenticated, "用户未登录");
-                }
-
                 // get username from token
                 String username = tokenProvider.fromToken(token, Claims::getSubject);
                 // lead user associated with token

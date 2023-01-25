@@ -1,5 +1,6 @@
 package com.nwpu.managementserver.config;
 
+import com.nwpu.managementserver.commen.LogFilter;
 import com.nwpu.managementserver.component.JwtAuthenticationEntryPoint;
 import com.nwpu.managementserver.component.filter.ExceptionFilter;
 import com.nwpu.managementserver.component.filter.JwtAuthenticationFilter;
@@ -34,6 +35,8 @@ public class SecurityConfiguration {
 
     private UserDetailsService userDetailsService;
 
+    private LogFilter logFilter;
+
     @Autowired
     public void setAuthenticationEntryPoint(JwtAuthenticationEntryPoint authenticationEntryPoint) {
 
@@ -56,6 +59,12 @@ public class SecurityConfiguration {
     public void setUserDetailsService(UserDetailsService userDetailsService) {
 
         this.userDetailsService = userDetailsService;
+    }
+
+    @Autowired
+    public void setLogFilter(LogFilter logFilter) {
+
+        this.logFilter = logFilter;
     }
 
     @Bean
@@ -83,7 +92,8 @@ public class SecurityConfiguration {
                 .authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(exceptionFilter, JwtAuthenticationFilter.class)
+                .addFilterBefore(logFilter, JwtAuthenticationFilter.class)
+                .addFilterBefore(exceptionFilter, LogFilter.class)
                 .build();
     }
 
