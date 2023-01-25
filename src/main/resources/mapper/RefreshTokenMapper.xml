@@ -6,20 +6,27 @@
 
     <resultMap id="BaseResultMap" type="com.nwpu.managementserver.domain.RefreshToken">
             <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="subject" column="subject" jdbcType="VARCHAR"/>
             <result property="token" column="token" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,token
+        id,subject,token
     </sql>
     <insert id="insert">
         insert into refresh_token
-        (id, token)
-        values (#{id,jdbcType=BIGINT}, #{token,jdbcType=VARCHAR})
+        (id, subject, token)
+        values (#{id,jdbcType=BIGINT}, #{subject,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR})
     </insert>
+
     <select id="getById" resultType="com.nwpu.managementserver.domain.RefreshToken">
         select <include refid="Base_Column_List" />
         from refresh_token
         where id = #{id,jdbcType=BIGINT}
     </select>
+
+    <delete id="deleteAllBySubject">
+        delete from refresh_token
+        where subject = #{subject,jdbcType=VARCHAR}
+    </delete>
 </mapper>

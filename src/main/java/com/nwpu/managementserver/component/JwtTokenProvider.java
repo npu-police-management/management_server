@@ -90,7 +90,7 @@ public class JwtTokenProvider {
                 .setId(String.valueOf(id))
                 .signWith(getKey())
                 .compact();
-        refreshTokenService.saveRefreshToken(id, refreshToken);
+        refreshTokenService.saveRefreshToken(id, username, refreshToken);
         return refreshToken;
     }
 

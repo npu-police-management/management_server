@@ -138,6 +138,7 @@ CREATE TABLE `total_assess` (
 */
 CREATE TABLE `refresh_token` (
     `id`                BIGINT          NOT NULL,   -- id
+    `subject`           VARCHAR(20)     NOT NULL,   -- subject
     `token`             VARCHAR(255)    NOT NULL,   -- refresh-token内容
 
     PRIMARY KEY(`id`)

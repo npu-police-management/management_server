@@ -5,7 +5,9 @@ import com.nwpu.managementserver.dto.AccountUserDetails;
 import com.nwpu.managementserver.dto.LoginParam;
 import com.nwpu.managementserver.dto.TokenDTO;
 import com.nwpu.managementserver.exception.ManagementException;
+import com.nwpu.managementserver.service.AccessTokenService;
 import com.nwpu.managementserver.service.AccountService;
+import com.nwpu.managementserver.service.RefreshTokenService;
 import com.nwpu.managementserver.vo.*;
 import jakarta.servlet.ServletRequest;
 import jakarta.validation.Valid;
@@ -14,10 +16,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static com.nwpu.managementserver.constant.CodeEnum.UserUnauthenticated;
+import static com.nwpu.managementserver.constant.RequestAttributeConstant.AccessToken;
 import static com.nwpu.managementserver.constant.RequestAttributeConstant.Token;
 
 /**
@@ -33,6 +37,10 @@ public class AuthController {
     private AccountService accountService;
 
     private JwtTokenProvider jwtTokenProvider;
+
+    private AccessTokenService accessTokenService;
+
+    private RefreshTokenService refreshTokenService;
 
     @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
@@ -50,6 +58,18 @@ public class AuthController {
     public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
 
         this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    @Autowired
+    public void setAccessTokenService(AccessTokenService accessTokenService) {
+
+        this.accessTokenService = accessTokenService;
+    }
+
+    @Autowired
+    public void setRefreshTokenService(RefreshTokenService refreshTokenService) {
+
+        this.refreshTokenService = refreshTokenService;
     }
 
     @PostMapping("/login")
@@ -96,6 +116,19 @@ public class AuthController {
         } catch (ManagementException e) {
             return CommonResult.failure(e);
         }
+    }
+
+    @PostMapping("logout")
+    public CommonResult logout(ServletRequest request,
+                               @AuthenticationPrincipal AccountUserDetails account) {
+
+        String accessToken = (String) request.getAttribute(AccessToken);
+        accessTokenService.addToBlacklist(accessToken);
+
+        String username = account.getUsername();
+        refreshTokenService.deleteAllBySubject(username);
+
+        return CommonResult.success();
     }
 
     @GetMapping("token-refresh")

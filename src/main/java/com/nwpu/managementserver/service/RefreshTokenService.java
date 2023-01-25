@@ -6,7 +6,9 @@ package com.nwpu.managementserver.service;
  */
 public interface RefreshTokenService {
 
-    void saveRefreshToken(long id, String refreshToken);
+    void saveRefreshToken(long id, String subject, String refreshToken);
 
     String getRefreshTokenById(long id);
+
+    void deleteAllBySubject(String subject);
 }

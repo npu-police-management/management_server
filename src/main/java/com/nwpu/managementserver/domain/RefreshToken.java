@@ -22,6 +22,11 @@ public class RefreshToken implements Serializable {
     private Long id;
 
     /**
+     *
+     */
+    private String subject;
+
+    /**
      * 
      */
     private String token;
@@ -29,8 +34,8 @@ public class RefreshToken implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public static RefreshToken of(long id, String refreshToken) {
+    public static RefreshToken of(long id, String subject, String refreshToken) {
 
-        return new RefreshToken(id, refreshToken);
+        return new RefreshToken(id, subject, refreshToken);
     }
 }
