@@ -24,12 +24,17 @@ public class TotalAssess implements Serializable {
     /**
      * 
      */
-    private String mentalState;
+    private String mentalPercentList;
 
     /**
      * 
      */
-    private String pressType;
+    private Boolean result;
+
+    /**
+     *
+     */
+    private String description;
 
     /**
      * 

@@ -23,18 +23,24 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public void saveRefreshToken(long id, String refreshToken) {
+    public void saveRefreshToken(long id, String subject, String refreshToken) {
 
-        refreshTokenMapper.insert(RefreshToken.of(id, refreshToken));
+        refreshTokenMapper.insert(RefreshToken.of(id, subject, refreshToken));
     }
 
     @Override
     public String getRefreshTokenById(long id) throws JwtAuthException {
 
-        String token = refreshTokenMapper.getById(id).getToken();
+        RefreshToken token = refreshTokenMapper.getById(id);
         if (token == null) {
             throw JwtAuthException.RefreshTokenNotFound;
         }
-        return token;
+        return token.getToken();
+    }
+
+    @Override
+    public void deleteAllBySubject(String subject) {
+
+        refreshTokenMapper.deleteAllBySubject(subject);
     }
 }

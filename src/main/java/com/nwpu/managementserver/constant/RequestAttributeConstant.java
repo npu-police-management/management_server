@@ -6,5 +6,7 @@ package com.nwpu.managementserver.constant;
  */
 public class RequestAttributeConstant {
 
+    public static final String AccessToken = "accessToken";
+
     public static final String Token = "token";
 }

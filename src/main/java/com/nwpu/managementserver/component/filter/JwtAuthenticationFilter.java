@@ -2,6 +2,8 @@ package com.nwpu.managementserver.component.filter;
 
 import com.nwpu.managementserver.component.JwtTokenProvider;
 import com.nwpu.managementserver.dto.TokenDTO;
+import com.nwpu.managementserver.exception.JwtAuthException;
+import com.nwpu.managementserver.service.AccessTokenService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,6 +21,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static com.nwpu.managementserver.constant.CodeEnum.UserUnauthenticated;
+import static com.nwpu.managementserver.constant.RequestAttributeConstant.AccessToken;
 import static com.nwpu.managementserver.constant.RequestAttributeConstant.Token;
 
 /**
@@ -32,6 +36,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private UserDetailsService userDetailsService;
 
+    private AccessTokenService accessTokenService;
+
     @Autowired
     public void setTokenProvider(JwtTokenProvider tokenProvider) {
 
@@ -42,6 +48,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void setUserDetailsService(UserDetailsService userDetailsService) {
 
         this.userDetailsService = userDetailsService;
+    }
+
+    @Autowired
+    public void setAccessTokenService(AccessTokenService accessTokenService) {
+
+        this.accessTokenService = accessTokenService;
     }
 
     @Override
@@ -66,6 +78,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
             else {
+                if (accessTokenService.existInBlacklist(token)) {
+                    throw new JwtAuthException(UserUnauthenticated, "用户未登录");
+                }
+
                 // get username from token
                 String username = tokenProvider.fromToken(token, Claims::getSubject);
                 // lead user associated with token
@@ -79,6 +95,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 .buildDetails(request));
                 // set spring security
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                request.setAttribute(AccessToken, token);
             }
 
 

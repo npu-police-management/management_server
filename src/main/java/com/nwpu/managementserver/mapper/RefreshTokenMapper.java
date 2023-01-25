@@ -15,6 +15,8 @@ public interface RefreshTokenMapper {
     int insert(RefreshToken refreshToken);
 
     RefreshToken getById(Long id);
+
+    int deleteAllBySubject(String subject);
 }
 
 
