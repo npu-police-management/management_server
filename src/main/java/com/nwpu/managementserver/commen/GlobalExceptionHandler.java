@@ -1,9 +1,7 @@
 package com.nwpu.managementserver.commen;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nwpu.managementserver.exception.IllegalOperationException;
 import com.nwpu.managementserver.exception.ManagementException;
-import com.nwpu.managementserver.exception.NotFoundException;
 import com.nwpu.managementserver.vo.CommonResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
@@ -34,9 +32,13 @@ import static com.nwpu.managementserver.constant.CodeEnum.*;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    public void setObjectMapper(ObjectMapper objectMapper) {
+
+        this.objectMapper = objectMapper;
+    }
 
     /**
      * 参数校验失败的异常处理器
@@ -73,17 +75,6 @@ public class GlobalExceptionHandler {
         return CommonResult.badRequest(RequestError, "请求格式不对");
     }
 
-
-    /**
-     * 请求的操作非法，例如一个普通用户要删除其他普通用户发布的内容（已通过授权并进入了Controller层，但是在Service层发现操作非法而抛出的异常）
-     */
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler(IllegalOperationException.class)
-    public CommonResult handleIllegalOperationException(Exception e, HttpServletRequest request) {
-        log.warn(formatException(e, request, null, false));
-        return CommonResult.forbidden(Forbidden, e.getMessage());
-    }
-
     /**
      * 请求URL有误，无法解析这个URL该对应Controller中哪个方法
      */
@@ -92,13 +83,6 @@ public class GlobalExceptionHandler {
     public CommonResult handleNotFoundException(NoHandlerFoundException e, HttpServletRequest request) {
         log.warn(formatException(e, request, null, false));
         return CommonResult.notFound(NotFound, "请求URL不存在");
-    }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException.class)
-    public CommonResult handleResourceNotFoundException(NotFoundException e, HttpServletRequest request) {
-        log.warn(formatException(e, request, null, false));
-        return CommonResult.notFound(NotFound, e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)

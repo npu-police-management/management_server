@@ -7,14 +7,15 @@
     <resultMap id="BaseResultMap" type="com.nwpu.managementserver.domain.TotalAssess">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="policeId" column="police_id" jdbcType="BIGINT"/>
-            <result property="mentalState" column="mental_state" jdbcType="VARCHAR"/>
-            <result property="pressType" column="press_type" jdbcType="VARCHAR"/>
+            <result property="mentalPercentList" column="mental_percent_list" jdbcType="VARCHAR"/>
+            <result property="result" column="result" jdbcType="BOOLEAN"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,police_id,mental_state,
-        press_type,create_time,update_time
+        id,police_id,mental_percent_list,
+        result,description,create_time,update_time
     </sql>
 </mapper>

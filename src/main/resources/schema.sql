@@ -125,12 +125,13 @@ CREATE TABLE `prison_model`(
  综合评估
  */
 CREATE TABLE `total_assess` (
-    `id`                BIGINT          PRIMARY KEY,
-    `police_id`         BIGINT          NOT NULL,   -- 综合评估的对象
-    `mental_percent_list`      VARCHAR(100)    NOT NULL,   -- 心理状态,形如[10,10,10,10,10,50],以六种基本情绪为对应,顺序为：愤怒（anger）、厌恶（disgust）、恐惧（fear）、幸福（happiness）、悲伤（sadness）和惊喜（surprise）
-    `result`        BOOLEAN    NOT NULL,   -- 最终结果是否在正常范围
-    `create_time`       DATETIME        NOT NULL,   -- 创建时间
-    `update_time`       DATETIME                    -- 更新时间
+    `id`                    BIGINT          PRIMARY KEY,
+    `police_id`             BIGINT          NOT NULL,   -- 综合评估的对象
+    `mental_percent_list`   VARCHAR(100)    NOT NULL,   -- 心理状态,形如[10,10,10,10,10,50],以六种基本情绪为对应,顺序为：愤怒（anger）、厌恶（disgust）、恐惧（fear）、幸福（happiness）、悲伤（sadness）和惊喜（surprise）
+    `result`                BOOLEAN         NOT NULL,   -- 最终结果是否在正常范围
+    `description`           VARCHAR(100)    NOT NULL,   -- 结果描述
+    `create_time`           DATETIME        NOT NULL,   -- 创建时间
+    `update_time`           DATETIME                    -- 更新时间
 );
 
 /*
