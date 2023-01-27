@@ -15,6 +15,11 @@
         id,account_number,password,
         role
     </sql>
+    <insert id="insert">
+        insert into account
+        (id, account_number, password, role)
+        values (#{id,jdbcType=BIGINT}, #{accountNumber,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=TINYINT})
+    </insert>
     <select id="selectOneByAccountNumber" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" />
         from account

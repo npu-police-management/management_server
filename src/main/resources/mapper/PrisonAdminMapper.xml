@@ -15,4 +15,14 @@
         id,nickname,account_id,
         prison_id
     </sql>
+    <insert id="insert">
+        insert into prison_admin
+        (id, nickname, account_id, prison_id)
+        values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{accountId,jdbcType=BIGINT}, #{prisonId,jdbcType=BIGINT})
+    </insert>
+    <select id="getByAccountId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from prison_admin
+        where account_id = #{accountId,jdbcType=BIGINT}
+    </select>
 </mapper>

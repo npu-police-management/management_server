@@ -13,6 +13,10 @@ import org.apache.ibatis.annotations.Mapper;
 public interface PrisonMapper {
 
     int insert(Prison prison);
+
+    Prison getByName(String name);
+
+    Prison getById(Long id);
 }
 
 
