@@ -11,7 +11,7 @@ import static com.nwpu.managementserver.constant.CodeEnum.*;
 public class JwtAuthException extends ManagementException {
 
     public static JwtAuthException RefreshTokenNotFound
-            = new JwtAuthException(NotFound, "Refresh Token Not Found");
+            = new JwtAuthException(UserUnauthenticated, "无效的 Refresh Token, 需重新登陆");
 
     public static JwtAuthException RefreshTokenNotMatch
             = new JwtAuthException(RequestError, "Refresh Token Not Match");

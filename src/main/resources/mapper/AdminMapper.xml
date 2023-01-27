@@ -13,4 +13,9 @@
     <sql id="Base_Column_List">
         id,nickname,account_id
     </sql>
+    <select id="getByAccountId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from admin
+        where account_id = #{accountId,jdbcType=BIGINT}
+    </select>
 </mapper>

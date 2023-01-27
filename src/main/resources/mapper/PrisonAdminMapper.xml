@@ -20,9 +20,37 @@
         (id, nickname, account_id, prison_id)
         values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{accountId,jdbcType=BIGINT}, #{prisonId,jdbcType=BIGINT})
     </insert>
+    <delete id="deleteById">
+        delete from prison_admin where id in 
+        <foreach collection="idList" open="(" close=")" separator=","  item="item">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <delete id="deleteByPrisonId">
+        delete from prison_admin where prison_id in
+        <foreach collection="idList" open="(" close=")" separator=","  item="item">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
     <select id="getByAccountId" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from prison_admin
         where account_id = #{accountId,jdbcType=BIGINT}
+    </select>
+    <select id="getAllLike" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from prison_admin
+        where nickname like concat('%', #{query,jdbcType=VARCHAR}, '%')
+        or prison_id in (
+            select id from prison where name like concat('%', #{query,jdbcType=VARCHAR}, '%')
+        )
+        or account_id in (
+            select id from account where account_number like concat('%', #{query,jdbcType=VARCHAR}, '%')
+        )
+    </select>
+    <select id="getById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from prison_admin
+        where id = #{id}
     </select>
 </mapper>

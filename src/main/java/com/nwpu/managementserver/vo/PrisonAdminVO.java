@@ -4,13 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+/**
+ * @author Jiayi Zhu
+ * 2023/1/27
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageResult<T> {
-    private Integer total;
+public class PrisonAdminVO {
 
-    private List<T> list;
+    private String nickname;
+
+    private String accountNumber;
+
+    private String prisonName;
 }
