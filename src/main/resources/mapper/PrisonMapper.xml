@@ -17,4 +17,14 @@
         (id, name)
         values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR})
     </insert>
+    <select id="getByName" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from prison
+        where name = #{name,jdbcType=VARCHAR}
+    </select>
+    <select id="getById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from prison
+        where id = #{id,jdbcType=BIGINT}
+    </select>
 </mapper>

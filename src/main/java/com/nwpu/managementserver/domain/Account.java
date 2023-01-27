@@ -2,6 +2,8 @@ package com.nwpu.managementserver.domain;
 
 import java.io.Serial;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -9,6 +11,7 @@ import lombok.Data;
  * @TableName account
  */
 @Data
+@AllArgsConstructor
 public class Account implements Serializable {
     /**
      * 

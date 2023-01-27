@@ -13,6 +13,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AccountMapper {
 
     Account selectOneByAccountNumber(String accountNumber);
+
+    int insert(Account account);
 }
 
 

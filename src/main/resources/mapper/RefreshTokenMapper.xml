@@ -19,7 +19,7 @@
         values (#{id,jdbcType=BIGINT}, #{subject,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR})
     </insert>
 
-    <select id="getById" resultType="com.nwpu.managementserver.domain.RefreshToken">
+    <select id="getById" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" />
         from refresh_token
         where id = #{id,jdbcType=BIGINT}

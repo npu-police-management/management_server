@@ -1,13 +1,13 @@
 package com.nwpu.managementserver.controller.basic;
 
 import com.nwpu.managementserver.component.JwtTokenProvider;
+import com.nwpu.managementserver.domain.Prison;
+import com.nwpu.managementserver.domain.PrisonAdmin;
 import com.nwpu.managementserver.dto.AccountUserDetails;
 import com.nwpu.managementserver.dto.LoginParam;
 import com.nwpu.managementserver.dto.TokenDTO;
 import com.nwpu.managementserver.exception.ManagementException;
-import com.nwpu.managementserver.service.AccessTokenService;
-import com.nwpu.managementserver.service.AccountService;
-import com.nwpu.managementserver.service.RefreshTokenService;
+import com.nwpu.managementserver.service.*;
 import com.nwpu.managementserver.vo.*;
 import jakarta.servlet.ServletRequest;
 import jakarta.validation.Valid;
@@ -42,6 +42,10 @@ public class AuthController {
 
     private RefreshTokenService refreshTokenService;
 
+    private PrisonAdminService prisonAdminService;
+
+    private PrisonService prisonService;
+
     @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
 
@@ -72,6 +76,18 @@ public class AuthController {
         this.refreshTokenService = refreshTokenService;
     }
 
+    @Autowired
+    public void setPrisonAdminService(PrisonAdminService prisonAdminService) {
+
+        this.prisonAdminService = prisonAdminService;
+    }
+
+    @Autowired
+    public void setPrisonService(PrisonService prisonService) {
+
+        this.prisonService = prisonService;
+    }
+
     @PostMapping("/login")
     public CommonResult login(@Valid @RequestBody LoginParam param) {
 
@@ -100,9 +116,11 @@ public class AuthController {
                     loginVO.setPerson(policeLoginVO);
                 }
                 case PrisonAdmin -> {
-                    // TODO
-                    PrisonAdminLoginVO prisonAdminLoginVO = new PrisonAdminLoginVO();
-                    loginVO.setPerson(prisonAdminLoginVO);
+                    PrisonAdmin prisonAdmin = prisonAdminService.getByAccountId(currentAccount.getId());
+                    Prison prison = prisonService.getPrisonById(prisonAdmin.getPrisonId());
+                    loginVO.setPerson(new PrisonAdminLoginVO(
+                            prisonAdmin.getId(), prisonAdmin.getNickname(), prison.getName()
+                    ));
                 }
                 case Admin -> {
                     // TODO

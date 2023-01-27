@@ -1,6 +1,9 @@
 package com.nwpu.managementserver.service;
 
+import com.nwpu.managementserver.dto.AccountUserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.function.Function;
 
 /**
  * @author Jiayi Zhu
@@ -8,4 +11,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  */
 public interface AccountService extends UserDetailsService {
 
+    AccountUserDetails add(String accountNumber, String password, int role, Function<String, String> encode);
 }

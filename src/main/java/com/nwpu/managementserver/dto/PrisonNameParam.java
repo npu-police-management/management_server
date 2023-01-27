@@ -8,7 +8,7 @@ import lombok.Data;
  * 2023/1/25
  */
 @Data
-public class AddPrisonParam {
+public class PrisonNameParam {
 
     @NotBlank
     private String prisonName;
