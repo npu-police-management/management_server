@@ -132,13 +132,13 @@ public class AuthController {
                     PrisonAdmin prisonAdmin = prisonAdminService.getByAccountId(currentAccount.getId());
                     Prison prison = prisonService.getPrisonById(prisonAdmin.getPrisonId());
                     loginVO.setPerson(new PrisonAdminLoginVO(
-                            prisonAdmin.getId(), prisonAdmin.getNickname(), prison.getName()
+                            prisonAdmin.getId().toString(), prisonAdmin.getNickname(), prison.getName()
                     ));
                 }
                 case Admin -> {
                     Admin admin = adminService.getByAccountId(currentAccount.getId());
                     loginVO.setPerson(new AdminLoginVO(
-                            admin.getId(), admin.getNickname()
+                            admin.getId().toString(), admin.getNickname()
                     ));
                 }
             }

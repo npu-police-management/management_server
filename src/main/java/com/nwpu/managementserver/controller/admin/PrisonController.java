@@ -1,5 +1,6 @@
 package com.nwpu.managementserver.controller.admin;
 
+import com.nwpu.managementserver.domain.Prison;
 import com.nwpu.managementserver.dto.IdListParam;
 import com.nwpu.managementserver.dto.PagingQueryParam;
 import com.nwpu.managementserver.dto.PrisonNameParam;
@@ -35,8 +36,8 @@ public class PrisonController {
     public CommonResult addPrison(@Valid @RequestBody PrisonNameParam param) {
 
         try {
-            prisonService.addPrison(param.getPrisonName());
-            return CommonResult.success();
+            Prison p = prisonService.addPrison(param.getPrisonName());
+            return CommonResult.success(new PrisonVO(p.getId().toString(), p.getName()));
         } catch (ManagementException e) {
             return CommonResult.failure(e);
         }
@@ -49,7 +50,7 @@ public class PrisonController {
         PageResult<PrisonVO> pageResult = PageTransformUtil.toViewPage(
                 param,
                 prisonService::queryPrison,
-                prison -> new PrisonVO(prison.getId(), prison.getName())
+                prison -> new PrisonVO(prison.getId().toString(), prison.getName())
         );
         return CommonResult.success(pageResult);
     }

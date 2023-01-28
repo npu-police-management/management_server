@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface PrisonService {
 
-    void addPrison(String prisonName);
+    Prison addPrison(String prisonName);
 
     Prison getPrisonByName(String prisonName);
 

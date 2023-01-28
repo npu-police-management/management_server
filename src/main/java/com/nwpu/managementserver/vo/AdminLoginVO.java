@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdminLoginVO {
 
-    private Long id;
+    private String id;
     private String nickname;
 }
