@@ -11,5 +11,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class PrisonVO {
 
+    private Long id;
+
     private String name;
 }

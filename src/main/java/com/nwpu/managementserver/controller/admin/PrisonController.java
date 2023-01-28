@@ -49,7 +49,7 @@ public class PrisonController {
         PageResult<PrisonVO> pageResult = PageTransformUtil.toViewPage(
                 param,
                 prisonService::queryPrison,
-                prison -> new PrisonVO(prison.getName())
+                prison -> new PrisonVO(prison.getId(), prison.getName())
         );
         return CommonResult.success(pageResult);
     }
