@@ -13,6 +13,7 @@ import com.nwpu.managementserver.vo.*;
 import jakarta.servlet.ServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +33,9 @@ import static com.nwpu.managementserver.constant.RequestAttributeConstant.Token;
 @RestController
 @RequestMapping("/api/backstage-management-service")
 public class AuthController {
+
+    @Value("${var.rsa.private-key}")
+    private String privateKey;
 
     private AuthenticationManager authenticationManager;
 
@@ -107,7 +111,7 @@ public class AuthController {
                     authenticationManager.authenticate(
                             new UsernamePasswordAuthenticationToken(
                                     currentAccount,
-                                    param.getDecryptPassword(),
+                                    param.getDecryptPassword(privateKey),
                                     currentAccount.getAuthorities()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
