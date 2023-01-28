@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PrisonAdminVO {
 
+    private Long id;
+
     private String nickname;
 
     private String accountNumber;

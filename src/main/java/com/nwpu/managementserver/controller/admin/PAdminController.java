@@ -91,6 +91,7 @@ public class PAdminController {
                 param,
                 prisonAdminService::queryPrisonAdmin,
                 prisonAdmin -> new PrisonAdminVO(
+                        prisonAdmin.getId(),
                         prisonAdmin.getNickname(),
                         accountService.getById(prisonAdmin.getAccountId()).getAccountNumber(),
                         prisonService.getPrisonById(prisonAdmin.getPrisonId()).getName()
