@@ -20,9 +20,36 @@
         (id, account_number, password, role)
         values (#{id,jdbcType=BIGINT}, #{accountNumber,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=TINYINT})
     </insert>
-    <select id="selectOneByAccountNumber" resultMap="BaseResultMap">
+    <delete id="deleteByPrisonAdminId">
+        delete from account where id in 
+        (select account_id from prison_admin where prison_admin.id in
+        <foreach collection="idList" open="(" close=")" separator=","  item="item">
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="deleteByPrisonId">
+        delete from account where id in
+        (select account_id from prison_admin where prison_admin.prison_id in
+        <foreach collection="idList" open="(" close=")" separator=","  item="item">
+            #{item}
+        </foreach>
+        )
+        or id in
+        (select account_id from police where police.prison_id in
+        <foreach collection="idList" open="(" close=")" separator=","  item="item">
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <select id="getByAccountNumber" resultMap="BaseResultMap">
         select <include refid="Base_Column_List" />
         from account
         where account_number = #{accountNumber,jdbcType=VARCHAR}
+    </select>
+    <select id="getById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from account
+        where id = #{id,jdbcType=BIGINT}
     </select>
 </mapper>

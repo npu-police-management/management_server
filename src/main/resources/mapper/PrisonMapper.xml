@@ -17,6 +17,12 @@
         (id, name)
         values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR})
     </insert>
+    <delete id="deleteById">
+        delete from prison where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
     <select id="getByName" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from prison
@@ -26,5 +32,10 @@
         select <include refid="Base_Column_List"/>
         from prison
         where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="getAllByNameLike" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from prison
+        where name like concat('%', #{query,jdbcType=VARCHAR}, '%')
     </select>
 </mapper>

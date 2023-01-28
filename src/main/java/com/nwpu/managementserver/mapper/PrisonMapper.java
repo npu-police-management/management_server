@@ -3,6 +3,8 @@ package com.nwpu.managementserver.mapper;
 import com.nwpu.managementserver.domain.Prison;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author Faust
 * @description 针对表【prison】的数据库操作Mapper
@@ -17,6 +19,10 @@ public interface PrisonMapper {
     Prison getByName(String name);
 
     Prison getById(Long id);
+
+    List<Prison> getAllByNameLike(String query);
+
+    int deleteById(List<Long> idList);
 }
 
 

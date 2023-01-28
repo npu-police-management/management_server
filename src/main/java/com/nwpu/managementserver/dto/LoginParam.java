@@ -1,5 +1,6 @@
 package com.nwpu.managementserver.dto;
 
+import com.nwpu.managementserver.util.RsaDecryptUtil;
 import lombok.Data;
 
 /**
@@ -13,10 +14,10 @@ public class LoginParam {
 
     String password;
 
-    public String getDecryptPassword() {
+    public String getDecryptPassword(String privateKey) {
 
-        return password;
+        //return password;
         //联调时采用以下返回
-        //return RsaDecryptUtil.decrypt(password);
+        return RsaDecryptUtil.decrypt(privateKey, password);
     }
 }

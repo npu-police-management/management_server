@@ -33,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public UserDetails loadUserByUsername(String username) throws BusinessException {
 
-        Account account = accountMapper.selectOneByAccountNumber(username);
+        Account account = accountMapper.getByAccountNumber(username);
         if (account == null) {
             throw new BusinessException(NotFound, "找不到帐户");
         }
@@ -43,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountUserDetails add(String accountNumber, String password, int role, Function<String, String> encode) {
 
-        Account oldAccount = accountMapper.selectOneByAccountNumber(accountNumber);
+        Account oldAccount = accountMapper.getByAccountNumber(accountNumber);
         if (oldAccount != null) {
             throw new BusinessException(CreationError, "此账户名已存在");
         }
@@ -51,5 +51,15 @@ public class AccountServiceImpl implements AccountService {
         Account account = new Account(id, accountNumber, encode.apply(password), role);
         accountMapper.insert(account);
         return AccountUserDetails.of(account);
+    }
+
+    @Override
+    public Account getById(long id) {
+
+        Account account = accountMapper.getById(id);
+        if (account == null) {
+            throw new BusinessException(NotFound, "找不到该账户");
+        }
+        return account;
     }
 }

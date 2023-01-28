@@ -3,6 +3,8 @@ package com.nwpu.managementserver.mapper;
 import com.nwpu.managementserver.domain.Account;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author Faust
 * @description 针对表【account】的数据库操作Mapper
@@ -12,9 +14,15 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AccountMapper {
 
-    Account selectOneByAccountNumber(String accountNumber);
+    Account getByAccountNumber(String accountNumber);
 
     int insert(Account account);
+
+    Account getById(Long id);
+
+    int deleteByPrisonAdminId(List<Long> idList);
+
+    int deleteByPrisonId(List<Long> idList);
 }
 
 

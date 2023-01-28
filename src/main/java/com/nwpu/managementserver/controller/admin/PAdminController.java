@@ -3,30 +3,28 @@ package com.nwpu.managementserver.controller.admin;
 import com.nwpu.managementserver.constant.RoleEnum;
 import com.nwpu.managementserver.domain.Prison;
 import com.nwpu.managementserver.domain.PrisonAdmin;
-import com.nwpu.managementserver.dto.AccountUserDetails;
-import com.nwpu.managementserver.dto.PAdminAccountDTO;
-import com.nwpu.managementserver.dto.PrisonNameParam;
-import com.nwpu.managementserver.exception.BusinessException;
+import com.nwpu.managementserver.dto.*;
+import com.nwpu.managementserver.exception.ManagementException;
 import com.nwpu.managementserver.service.AccountService;
 import com.nwpu.managementserver.service.PrisonAdminService;
 import com.nwpu.managementserver.service.PrisonService;
 import com.nwpu.managementserver.util.PAdminNameGenerateUtil;
+import com.nwpu.managementserver.util.PageTransformUtil;
 import com.nwpu.managementserver.vo.CommonResult;
+import com.nwpu.managementserver.vo.PageResult;
+import com.nwpu.managementserver.vo.PrisonAdminVO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Jiayi Zhu
  * 2023/1/27
  */
 @RestController
-@RequestMapping("/api/backstage-management-service/admin/prison/padmin")
+@RequestMapping("/api/backstage-management-service/admin")
 public class PAdminController {
 
     private PrisonService prisonService;
@@ -61,8 +59,8 @@ public class PAdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PreAuthorize("hasAuthority('Admin')")
-    @PostMapping("")
+
+    @PostMapping("/prison/padmin")
     public CommonResult addPrisonAdmin(@Valid @RequestBody PrisonNameParam param) {
 
         try {
@@ -80,8 +78,32 @@ public class PAdminController {
                     prisonAdmin.getNickname(),
                     account.getAccountNumber()
             ));
-        } catch (BusinessException e) {
+        } catch (ManagementException e) {
             return CommonResult.failure(e);
         }
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @GetMapping("/padmin")
+    public CommonResult queryPAdmin(@Valid PagingQueryParam param) {
+
+        PageResult<PrisonAdminVO> pageResult = PageTransformUtil.toViewPage(
+                param,
+                prisonAdminService::queryPrisonAdmin,
+                prisonAdmin -> new PrisonAdminVO(
+                        prisonAdmin.getNickname(),
+                        accountService.getById(prisonAdmin.getAccountId()).getAccountNumber(),
+                        prisonService.getPrisonById(prisonAdmin.getPrisonId()).getName()
+                )
+        );
+        return CommonResult.success(pageResult);
+    }
+
+    @PreAuthorize("hasAuthority('Admin')")
+    @DeleteMapping("/prison/padmin")
+    public CommonResult deleteById(@RequestBody IdListParam param) {
+
+        prisonAdminService.deleteById(param.getIdList());
+        return CommonResult.success();
     }
 }
