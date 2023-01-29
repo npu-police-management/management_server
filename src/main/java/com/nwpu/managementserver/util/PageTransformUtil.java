@@ -32,7 +32,7 @@ public class PageTransformUtil {
         List<T> tList = query.apply(param.getQuery());
         PageInfo<T> tPageInfo = new PageInfo<>(tList);
         return new PageResult<>(
-                tPageInfo.getPages(),
+                (int)tPageInfo.getTotal(),
                 tList.stream().map(mapper).toList()
         );
     }
