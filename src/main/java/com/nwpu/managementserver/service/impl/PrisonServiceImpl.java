@@ -46,11 +46,12 @@ public class PrisonServiceImpl implements PrisonService {
     }
 
     @Override
-    public void addPrison(String prisonName) {
+    public Prison addPrison(String prisonName) {
 
         long id = SnowflakeIdUtil.nextId();
         Prison prison = new Prison(id, prisonName);
         prisonMapper.insert(prison);
+        return prison;
     }
 
     @Override

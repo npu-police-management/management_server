@@ -73,10 +73,11 @@ public class PAdminController {
                     passwordEncoder::encode);
             PrisonAdmin prisonAdmin = prisonAdminService.add(name, account.getId(), prison.getId());
 
-            return CommonResult.success(new PAdminAccountDTO(
-                    prisonAdmin.getId(),
+            return CommonResult.success(new PrisonAdminVO(
+                    prisonAdmin.getId().toString(),
                     prisonAdmin.getNickname(),
-                    account.getAccountNumber()
+                    account.getAccountNumber(),
+                    param.getPrisonName()
             ));
         } catch (ManagementException e) {
             return CommonResult.failure(e);
@@ -91,7 +92,7 @@ public class PAdminController {
                 param,
                 prisonAdminService::queryPrisonAdmin,
                 prisonAdmin -> new PrisonAdminVO(
-                        prisonAdmin.getId(),
+                        prisonAdmin.getId().toString(),
                         prisonAdmin.getNickname(),
                         accountService.getById(prisonAdmin.getAccountId()).getAccountNumber(),
                         prisonService.getPrisonById(prisonAdmin.getPrisonId()).getName()
