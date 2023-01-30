@@ -51,7 +51,7 @@ public class PoliceManageController {
      * @description:
      *     得到所偶有监所的名字列表
      */
-    @PreAuthorize("hasAuthority('Prison')")
+    @PreAuthorize("hasAuthority('PrisonAdmin')")
     @GetMapping("/prison")
     public CommonResult prison(){
         List<String> prisonNameList = prisonService.getPrisonNameList();
@@ -65,7 +65,7 @@ public class PoliceManageController {
      * @description:
      *     分页查询警员信息
      */
-    @PreAuthorize("hasAuthority('Prison')")
+    @PreAuthorize("hasAuthority('PrisonAdmin')")
     @GetMapping("/police/query")
     public CommonResult query(@Valid PagingQueryParam param,@AuthenticationPrincipal AccountUserDetails account){
         //account = AccountUserDetails.of(new Account(2L,null,"",1));
@@ -86,7 +86,7 @@ public class PoliceManageController {
      * @description:
      *     添加一个新警员
      */
-    @PreAuthorize("hasAuthority('Prison')")
+    @PreAuthorize("hasAuthority('PrisonAdmin')")
     @PostMapping("police")
     public CommonResult save(@RequestBody PoliceAddParam policeAddParam,@AuthenticationPrincipal AccountUserDetails account){
         //account = AccountUserDetails.of(new Account(2L,null,"",1));
@@ -110,7 +110,7 @@ public class PoliceManageController {
      * @description:
      *     批量删除警员
      */
-    @PreAuthorize("hasAuthority('Prison')")
+    @PreAuthorize("hasAuthority('PrisonAdmin')")
     @DeleteMapping("/police")
     public CommonResult deletePoliceList(@RequestBody IdListParam param){
         System.out.println(param.getIdList());
@@ -124,7 +124,7 @@ public class PoliceManageController {
      * @description:
      *     监所管理员更新警员的数据
      */
-    @PreAuthorize("hasAuthority('Prison')")
+    @PreAuthorize("hasAuthority('PrisonAdmin')")
     @PutMapping("/police/{id}")
     public CommonResult update(@RequestBody PoliceUpdateParam param, @PathVariable("id")long id){
         Police police = policeService.getPoliceById(id);
