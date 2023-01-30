@@ -30,6 +30,8 @@ public class PoliceController {
     PoliceService policeService;
     @Autowired
     PrisonService prisonService;
+    @Autowired
+    PrisonAdminService prisonAdminService;
 
     /**
      * @author GengXuelong
@@ -63,8 +65,10 @@ public class PoliceController {
     public CommonResult getMyDetail(@AuthenticationPrincipal AccountUserDetails account){
         Long account_id = account.getId();
         String accountNumber = account.getAccountNumber();
+        PrisonAdmin byAccountId = prisonAdminService.getByAccountId(account_id);
+        Prison prisonById = prisonService.getPrisonById(byAccountId.getPrisonId());
         Police police = policeService.getPoliceByAccountId(account_id);
-        PoliceVO policeVO = new PoliceVO(String.valueOf(police.getId()), police.getName(),accountNumber,police.getImageUrl());
+        PoliceToSelfVO policeVO = new PoliceToSelfVO(police.getId()+"",police.getName(),accountNumber,police.getImageUrl(),prisonById.getName());
         return CommonResult.success(policeVO);
     }
 }
