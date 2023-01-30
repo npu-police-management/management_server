@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PoliceUpdatePoram {
+public class PoliceUpdateParam {
     private String name;
     private String prisonName;
     private String imageUrl;

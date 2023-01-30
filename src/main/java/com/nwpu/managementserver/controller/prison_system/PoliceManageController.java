@@ -3,7 +3,6 @@ package com.nwpu.managementserver.controller.prison_system;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.util.StringUtil;
-import com.nwpu.managementserver.domain.Account;
 import com.nwpu.managementserver.domain.Police;
 import com.nwpu.managementserver.domain.Prison;
 import com.nwpu.managementserver.dto.*;
@@ -126,7 +125,7 @@ public class PoliceManageController {
      */
     @PreAuthorize("hasAuthority('Prison')")
     @PutMapping("/police/{id}")
-    public CommonResult update(@RequestBody PoliceUpdatePoram param,@PathVariable("id")long id){
+    public CommonResult update(@RequestBody PoliceUpdateParam param, @PathVariable("id")long id){
         Police police = policeService.getPoliceById(id);
         police.setName(param.getName());
         police.setImageUrl(param.getImageUrl());
