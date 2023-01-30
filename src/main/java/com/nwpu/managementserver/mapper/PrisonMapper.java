@@ -25,7 +25,6 @@ public interface PrisonMapper {
     int deleteById(List<Long> idList);
 
     List<String> getPrisonNameList();
-
 }
 
 

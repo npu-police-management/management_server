@@ -3,11 +3,14 @@ package com.nwpu.managementserver.controller.police_system;
 import com.github.pagehelper.util.StringUtil;
 import com.nwpu.managementserver.domain.Police;
 import com.nwpu.managementserver.domain.Prison;
+import com.nwpu.managementserver.domain.PrisonAdmin;
 import com.nwpu.managementserver.dto.AccountUserDetails;
 import com.nwpu.managementserver.dto.PoliceUpdateParam;
 import com.nwpu.managementserver.service.PoliceService;
+import com.nwpu.managementserver.service.PrisonAdminService;
 import com.nwpu.managementserver.service.PrisonService;
 import com.nwpu.managementserver.vo.CommonResult;
+import com.nwpu.managementserver.vo.PoliceToSelfVO;
 import com.nwpu.managementserver.vo.PoliceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,6 +33,8 @@ public class PoliceController {
     PoliceService policeService;
     @Autowired
     PrisonService prisonService;
+    @Autowired
+    PrisonAdminService prisonAdminService;
 
     /**
      * @author GengXuelong
@@ -58,13 +63,15 @@ public class PoliceController {
     * @description:
     *     警员系统得到该警员的详细信息
     */
-    @PreAuthorize("hasAuthority('Police')")
+//    @PreAuthorize("hasAuthority('Police')")
     @GetMapping("/profile")
     public CommonResult getMyDetail(@AuthenticationPrincipal AccountUserDetails account){
         Long account_id = account.getId();
         String accountNumber = account.getAccountNumber();
+        PrisonAdmin byAccountId = prisonAdminService.getByAccountId(account_id);
+        Prison prisonById = prisonService.getPrisonById(byAccountId.getPrisonId());
         Police police = policeService.getPoliceByAccountId(account_id);
-        PoliceVO policeVO = new PoliceVO(police.getId()+"",police.getName(),accountNumber,police.getImageUrl());
+        PoliceToSelfVO policeVO = new PoliceToSelfVO(police.getId()+"",police.getName(),accountNumber,police.getImageUrl(),prisonById.getName());
         return CommonResult.success(policeVO);
     }
 }

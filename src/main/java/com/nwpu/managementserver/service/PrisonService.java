@@ -21,4 +21,5 @@ public interface PrisonService {
     void deleteById(List<Long> idList);
 
     List<String> getPrisonNameList();
+
 }
