@@ -2,6 +2,7 @@ package edu.nwpu.managementserver.service;
 
 
 import edu.nwpu.managementserver.domain.Police;
+import edu.nwpu.managementserver.dto.PagingQueryForPrisonAdminParam;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @description:
  */
 public interface PoliceService {
-    List<Police> queryList(String query, long prison_id);
+    List<Police> queryList(PagingQueryForPrisonAdminParam param);
 
     void add(Police police);
 

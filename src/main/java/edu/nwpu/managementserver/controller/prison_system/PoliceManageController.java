@@ -10,6 +10,7 @@ import edu.nwpu.managementserver.exception.ManagementException;
 import edu.nwpu.managementserver.service.AccountService;
 import edu.nwpu.managementserver.service.PoliceService;
 import edu.nwpu.managementserver.service.PrisonService;
+import edu.nwpu.managementserver.util.PageTransformUtil;
 import edu.nwpu.managementserver.util.SnowflakeIdUtil;
 import edu.nwpu.managementserver.vo.CommonResult;
 import edu.nwpu.managementserver.vo.PageResult;
@@ -68,16 +69,18 @@ public class PoliceManageController {
     @PreAuthorize("hasAuthority('PrisonAdmin')")
     @GetMapping("/police/query")
     public CommonResult query(@Valid PagingQueryParam param, @AuthenticationPrincipal AccountUserDetails account){
+        System.out.println("================>进入query");
         //account = AccountUserDetails.of(new Account(2L,null,"",1));
-        long prison_id = policeService.getPrisonIdByAccountId(account.getId());
-        PageHelper.startPage(param.getPageNum(), param.getPageSize());
-        List<Police> tList = policeService.queryList(param.getQuery(),prison_id);
-        PageInfo<Police> tPageInfo = new PageInfo<>(tList);
-        Function<Police,PoliceVO> mapper =  police->new PoliceVO(police.getId()+"",police.getName(),accountService.getById(police.getAccountId()).getAccountNumber(),police.getImageUrl());
-        PageResult<PoliceVO> policePageResult = new PageResult<>(
-                (int)tPageInfo.getTotal(),
-                tList.stream().map(mapper).toList());
-        return CommonResult.success(policePageResult);
+        long account_id = account.getId();
+        String  accountNumber = account.getAccountNumber();
+        System.out.println("account_id--->"+account_id);
+        long prison_id = policeService.getPrisonIdByAccountId(account_id);
+        System.out.println("prison_id----->"+prison_id);
+        PagingQueryForPrisonAdminParam pagingQueryForPrisonAdminParam = new PagingQueryForPrisonAdminParam(param,prison_id);
+        Function<Police,PoliceVO> mapper =  police->new PoliceVO(police.getId()+"",police.getName(),accountNumber,police.getImageUrl());
+        PageResult<PoliceVO> policeVOPageResult = PageTransformUtil.toViewPage(pagingQueryForPrisonAdminParam, policeService::queryList, mapper);
+        return CommonResult.success(policeVOPageResult);
+
     }
 
     /**
@@ -88,7 +91,8 @@ public class PoliceManageController {
      */
     @PreAuthorize("hasAuthority('PrisonAdmin')")
     @PostMapping("police")
-    public CommonResult save(@RequestBody @Valid PoliceAddParam policeAddParam,@AuthenticationPrincipal AccountUserDetails account){
+    public CommonResult save(@RequestBody @Valid PoliceAddParam policeAddParam,
+                             @AuthenticationPrincipal AccountUserDetails account){
         //account = AccountUserDetails.of(new Account(2L,null,"",1));
         System.out.println(policeAddParam.getPoliceCode()+policeAddParam.getImageUrl()+policeAddParam.getName());
         System.out.println(account.getId()+account.getAccountNumber());
@@ -130,8 +134,11 @@ public class PoliceManageController {
         Police police = policeService.getPoliceById(id);
         police.setName(param.getName());
         police.setImageUrl(param.getImageUrl());
-        if(!StringUtil.isEmpty(param.getPrisonName())){
+        String prisonName = param.getPrisonName();
+        System.out.println(param.getPrisonName());
+        if(prisonName!=null&&!prisonName.equals("")){
             Prison prisonByName = prisonService.getPrisonByName(param.getPrisonName());
+            System.out.println(prisonByName);
             police.setPrisonId(prisonByName.getId());
         }
         policeService.update(police);

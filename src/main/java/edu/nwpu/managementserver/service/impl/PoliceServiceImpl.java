@@ -1,6 +1,7 @@
 package edu.nwpu.managementserver.service.impl;
 import edu.nwpu.managementserver.constant.CodeEnum;
 import edu.nwpu.managementserver.domain.Police;
+import edu.nwpu.managementserver.dto.PagingQueryForPrisonAdminParam;
 import edu.nwpu.managementserver.exception.BusinessException;
 import edu.nwpu.managementserver.mapper.AccountMapper;
 import edu.nwpu.managementserver.mapper.PoliceMapper;
@@ -29,8 +30,8 @@ public class PoliceServiceImpl  implements PoliceService {
     AccountMapper accountMapper;
 
     @Override
-    public List<Police> queryList(String query, long prison_id) {
-        return policeMapper.getPoliceListByNameLike(query,prison_id);
+    public List<Police> queryList(PagingQueryForPrisonAdminParam param) {
+        return policeMapper.getPoliceListByNameLike(param.getQuery(),param.getPrisonId());
     }
 
     @Override

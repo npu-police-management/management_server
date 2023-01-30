@@ -6,6 +6,7 @@ import edu.nwpu.managementserver.domain.Prison;
 import edu.nwpu.managementserver.domain.PrisonAdmin;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
 import edu.nwpu.managementserver.dto.PoliceUpdateParam;
+import edu.nwpu.managementserver.dto.PoliceUpdateSelfParam;
 import edu.nwpu.managementserver.service.PoliceService;
 import edu.nwpu.managementserver.service.PrisonAdminService;
 import edu.nwpu.managementserver.service.PrisonService;
@@ -43,14 +44,10 @@ public class PoliceController {
      */
     @PreAuthorize("hasAuthority('Police')")
     @PutMapping("/profile/{id}")
-    public CommonResult update(@RequestBody PoliceUpdateParam param, @PathVariable("id")long id){
+    public CommonResult update(@RequestBody PoliceUpdateSelfParam param, @PathVariable("id")long id){
         Police police = policeService.getPoliceById(id);
         police.setName(param.getName());
         police.setImageUrl(param.getImageUrl());
-        if(!StringUtil.isEmpty(param.getPrisonName())){
-            Prison prisonByName = prisonService.getPrisonByName(param.getPrisonName());
-            police.setPrisonId(prisonByName.getId());
-        }
         policeService.update(police);
         return CommonResult.success();
     }
@@ -66,10 +63,10 @@ public class PoliceController {
     @GetMapping("/profile")
     public CommonResult getMyDetail(@AuthenticationPrincipal AccountUserDetails account){
         Long account_id = account.getId();
+        System.out.println(account_id);
         String accountNumber = account.getAccountNumber();
-        PrisonAdmin byAccountId = prisonAdminService.getByAccountId(account_id);
-        Prison prisonById = prisonService.getPrisonById(byAccountId.getPrisonId());
         Police police = policeService.getPoliceByAccountId(account_id);
+        Prison prisonById = prisonService.getPrisonById(police.getPrisonId());
         PoliceToSelfVO policeVO = new PoliceToSelfVO(police.getId()+"",police.getName(),accountNumber,police.getImageUrl(),prisonById.getName());
         return CommonResult.success(policeVO);
     }
