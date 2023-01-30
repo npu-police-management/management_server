@@ -72,12 +72,11 @@ public class PoliceManageController {
         System.out.println("================>进入query");
         //account = AccountUserDetails.of(new Account(2L,null,"",1));
         long account_id = account.getId();
-        String  accountNumber = account.getAccountNumber();
         System.out.println("account_id--->"+account_id);
         long prison_id = policeService.getPrisonIdByAccountId(account_id);
         System.out.println("prison_id----->"+prison_id);
         PagingQueryForPrisonAdminParam pagingQueryForPrisonAdminParam = new PagingQueryForPrisonAdminParam(param,prison_id);
-        Function<Police,PoliceVO> mapper =  police->new PoliceVO(police.getId()+"",police.getName(),accountNumber,police.getImageUrl());
+        Function<Police,PoliceVO> mapper =  police->new PoliceVO(police.getId()+"",police.getName(),(accountService.getById(police.getAccountId())).getAccountNumber(),police.getImageUrl());
         PageResult<PoliceVO> policeVOPageResult = PageTransformUtil.toViewPage(pagingQueryForPrisonAdminParam, policeService::queryList, mapper);
         return CommonResult.success(policeVOPageResult);
 
