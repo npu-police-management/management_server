@@ -16,4 +16,34 @@
         id,name,image_url,
         prison_id,account_id
     </sql>
+    <select id="getPoliceListByNameLike" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from police
+        where `name` like concat('%', #{query,jdbcType=VARCHAR}, '%') and prison_id = #{prison_id}
+    </select>
+    <select id="getById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from police
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="getList" parameterType="police" resultMap="BaseResultMap">
+        select * from police
+    </select>
+    <select id="getPoliceByAccountId" resultMap="BaseResultMap">
+        select * from police where account_id = #{id}
+    </select>
+
+    <insert id="save" parameterType="police">
+        insert into police value (#{id},#{name},#{imageUrl},#{prisonId},#{accountId})
+    </insert>
+    <update id="updateById" parameterType="police">
+        update police set name=#{name},image_url=#{imageUrl},prison_id=#{prisonId},account_id=#{accountId} where id = #{id}
+    </update>
+    <delete id="deleteByIdList">
+        delete from police where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+
 </mapper>

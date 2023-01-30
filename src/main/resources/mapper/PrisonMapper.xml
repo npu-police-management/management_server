@@ -38,4 +38,7 @@
         from prison
         where name like concat('%', #{query,jdbcType=VARCHAR}, '%')
     </select>
+    <select id="getPrisonNameList" resultType="string">
+        select `name` from prison
+    </select>
 </mapper>

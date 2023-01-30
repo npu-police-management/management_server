@@ -23,6 +23,9 @@ public interface PrisonMapper {
     List<Prison> getAllByNameLike(String query);
 
     int deleteById(List<Long> idList);
+
+    List<String> getPrisonNameList();
+
 }
 
 

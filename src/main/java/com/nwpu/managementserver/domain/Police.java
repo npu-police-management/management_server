@@ -2,13 +2,18 @@ package com.nwpu.managementserver.domain;
 
 import java.io.Serial;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
  * @TableName police
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Police implements Serializable {
     /**
      * 

@@ -19,4 +19,6 @@ public interface PrisonService {
     List<Prison> queryPrison(String query);
 
     void deleteById(List<Long> idList);
+
+    List<String> getPrisonNameList();
 }
