@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nwpu.managementserver.mapper.PoliceTrainingMapper">
+<mapper namespace="edu.nwpu.managementserver.mapper.PoliceTrainingMapper">
 
-    <resultMap id="BaseResultMap" type="com.nwpu.managementserver.domain.PoliceTraining">
+    <resultMap id="BaseResultMap" type="edu.nwpu.managementserver.domain.PoliceTraining">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="policeId" column="police_id" jdbcType="BIGINT"/>
             <result property="modelId" column="model_id" jdbcType="BIGINT"/>

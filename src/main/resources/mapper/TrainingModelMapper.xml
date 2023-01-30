@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nwpu.managementserver.mapper.TrainingModelMapper">
+<mapper namespace="edu.nwpu.managementserver.mapper.TrainingModelMapper">
 
-    <resultMap id="BaseResultMap" type="com.nwpu.managementserver.domain.TrainingModel">
+    <resultMap id="BaseResultMap" type="edu.nwpu.managementserver.domain.TrainingModel">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="description" column="description" jdbcType="VARCHAR"/>
