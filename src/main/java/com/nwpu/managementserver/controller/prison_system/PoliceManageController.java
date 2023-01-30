@@ -75,7 +75,7 @@ public class PoliceManageController {
         PageInfo<Police> tPageInfo = new PageInfo<>(tList);
         Function<Police,PoliceVO> mapper =  police->new PoliceVO(police.getId()+"",police.getName(),accountService.getById(police.getAccountId()).getAccountNumber(),police.getImageUrl());
         PageResult<PoliceVO> policePageResult = new PageResult<>(
-                tPageInfo.getPages(),
+                (int)tPageInfo.getTotal(),
                 tList.stream().map(mapper).toList());
         return CommonResult.success(policePageResult);
     }
