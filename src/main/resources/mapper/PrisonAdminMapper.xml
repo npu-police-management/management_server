@@ -32,6 +32,11 @@
             #{item,jdbcType=BIGINT}
         </foreach>
     </delete>
+
+    <select id="getPrisonIdByAccountId" parameterType="long" resultType="long">
+        select prison_id from prison_admin where account_id = #{id}
+    </select>
+
     <select id="getByAccountId" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from prison_admin

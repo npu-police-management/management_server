@@ -87,4 +87,10 @@ public class PrisonServiceImpl implements PrisonService {
         prisonAdminMapper.deleteByPrisonId(idList);
         prisonMapper.deleteById(idList);
     }
+
+    @Override
+    public List<String> getPrisonNameList() {
+
+        return prisonMapper.getPrisonNameList();
+    }
 }

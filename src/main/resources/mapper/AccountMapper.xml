@@ -28,6 +28,14 @@
         </foreach>
         )
     </delete>
+    <delete id="deleteByPoliceIdList">
+        delete from account where id in
+        (select account_id from police where police.id in
+        <foreach collection="idList" open="(" close=")" separator=","  item="item">
+            #{item}
+        </foreach>
+        )
+    </delete>
     <delete id="deleteByPrisonId">
         delete from account where id in
         (select account_id from prison_admin where prison_admin.prison_id in

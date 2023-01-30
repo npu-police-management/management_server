@@ -22,6 +22,8 @@ public interface AccountMapper {
 
     int deleteByPrisonAdminId(List<Long> idList);
 
+    int deleteByPoliceIdList(List<Long> idList);
+
     int deleteByPrisonId(List<Long> idList);
 }
 
