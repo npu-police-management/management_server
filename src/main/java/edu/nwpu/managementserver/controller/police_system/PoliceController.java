@@ -4,7 +4,7 @@ import com.github.pagehelper.util.StringUtil;
 import edu.nwpu.managementserver.domain.Police;
 import edu.nwpu.managementserver.domain.Prison;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
-import edu.nwpu.managementserver.dto.PoliceUpdatePoram;
+import edu.nwpu.managementserver.dto.PoliceUpdateParam;
 import edu.nwpu.managementserver.service.PoliceService;
 import edu.nwpu.managementserver.service.PrisonService;
 import edu.nwpu.managementserver.vo.CommonResult;
@@ -39,7 +39,7 @@ public class PoliceController {
      */
     @PreAuthorize("hasAuthority('Police')")
     @PutMapping("/profile/{id}")
-    public CommonResult update(@RequestBody PoliceUpdatePoram param, @PathVariable("id")long id){
+    public CommonResult update(@RequestBody PoliceUpdateParam param, @PathVariable("id")long id){
         Police police = policeService.getPoliceById(id);
         police.setName(param.getName());
         police.setImageUrl(param.getImageUrl());
@@ -64,7 +64,7 @@ public class PoliceController {
         Long account_id = account.getId();
         String accountNumber = account.getAccountNumber();
         Police police = policeService.getPoliceByAccountId(account_id);
-        PoliceVO policeVO = new PoliceVO(police.getId(),police.getName(),accountNumber,police.getImageUrl());
+        PoliceVO policeVO = new PoliceVO(String.valueOf(police.getId()), police.getName(),accountNumber,police.getImageUrl());
         return CommonResult.success(policeVO);
     }
 }

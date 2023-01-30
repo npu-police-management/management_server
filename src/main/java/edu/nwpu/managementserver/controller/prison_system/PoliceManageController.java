@@ -73,7 +73,7 @@ public class PoliceManageController {
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
         List<Police> tList = policeService.queryList(param.getQuery(),prison_id);
         PageInfo<Police> tPageInfo = new PageInfo<>(tList);
-        Function<Police, PoliceVO> mapper = police->new PoliceVO(police.getId(),police.getName(),accountService.getById(police.getAccountId()).getAccountNumber(),police.getImageUrl());
+        Function<Police,PoliceVO> mapper =  police->new PoliceVO(police.getId()+"",police.getName(),accountService.getById(police.getAccountId()).getAccountNumber(),police.getImageUrl());
         PageResult<PoliceVO> policePageResult = new PageResult<>(
                 tPageInfo.getPages(),
                 tList.stream().map(mapper).toList());
@@ -88,7 +88,7 @@ public class PoliceManageController {
      */
     @PreAuthorize("hasAuthority('Prison')")
     @PostMapping("police")
-    public CommonResult save(@Valid PoliceAddParam policeAddParam, @AuthenticationPrincipal AccountUserDetails account){
+    public CommonResult save(@RequestBody @Valid PoliceAddParam policeAddParam,@AuthenticationPrincipal AccountUserDetails account){
         //account = AccountUserDetails.of(new Account(2L,null,"",1));
         System.out.println(policeAddParam.getPoliceCode()+policeAddParam.getImageUrl()+policeAddParam.getName());
         System.out.println(account.getId()+account.getAccountNumber());
@@ -126,7 +126,7 @@ public class PoliceManageController {
      */
     @PreAuthorize("hasAuthority('Prison')")
     @PutMapping("/police/{id}")
-    public CommonResult update(@RequestBody PoliceUpdatePoram param, @PathVariable("id")long id){
+    public CommonResult update(@RequestBody PoliceUpdateParam param, @PathVariable("id")long id){
         Police police = policeService.getPoliceById(id);
         police.setName(param.getName());
         police.setImageUrl(param.getImageUrl());
