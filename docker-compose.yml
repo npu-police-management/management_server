@@ -1,0 +1,50 @@
+version: "3"
+services:
+  police-db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: AeK0cPV9
+      TZ: Asia/Shanghai
+    networks:
+      - police-network
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
+      - police_db_volume:/var/lib/mysql
+  police-redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass zVxDxXCe
+    volumes:
+      - police_redis_volume:/data
+    networks:
+      - police-network
+  police-management-backend:
+    build:
+      context: .
+    networks:
+      - police-network
+    ports:
+      - "8080:8080"
+    environment:
+      MYSQL_HOST: police-db
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: police_management
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: AeK0cPV9
+      REDIS_HOST: police-redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: zVxDxXCe
+      SNOWFLAKE_ID: 15
+      DATACENTER_ID: 15
+      JWT_SECRET: s71uE1N861fVWFi8pjZqHwG15Ma4l5vCGq09Cb4w10tTtY7gWPwXyM_cQaSCdMid
+      RSA_KEY: MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMdBbmmkALx1oql+F3fwA986OPIJzD1ZdMlFVecdi4fcQ7iTR8cDqelJtPUgOA052KAwQwM2ePAn42j2JxtUm5qOUe/DgfxDXFMm/Id+B5g6HuejYei8BdHPhM9wO7o9skN4WGAX3Rmf5Y5HI1H4tI1HTDrE4Txz4uSinV245VfZAgMBAAECgYEAlwU4skjjZfOi/ePb1cPMq3xtfMWAT19l7MbofOsfvjFsApFebbCRL4f153QsB5o4XfE2WVEICL2y1vL6YPSXmg42uM2numDgjGsQxy69KjIq9fz5jiLrKE+dzb0BRIzHOjK8YE71xHxqMvrAw4xlP8SnNA9OjurcJa2H6tzc3oECQQDubw9f6FnlYb91pTdlpuJqteLCDVgCiBSEwmX6ZSMvKv1B5g5PIFcI9Rs/pBrQqmQW09fCOPPkXsTzomAVoCONAkEA1e909gxLx628vVqEa0+izm9zQSb9WAQCqyp9xb9+NHDkMp6V1qRVe4cbzSLzTkGYLAXNuPcK9HlHAjy1yibsfQJAIw6pUAy1ywhIQl/8eTHEcLQ1lxqnKhggDDUZEWv1dGX5vsq4p+G1ale/neffGXc0KDcVrjT5h0Z35uqk/gkBsQJAIkM3eDB/8nrgv3K/wm/+oxE2ZDjaWj5KLx+fBQymKb/qzDCZzsaC6kW5LiFq1h2rQWGskPL/zieeN72BX97cAQJAVp8hiBdhyJR+/s9lfP0MSfzdlFFeHKYJXM6VVgbHpGhNa8XeMLCSmLr07Vl7v0ffBzOX6u+ChYAvVNRnwCVogQ==
+
+networks:
+  police-network:
+
+volumes:
+  police_db_volume:
+  police_redis_volume:

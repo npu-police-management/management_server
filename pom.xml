@@ -8,7 +8,7 @@
 		<version>3.0.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.nwpu</groupId>
+	<groupId>edu.nwpu</groupId>
 	<artifactId>ManagementServer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ManagementServer</name>

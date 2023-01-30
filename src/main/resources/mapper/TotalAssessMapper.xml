@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nwpu.managementserver.mapper.TotalAssessMapper">
+<mapper namespace="edu.nwpu.managementserver.mapper.TotalAssessMapper">
 
-    <resultMap id="BaseResultMap" type="com.nwpu.managementserver.domain.TotalAssess">
+    <resultMap id="BaseResultMap" type="edu.nwpu.managementserver.domain.TotalAssess">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="policeId" column="police_id" jdbcType="BIGINT"/>
             <result property="mentalPercentList" column="mental_percent_list" jdbcType="VARCHAR"/>

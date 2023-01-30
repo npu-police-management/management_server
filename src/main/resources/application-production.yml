@@ -1,0 +1,124 @@
+server:
+  port: 8080
+
+# Variables defined for the project
+var:
+  # Database Connection
+  db-conn:
+    mysql:
+      host: ${MYSQL_HOST}
+      port: ${MYSQL_PORT}
+      database: ${MYSQL_DATABASE}
+      username: ${MYSQL_USERNAME}
+      password: ${MYSQL_PASSWORD}
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+  # Snowflake id
+  snowflake:
+    worker-id: ${SNOWFLAKE_ID}
+    datacenter-id: ${DATACENTER_ID}
+  # Jwt Strings
+  jwt:
+    secret: ${JWT_SECRET}
+    access-token-expiration: 1800000 # 30 minutes
+    refresh-token-expiration: 604800000 # 7 days
+  rsa:
+    private-key: ${RSA_KEY}
+
+spring:
+  data:
+    redis:
+      host: ${var.db-conn.redis.host}
+      port: ${var.db-conn.redis.port}
+      password: ${var.db-conn.redis.password}
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: 100ms
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${var.db-conn.mysql.username}
+    password: ${var.db-conn.mysql.password}
+    url: jdbc:mysql://${var.db-conn.mysql.host}:${var.db-conn.mysql.port}/${var.db-conn.mysql.database}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+
+  sql:
+    init:
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+      username: ${var.db-conn.mysql.username}
+      password: ${var.db-conn.mysql.password}
+      encoding: UTF-8
+      mode: always
+
+  jackson:
+    # 日期序列化格式
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 序列化和反序列化属性配置，默认是保留字段名称，并从方法中删除 set/get/is 前缀（以及小写首字母大写字符序列）
+    property-naming-strategy: com.fasterxml.jackson.databind.PropertyNamingStrategy
+
+    # 序列化配置，有多个
+    serialization:
+      # 底层格式化序列后的JSON，换行、缩进等
+      indent-output: true
+      # 忽略无法转换的对象
+      fail_on_empty_beans: true
+    # 反序列化配置，有多个
+    deserialization:
+      # 解析json时，遇到不存在的属性就忽略
+      fail_on_unknown_properties: false
+    # 配置@JsonInclude默认包含哪些属性
+    defaultPropertyInclusion: use_defaults
+    parser:
+      # 允许特殊和转义符
+      allow_unquoted_control_chars: true
+      # 允许单引号
+      allow_single_quotes: true
+    # 配置时区
+    timeZone: Asia/Shanghai
+    # 配置地区
+    locale: zh_CN
+
+  #下面这个mvc和web配置，是为了使请求不存在的url时，能够按照通用返回模板返回（在全局异常处理器捕获NoHandlerFoundException即可）
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+#  mapper对应的xml文件存放路径
+mybatis:
+  mapper-locations: mapper/*.xml
+  type-aliases-package: edu.nwpu.managementserver.domain
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  auto-dialect: on
+
+# 暴露监控指标，通过GET http://127.0.0.1:8080/actuator/prometheus 可获取运行时信息
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: ping
+        readiness:
+          include: '*'
+      show-details: always
+
+logging:
+  pattern:
+    console: "%X{traceId} %X{userId} %d{yyyy-MM-dd}T%d{HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:%-1p} %-1logger{39} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
