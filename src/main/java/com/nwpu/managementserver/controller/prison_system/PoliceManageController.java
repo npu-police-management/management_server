@@ -86,10 +86,10 @@ public class PoliceManageController {
      * @description:
      *     添加一个新警员
      */
-//    @PreAuthorize("hasAuthority('Prison')")
+    @PreAuthorize("hasAuthority('Prison')")
     @PostMapping("police")
     public CommonResult save(@RequestBody PoliceAddParam policeAddParam,@AuthenticationPrincipal AccountUserDetails account){
-        account = AccountUserDetails.of(new Account(2L,null,"",1));
+        //account = AccountUserDetails.of(new Account(2L,null,"",1));
         System.out.println(policeAddParam.getPoliceCode()+policeAddParam.getImageUrl()+policeAddParam.getName());
         System.out.println(account.getId()+account.getAccountNumber());
         try {
