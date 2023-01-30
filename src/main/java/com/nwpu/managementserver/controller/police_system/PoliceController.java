@@ -64,7 +64,7 @@ public class PoliceController {
         Long account_id = account.getId();
         String accountNumber = account.getAccountNumber();
         Police police = policeService.getPoliceByAccountId(account_id);
-        PoliceVO policeVO = new PoliceVO(police.getId(),police.getName(),accountNumber,police.getImageUrl());
+        PoliceVO policeVO = new PoliceVO(police.getId()+"",police.getName(),accountNumber,police.getImageUrl());
         return CommonResult.success(policeVO);
     }
 }

@@ -73,7 +73,7 @@ public class PoliceManageController {
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
         List<Police> tList = policeService.queryList(param.getQuery(),prison_id);
         PageInfo<Police> tPageInfo = new PageInfo<>(tList);
-        Function<Police,PoliceVO> mapper =  police->new PoliceVO(police.getId(),police.getName(),accountService.getById(police.getAccountId()).getAccountNumber(),police.getImageUrl());
+        Function<Police,PoliceVO> mapper =  police->new PoliceVO(police.getId()+"",police.getName(),accountService.getById(police.getAccountId()).getAccountNumber(),police.getImageUrl());
         PageResult<PoliceVO> policePageResult = new PageResult<>(
                 tPageInfo.getPages(),
                 tList.stream().map(mapper).toList());
