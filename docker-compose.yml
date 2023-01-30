@@ -27,7 +27,7 @@ services:
     networks:
       - police-network
     ports:
-      - "8080:8080"
+      - "8079:8080"
     environment:
       MYSQL_HOST: police-db
       MYSQL_PORT: 3306

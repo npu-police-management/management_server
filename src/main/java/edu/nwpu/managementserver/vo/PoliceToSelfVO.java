@@ -1,6 +1,5 @@
-package com.nwpu.managementserver.vo;
+package edu.nwpu.managementserver.vo;
 
-import jakarta.annotation.security.DenyAll;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
