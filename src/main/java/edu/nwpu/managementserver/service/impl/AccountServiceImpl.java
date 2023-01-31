@@ -60,4 +60,12 @@ public class AccountServiceImpl implements AccountService {
         }
         return account;
     }
+
+    @Override
+    public void updatePassword(AccountUserDetails userDetails, String newPassword,
+                               Function<String, String> encode) {
+
+        userDetails.setPassword(encode.apply(newPassword));
+        accountMapper.updatePassword(userDetails.toAccount());
+    }
 }

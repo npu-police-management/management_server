@@ -16,4 +16,5 @@ public interface AccountService extends UserDetailsService {
 
     Account getById(long id);
 
+    void updatePassword(AccountUserDetails userDetails, String newPassword, Function<String, String> encode);
 }

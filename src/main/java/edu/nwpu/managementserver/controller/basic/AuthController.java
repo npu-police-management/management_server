@@ -2,13 +2,16 @@ package edu.nwpu.managementserver.controller.basic;
 
 import edu.nwpu.managementserver.component.JwtTokenProvider;
 import edu.nwpu.managementserver.domain.Admin;
+import edu.nwpu.managementserver.domain.Police;
 import edu.nwpu.managementserver.domain.Prison;
 import edu.nwpu.managementserver.domain.PrisonAdmin;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
 import edu.nwpu.managementserver.dto.LoginParam;
+import edu.nwpu.managementserver.dto.PasswordChangeParam;
 import edu.nwpu.managementserver.dto.TokenDTO;
 import edu.nwpu.managementserver.exception.ManagementException;
 import edu.nwpu.managementserver.service.*;
+import edu.nwpu.managementserver.util.RsaDecryptUtil;
 import edu.nwpu.managementserver.vo.*;
 import jakarta.servlet.ServletRequest;
 import jakarta.validation.Valid;
@@ -20,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import static edu.nwpu.managementserver.constant.CodeEnum.UserUnauthenticated;
@@ -53,6 +57,9 @@ public class AuthController {
 
     private AdminService adminService;
 
+    private PoliceService policeService;
+
+    private PasswordEncoder passwordEncoder;
     @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
 
@@ -101,6 +108,18 @@ public class AuthController {
         this.adminService = adminService;
     }
 
+    @Autowired
+    public void setPoliceService(PoliceService policeService) {
+
+        this.policeService = policeService;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @PostMapping("/login")
     public CommonResult login(@Valid @RequestBody LoginParam param) {
 
@@ -124,9 +143,14 @@ public class AuthController {
 
             switch (currentAccount.getRole()) {
                 case Police -> {
-                    // TODO
-                    PoliceLoginVO policeLoginVO = new PoliceLoginVO();
-                    loginVO.setPerson(policeLoginVO);
+                    Police police = policeService.getPoliceByAccountId(currentAccount.getId());
+                    Prison prison = prisonService.getPrisonById(police.getPrisonId());
+                    loginVO.setPerson(new PoliceLoginVO(
+                            police.getId().toString(),
+                            police.getName(),
+                            police.getImageUrl(),
+                            prison.getName()
+                    ));
                 }
                 case PrisonAdmin -> {
                     PrisonAdmin prisonAdmin = prisonAdminService.getByAccountId(currentAccount.getId());
@@ -167,5 +191,23 @@ public class AuthController {
     public CommonResult refreshToken(ServletRequest request) {
 
         return CommonResult.success(request.getAttribute(Token));
+    }
+
+    @PutMapping("/account/password")
+    public CommonResult changePassword(@Valid @RequestBody PasswordChangeParam param,
+                                       @AuthenticationPrincipal AccountUserDetails currentAccount) {
+
+        try {
+            authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    currentAccount, RsaDecryptUtil.decrypt(privateKey, param.getOldPassword()),
+                                    currentAccount.getAuthorities()));
+            accountService.updatePassword(currentAccount, RsaDecryptUtil.decrypt(privateKey, param.getNewPassword()), passwordEncoder::encode);
+            return CommonResult.success();
+        } catch (ManagementException e) {
+            return CommonResult.failure(e);
+        } catch (AuthenticationException e) {
+            return CommonResult.unauthorized(UserUnauthenticated, e.getMessage());
+        }
     }
 }
