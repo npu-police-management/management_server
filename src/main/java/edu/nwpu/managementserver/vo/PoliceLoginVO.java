@@ -20,9 +20,4 @@ public class PoliceLoginVO {
     private String imageUrl;
 
     private String prisonName;
-
-    /**
-     * 是否在训练
-     */
-    private Boolean training;
 }

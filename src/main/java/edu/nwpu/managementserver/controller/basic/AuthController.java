@@ -2,6 +2,7 @@ package edu.nwpu.managementserver.controller.basic;
 
 import edu.nwpu.managementserver.component.JwtTokenProvider;
 import edu.nwpu.managementserver.domain.Admin;
+import edu.nwpu.managementserver.domain.Police;
 import edu.nwpu.managementserver.domain.Prison;
 import edu.nwpu.managementserver.domain.PrisonAdmin;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
@@ -53,6 +54,8 @@ public class AuthController {
 
     private AdminService adminService;
 
+    private PoliceService policeService;
+
     @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
 
@@ -101,6 +104,12 @@ public class AuthController {
         this.adminService = adminService;
     }
 
+    @Autowired
+    public void setPoliceService(PoliceService policeService) {
+
+        this.policeService = policeService;
+    }
+
     @PostMapping("/login")
     public CommonResult login(@Valid @RequestBody LoginParam param) {
 
@@ -124,9 +133,14 @@ public class AuthController {
 
             switch (currentAccount.getRole()) {
                 case Police -> {
-                    // TODO
-                    PoliceLoginVO policeLoginVO = new PoliceLoginVO();
-                    loginVO.setPerson(policeLoginVO);
+                    Police police = policeService.getPoliceByAccountId(currentAccount.getId());
+                    Prison prison = prisonService.getPrisonById(police.getPrisonId());
+                    loginVO.setPerson(new PoliceLoginVO(
+                            police.getId().toString(),
+                            police.getName(),
+                            police.getImageUrl(),
+                            prison.getName()
+                    ));
                 }
                 case PrisonAdmin -> {
                     PrisonAdmin prisonAdmin = prisonAdminService.getByAccountId(currentAccount.getId());
