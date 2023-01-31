@@ -1,6 +1,6 @@
 version: "3"
 services:
-  police-db:
+  db:
     image: mysql:latest
     ports:
       - "3306:3306"
@@ -12,7 +12,7 @@ services:
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
       - police_db_volume:/var/lib/mysql
-  police-redis:
+  redis:
     image: redis:latest
     ports:
       - "6379:6379"
@@ -21,7 +21,7 @@ services:
       - police_redis_volume:/data
     networks:
       - police-network
-  police-management-backend:
+  app:
     build:
       context: .
     networks:
@@ -29,12 +29,12 @@ services:
     ports:
       - "8079:8080"
     environment:
-      MYSQL_HOST: police-db
+      MYSQL_HOST: db
       MYSQL_PORT: 3306
       MYSQL_DATABASE: police_management
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: AeK0cPV9
-      REDIS_HOST: police-redis
+      REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: zVxDxXCe
       SNOWFLAKE_ID: 15
