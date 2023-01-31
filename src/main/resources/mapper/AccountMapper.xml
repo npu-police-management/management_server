@@ -20,6 +20,11 @@
         (id, account_number, password, role)
         values (#{id,jdbcType=BIGINT}, #{accountNumber,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{role,jdbcType=TINYINT})
     </insert>
+    <update id="updatePassword" parameterType="edu.nwpu.managementserver.domain.Account">
+        update account
+        set password = #{password,jdbcType=CHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
     <delete id="deleteByPrisonAdminId">
         delete from account where id in 
         (select account_id from prison_admin where prison_admin.id in

@@ -39,6 +39,11 @@ public class AccountUserDetails implements UserDetails {
                 RoleEnum.fromValue(account.getRole()));
     }
 
+    public Account toAccount() {
+
+        return new Account(id, accountNumber, password, role.getValue());
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 

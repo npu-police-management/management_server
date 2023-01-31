@@ -2,6 +2,7 @@ package edu.nwpu.managementserver.service;
 
 import edu.nwpu.managementserver.domain.Account;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
+import edu.nwpu.managementserver.dto.PasswordChangeParam;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.function.Function;
@@ -16,4 +17,5 @@ public interface AccountService extends UserDetailsService {
 
     Account getById(long id);
 
+    void updatePassword(AccountUserDetails userDetails, PasswordChangeParam param, Function<String, String> encode);
 }
