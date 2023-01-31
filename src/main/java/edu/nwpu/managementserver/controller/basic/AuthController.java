@@ -7,9 +7,11 @@ import edu.nwpu.managementserver.domain.Prison;
 import edu.nwpu.managementserver.domain.PrisonAdmin;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
 import edu.nwpu.managementserver.dto.LoginParam;
+import edu.nwpu.managementserver.dto.PasswordChangeParam;
 import edu.nwpu.managementserver.dto.TokenDTO;
 import edu.nwpu.managementserver.exception.ManagementException;
 import edu.nwpu.managementserver.service.*;
+import edu.nwpu.managementserver.util.RsaDecryptUtil;
 import edu.nwpu.managementserver.vo.*;
 import jakarta.servlet.ServletRequest;
 import jakarta.validation.Valid;
@@ -21,6 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import static edu.nwpu.managementserver.constant.CodeEnum.UserUnauthenticated;
@@ -56,6 +59,7 @@ public class AuthController {
 
     private PoliceService policeService;
 
+    private PasswordEncoder passwordEncoder;
     @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
 
@@ -108,6 +112,12 @@ public class AuthController {
     public void setPoliceService(PoliceService policeService) {
 
         this.policeService = policeService;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
@@ -181,5 +191,23 @@ public class AuthController {
     public CommonResult refreshToken(ServletRequest request) {
 
         return CommonResult.success(request.getAttribute(Token));
+    }
+
+    @PutMapping("/account/password")
+    public CommonResult changePassword(@Valid @RequestBody PasswordChangeParam param,
+                                       @AuthenticationPrincipal AccountUserDetails currentAccount) {
+
+        try {
+            authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    currentAccount, RsaDecryptUtil.decrypt(privateKey, param.getOldPassword()),
+                                    currentAccount.getAuthorities()));
+            accountService.updatePassword(currentAccount, RsaDecryptUtil.decrypt(privateKey, param.getNewPassword()), passwordEncoder::encode);
+            return CommonResult.success();
+        } catch (ManagementException e) {
+            return CommonResult.failure(e);
+        } catch (AuthenticationException e) {
+            return CommonResult.unauthorized(UserUnauthenticated, e.getMessage());
+        }
     }
 }

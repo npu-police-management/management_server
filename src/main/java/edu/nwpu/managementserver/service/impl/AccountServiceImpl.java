@@ -2,7 +2,6 @@ package edu.nwpu.managementserver.service.impl;
 
 import edu.nwpu.managementserver.domain.Account;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
-import edu.nwpu.managementserver.dto.PasswordChangeParam;
 import edu.nwpu.managementserver.exception.BusinessException;
 import edu.nwpu.managementserver.mapper.AccountMapper;
 import edu.nwpu.managementserver.service.AccountService;
@@ -63,12 +62,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void updatePassword(AccountUserDetails userDetails, PasswordChangeParam param, Function<String, String> encode) {
+    public void updatePassword(AccountUserDetails userDetails, String newPassword,
+                               Function<String, String> encode) {
 
-        if (!userDetails.getPassword().equals(encode.apply(param.getOldPassword()))) {
-            throw new BusinessException(CodeEnum.RequestError, "旧密码错误");
-        }
-        userDetails.setPassword(encode.apply(param.getNewPassword()));
+        userDetails.setPassword(encode.apply(newPassword));
         accountMapper.updatePassword(userDetails.toAccount());
     }
 }

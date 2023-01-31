@@ -1,6 +1,5 @@
 package edu.nwpu.managementserver.dto;
 
-import edu.nwpu.managementserver.util.RsaDecryptUtil;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,10 +18,4 @@ public class PasswordChangeParam {
 
     @NotBlank
     private String newPassword;
-
-    public PasswordChangeParam getDecryptParam(String privateKey) {
-        return new PasswordChangeParam(
-                RsaDecryptUtil.decrypt(privateKey, oldPassword),
-                RsaDecryptUtil.decrypt(privateKey, newPassword));
-    }
 }
