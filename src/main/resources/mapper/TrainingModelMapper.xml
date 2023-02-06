@@ -16,4 +16,39 @@
         id,name,description,
         enable,priority
     </sql>
+    <insert id="insert">
+        insert into training_model
+        (id, name, description, enable, priority)
+        values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{enable,jdbcType=BOOLEAN}, #{priority,jdbcType=INTEGER})
+    </insert>
+    <update id="updateById" parameterType="edu.nwpu.managementserver.domain.TrainingModel">
+        update training_model
+        set name = #{name,jdbcType=VARCHAR},
+            description = #{description,jdbcType=VARCHAR},
+            enable = #{enable,jdbcType=BOOLEAN},
+            priority = #{priority,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <delete id="deleteById">
+        delete from training_model where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="item">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <select id="findByName" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from training_model
+        where name = #{name,jdbcType=VARCHAR}
+    </select>
+    <select id="findById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from training_model
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="getAllByQuery" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from training_model
+        where name like concat('%', #{query,jdbcType=VARCHAR}, '%')
+        or description like concat('%', #{query,jdbcType=VARCHAR}, '%')
+    </select>
 </mapper>
