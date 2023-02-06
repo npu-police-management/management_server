@@ -29,4 +29,9 @@
         where pt.end_time >= date_sub(current_date(),interval  7 day)
           and pt.police_id in (select id from police where prison_id = #{prisonId})
     </select>
+    <select id="getThreeDate" resultType="edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO">
+        select p.name policeName,t.name modelName,pt.end_time endTime from police_training pt,police p,training_model t
+        where pt.police_id = p.id and pt.model_id = t.id and p.id in (select id from police where prison_id = #{prisonId})
+        limit 3
+    </select>
 </mapper>

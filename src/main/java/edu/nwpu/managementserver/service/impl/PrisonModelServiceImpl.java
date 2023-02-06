@@ -4,6 +4,7 @@ import edu.nwpu.managementserver.domain.PrisonModel;
 import edu.nwpu.managementserver.mapper.PrisonModelMapper;
 import edu.nwpu.managementserver.service.PrisonModelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @className edu.nwpu.managementserver.service.impl.PrisonModelServiceImpl
  * @description:
  */
+@Service
 public class PrisonModelServiceImpl implements PrisonModelService {
     @Autowired
     PrisonModelMapper prisonModelMapper;

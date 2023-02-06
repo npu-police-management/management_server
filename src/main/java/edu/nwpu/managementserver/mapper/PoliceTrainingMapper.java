@@ -1,6 +1,9 @@
 package edu.nwpu.managementserver.mapper;
 
+import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
 * @author Faust
@@ -12,6 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface PoliceTrainingMapper {
     int getNumberTodayFinish(long prisonId);
     int getNumberWeekFinish(long prisonId);
+    List<PrisonAdminMainPageDynamicVO> getThreeDate(long PrisonId);
 }
 
 

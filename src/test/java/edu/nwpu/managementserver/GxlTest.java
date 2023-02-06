@@ -100,7 +100,8 @@ public class GxlTest {
     PoliceTrainingMapper policeTrainingMapper;
     @Test
     public void testPoliceTrainingMapper(){
-        System.out.println(policeTrainingMapper.getNumberTodayFinish(2));
+//        System.out.println(policeTrainingMapper.getNumberTodayFinish(2));
+        System.out.println(policeTrainingMapper.getThreeDate(2));
     }
 
 }

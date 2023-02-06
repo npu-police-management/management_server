@@ -1,6 +1,9 @@
 package edu.nwpu.managementserver.service;
 
+import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author GengXuelong
@@ -13,5 +16,6 @@ import org.springframework.stereotype.Service;
 public interface PoliceTrainingService {
     int getNumberTodayFinish(long prisonId);
     int getNumberWeekFinish(long prisonId);
+    List<PrisonAdminMainPageDynamicVO> getThreeDate(long prisonId);
 
 }

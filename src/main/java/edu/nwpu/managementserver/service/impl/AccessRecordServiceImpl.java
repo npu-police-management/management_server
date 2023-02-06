@@ -3,6 +3,7 @@ package edu.nwpu.managementserver.service.impl;
 import edu.nwpu.managementserver.mapper.AccessRecordMapper;
 import edu.nwpu.managementserver.service.AccessRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author GengXuelong
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @className edu.nwpu.managementserver.service.impl.AccessRecordServiceImpl
  * @description:
  */
+@Service
 public class AccessRecordServiceImpl implements AccessRecordService {
     @Autowired
     private AccessRecordMapper accessRecordMapper;

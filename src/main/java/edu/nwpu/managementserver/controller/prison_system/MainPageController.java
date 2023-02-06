@@ -3,16 +3,16 @@ package edu.nwpu.managementserver.controller.prison_system;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
 import edu.nwpu.managementserver.mapper.AccessRecordMapper;
 import edu.nwpu.managementserver.mapper.PrisonModelMapper;
-import edu.nwpu.managementserver.service.PoliceService;
-import edu.nwpu.managementserver.service.PoliceTrainingService;
-import edu.nwpu.managementserver.service.PrisonAdminService;
-import edu.nwpu.managementserver.service.PrisonService;
+import edu.nwpu.managementserver.service.*;
+import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author GengXuelong
@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/backstage-management-service/prison")
 public class MainPageController {
     @Autowired
-    private PrisonModelMapper prisonModelMapper;
+    private PrisonModelService prisonModelService;
     @Autowired
-    private AccessRecordMapper accessRecordMapper;
+    private AccessRecordService accessRecordService;
     @Autowired
     private PoliceTrainingService policeTrainingService;
     @Autowired
@@ -40,8 +40,18 @@ public class MainPageController {
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
         PrisonAdminMainPageVO prisonAdminMainPageVO = new PrisonAdminMainPageVO();
         prisonAdminMainPageVO.setFinishTrainTimeWeekly(policeTrainingService.getNumberWeekFinish(prison_id)+"");
-        return null;
+        prisonAdminMainPageVO.setFinishTrainTimeDaily(policeTrainingService.getNumberTodayFinish(prison_id)+"");
+        prisonAdminMainPageVO.setWorkingModeNumber(prisonModelService.getTheOpeningModeSizeForPrison(prison_id)+"");
+        prisonAdminMainPageVO.setLoginTimeDaily(accessRecordService.getNumberTodayAccess(prison_id)+"");
+        return prisonAdminMainPageVO;
     }
+
+    @GetMapping("/mainPage/dynamic")
+    public List<PrisonAdminMainPageDynamicVO> mainPageDynamic( @AuthenticationPrincipal AccountUserDetails account){
+        return null;
+
+    }
+
 
 
 
