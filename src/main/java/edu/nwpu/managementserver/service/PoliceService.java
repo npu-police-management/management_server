@@ -19,8 +19,6 @@ public interface PoliceService {
 
     void add(Police police);
 
-    long getPrisonIdByAccountId(long id);
-
     void deleteList(List<Long> idList);
 
     Police getPoliceById(long id);

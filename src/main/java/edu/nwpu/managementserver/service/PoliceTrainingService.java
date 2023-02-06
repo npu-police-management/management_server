@@ -1,5 +1,7 @@
 package edu.nwpu.managementserver.service;
 
+import org.springframework.stereotype.Service;
+
 /**
  * @author GengXuelong
  * @version 1.0
@@ -10,4 +12,6 @@ package edu.nwpu.managementserver.service;
  */
 public interface PoliceTrainingService {
     int getNumberTodayFinish(long prisonId);
+    int getNumberWeekFinish(long prisonId);
+
 }

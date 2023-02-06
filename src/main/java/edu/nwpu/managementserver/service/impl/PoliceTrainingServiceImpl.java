@@ -1,7 +1,9 @@
 package edu.nwpu.managementserver.service.impl;
 
+import edu.nwpu.managementserver.mapper.PoliceTrainingMapper;
 import edu.nwpu.managementserver.service.PoliceTrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author GengXuelong
@@ -11,11 +13,17 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @className edu.nwpu.managementserver.service.impl.PoliceTrainingServiceImpl
  * @description:
  */
+@Service
 public class PoliceTrainingServiceImpl implements PoliceTrainingService {
     @Autowired
-    PoliceTrainingService policeTrainingService;
+    PoliceTrainingMapper policeTrainingMapper;
     @Override
     public int getNumberTodayFinish(long prisonId) {
-	return policeTrainingService.getNumberTodayFinish(prisonId);
+	return policeTrainingMapper.getNumberTodayFinish(prisonId);
+    }
+
+    @Override
+    public int getNumberWeekFinish(long prisonId) {
+	return policeTrainingMapper.getNumberWeekFinish(prisonId);
     }
 }

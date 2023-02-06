@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface PoliceTrainingMapper {
     int getNumberTodayFinish(long prisonId);
+    int getNumberWeekFinish(long prisonId);
 }
 
 

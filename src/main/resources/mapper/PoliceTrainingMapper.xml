@@ -21,7 +21,12 @@
     </sql>
     <select id="getNumberTodayFinish" parameterType="long" resultType="int">
         select count(*) from police_training pt
-        where pt.end_time >= date_sub(current_date,interval  1 day)
+        where pt.end_time >= date_sub(current_date(),interval  1 day)
         and pt.police_id in (select id from police where prison_id = #{prisonId})
+    </select>
+    <select id="getNumberWeekFinish" parameterType="long" resultType="int">
+        select count(*) from police_training pt
+        where pt.end_time >= date_sub(current_date(),interval  7 day)
+          and pt.police_id in (select id from police where prison_id = #{prisonId})
     </select>
 </mapper>

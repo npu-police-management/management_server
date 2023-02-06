@@ -39,15 +39,6 @@ public class PoliceServiceImpl  implements PoliceService {
         policeMapper.save(police);
     }
 
-    @Override
-    public long getPrisonIdByAccountId(long id) {
-        List<Long> idList = prisonAdminMapper.getPrisonIdByAccountId(id);
-        long prison_id =-1;
-        if(idList!=null&&idList.size()>0){
-            prison_id = idList.get(0);
-        }
-        return prison_id;
-    }
 
     @Override
     public void deleteList(List<Long> idList) {
