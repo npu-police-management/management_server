@@ -19,4 +19,9 @@
         start_time,end_time,status,
         result
     </sql>
+    <select id="getByPoliceId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from police_training
+        where police_id = #{policeId,jdbcType=BIGINT}
+    </select>
 </mapper>

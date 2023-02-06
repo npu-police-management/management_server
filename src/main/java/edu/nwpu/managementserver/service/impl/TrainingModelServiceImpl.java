@@ -81,4 +81,13 @@ public class TrainingModelServiceImpl implements TrainingModelService {
         return trainingModelMapper.getAllByQuery(query);
     }
 
+    @Override
+    public TrainingModel getById(long id) {
+
+        TrainingModel model = trainingModelMapper.findById(id);
+        if (model == null) {
+            throw new BusinessException(CodeEnum.NotFound, "模型不存在");
+        }
+        return model;
+    }
 }

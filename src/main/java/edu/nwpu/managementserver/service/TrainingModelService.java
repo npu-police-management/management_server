@@ -20,4 +20,6 @@ public interface TrainingModelService {
     void deleteById(List<Long> idList);
 
     List<TrainingModel> queryTrainingModel(String query);
+
+    TrainingModel getById(long id);
 }
