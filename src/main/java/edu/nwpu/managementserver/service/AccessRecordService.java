@@ -9,5 +9,5 @@ package edu.nwpu.managementserver.service;
  * @description:
  */
 public interface AccessRecordService {
-    int getNumberTodayAccess();
+    int getNumberTodayAccess(long prison_id);
 }

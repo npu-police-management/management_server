@@ -16,7 +16,7 @@ public class AccessRecordServiceImpl implements AccessRecordService {
     @Autowired
     private AccessRecordMapper accessRecordMapper;
     @Override
-    public int getNumberTodayAccess() {
-	return accessRecordMapper.getNumberTodayAccess();
+    public int getNumberTodayAccess(long prisonId) {
+	return accessRecordMapper.getNumberTodayAccess(prisonId);
     }
 }

@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 */
 @Mapper
 public interface AccessRecordMapper {
-    int getNumberTodayAccess();
+    int getNumberTodayAccess(long prisonId);
 }
 
 

@@ -95,7 +95,7 @@ public class GxlTest {
     AccessRecordMapper accessRecordMapper;
     @Test
     public void testAccessRecordMapper(){
-        System.out.println(accessRecordMapper.getNumberTodayAccess());
+        System.out.println(accessRecordMapper.getNumberTodayAccess(2));
     }
 
 }
