@@ -3,6 +3,7 @@ package edu.nwpu.managementserver.service.impl;
 import edu.nwpu.managementserver.mapper.PoliceTrainingMapper;
 import edu.nwpu.managementserver.service.PoliceTrainingService;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
+import edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * @description:
  */
 @Service
-public class PoliceTrainingServiceImpl implements PoliceTrainingService {
+public class PoliceTrainingServiceImpl  implements PoliceTrainingService {
     @Autowired
     PoliceTrainingMapper policeTrainingMapper;
     @Override
@@ -33,5 +34,10 @@ public class PoliceTrainingServiceImpl implements PoliceTrainingService {
     @Override
     public List<PrisonAdminMainPageDynamicVO> getThreeDate(long prisonId) {
 	return policeTrainingMapper.getThreeDate(prisonId);
+    }
+
+    @Override
+    public List<PrisonAdminMainPageStatsVO> getWeeklyStatus(long prisonId) {
+	return policeTrainingMapper.getWeeklyStatus(prisonId);
     }
 }

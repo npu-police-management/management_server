@@ -5,6 +5,7 @@ import edu.nwpu.managementserver.mapper.AccessRecordMapper;
 import edu.nwpu.managementserver.mapper.PrisonModelMapper;
 import edu.nwpu.managementserver.service.*;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
+import edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,7 +39,7 @@ public class MainPageController {
     public PrisonAdminMainPageVO mainPage( @AuthenticationPrincipal AccountUserDetails account){
         long account_id = account.getId();
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
-        PrisonAdminMainPageVO prisonAdminMainPageVO = new PrisonAdminMainPageVO();
+        PrisonAdminMainPageVO prisonAdminMainPageVO =new PrisonAdminMainPageVO();
         prisonAdminMainPageVO.setFinishTrainTimeWeekly(policeTrainingService.getNumberWeekFinish(prison_id)+"");
         prisonAdminMainPageVO.setFinishTrainTimeDaily(policeTrainingService.getNumberTodayFinish(prison_id)+"");
         prisonAdminMainPageVO.setWorkingModeNumber(prisonModelService.getTheOpeningModeSizeForPrison(prison_id)+"");
@@ -48,8 +49,16 @@ public class MainPageController {
 
     @GetMapping("/mainPage/dynamic")
     public List<PrisonAdminMainPageDynamicVO> mainPageDynamic( @AuthenticationPrincipal AccountUserDetails account){
-        return null;
+        long account_id = account.getId();
+        long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
+        return policeTrainingService.getThreeDate(prison_id);
+    }
 
+    @GetMapping("/mainPage/stats")
+    public List<PrisonAdminMainPageStatsVO> mainPageStats(@AuthenticationPrincipal AccountUserDetails account){
+        long account_id = account.getId();
+        long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
+        return policeTrainingService.getWeeklyStatus(prison_id);
     }
 
 
