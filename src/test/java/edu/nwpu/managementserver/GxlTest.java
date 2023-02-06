@@ -63,7 +63,6 @@ public class GxlTest {
 //        System.out.println(prisonAdminMapper.getByAccountId(110L));
         System.out.println(accountService.getById(110L));
     }
-
     @Test
     public void tedfsfst(){
         String privateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAMdBbmmkALx1oql+F3fwA986OPIJzD1ZdMlFVecdi4fcQ7iTR8cDqelJtPUgOA052KAwQwM2ePAn42j2JxtUm5qOUe/DgfxDXFMm/Id+B5g6HuejYei8BdHPhM9wO7o9skN4WGAX3Rmf5Y5HI1H4tI1HTDrE4Txz4uSinV245VfZAgMBAAECgYEAlwU4skjjZfOi/ePb1cPMq3xtfMWAT19l7MbofOsfvjFsApFebbCRL4f153QsB5o4XfE2WVEICL2y1vL6YPSXmg42uM2numDgjGsQxy69KjIq9fz5jiLrKE+dzb0BRIzHOjK8YE71xHxqMvrAw4xlP8SnNA9OjurcJa2H6tzc3oECQQDubw9f6FnlYb91pTdlpuJqteLCDVgCiBSEwmX6ZSMvKv1B5g5PIFcI9Rs/pBrQqmQW09fCOPPkXsTzomAVoCONAkEA1e909gxLx628vVqEa0+izm9zQSb9WAQCqyp9xb9+NHDkMp6V1qRVe4cbzSLzTkGYLAXNuPcK9HlHAjy1yibsfQJAIw6pUAy1ywhIQl/8eTHEcLQ1lxqnKhggDDUZEWv1dGX5vsq4p+G1ale/neffGXc0KDcVrjT5h0Z35uqk/gkBsQJAIkM3eDB/8nrgv3K/wm/+oxE2ZDjaWj5KLx+fBQymKb/qzDCZzsaC6kW5LiFq1h2rQWGskPL/zieeN72BX97cAQJAVp8hiBdhyJR+/s9lfP0MSfzdlFFeHKYJXM6VVgbHpGhNa8XeMLCSmLr07Vl7v0ffBzOX6u+ChYAvVNRnwCVogQ==";
@@ -79,6 +78,8 @@ public class GxlTest {
         System.out.println(policeVOPageResult.getTotal()+""+policeVOPageResult.getList());
     }
 
+
+
     @Autowired
     PrisonModelMapper prisonModelMapper;
     @Test
@@ -89,13 +90,17 @@ public class GxlTest {
 //        System.out.println(prisonModelMapper.addRecord(new PrisonModel(3L,2L,3L)));
 //        System.out.println(prisonModelMapper.getModelIdSizeByPrisonId(2L));
     }
-
-
     @Autowired
     AccessRecordMapper accessRecordMapper;
     @Test
     public void testAccessRecordMapper(){
         System.out.println(accessRecordMapper.getNumberTodayAccess(2));
+    }
+    @Autowired
+    PoliceTrainingMapper policeTrainingMapper;
+    @Test
+    public void testPoliceTrainingMapper(){
+        System.out.println(policeTrainingMapper.getNumberTodayFinish(2));
     }
 
 }
