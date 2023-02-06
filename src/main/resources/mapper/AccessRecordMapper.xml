@@ -15,4 +15,8 @@
         id,access_time,account_id,
         content
     </sql>
+    <select id="getNumberTodayAccess" resultType="int">
+        select count(distinct account_id) from access_record
+        where access_time >= date_sub(current_date,interval 1 day )
+    </select>
 </mapper>

@@ -1,13 +1,11 @@
 package edu.nwpu.managementserver;
 
 import edu.nwpu.managementserver.domain.Police;
+import edu.nwpu.managementserver.domain.PrisonModel;
 import edu.nwpu.managementserver.dto.PagingQueryForPrisonAdminParam;
-import edu.nwpu.managementserver.mapper.PoliceMapper;
-import edu.nwpu.managementserver.mapper.PrisonAdminMapper;
-import edu.nwpu.managementserver.mapper.PrisonMapper;
+import edu.nwpu.managementserver.mapper.*;
 import edu.nwpu.managementserver.service.AccountService;
 import edu.nwpu.managementserver.service.PoliceService;
-import edu.nwpu.managementserver.service.impl.AccountServiceImpl;
 import edu.nwpu.managementserver.util.PageTransformUtil;
 import edu.nwpu.managementserver.util.RsaDecryptUtil;
 import edu.nwpu.managementserver.vo.PageResult;
@@ -16,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -80,6 +77,25 @@ public class GxlTest {
         Function<Police,PoliceVO> mapper = police->new PoliceVO(police.getId()+"",police.getName(),accountService.getById(police.getAccountId()).getAccountNumber(),police.getImageUrl());
         PageResult<PoliceVO> policeVOPageResult = PageTransformUtil.toViewPage(pagingQueryForPrisonAdminParam, policeService::queryList, mapper);
         System.out.println(policeVOPageResult.getTotal()+""+policeVOPageResult.getList());
+    }
+
+    @Autowired
+    PrisonModelMapper prisonModelMapper;
+    @Test
+    public void testPrisonModelMapper(){
+        List<Long> modeIdListByPrisonId = prisonModelMapper.getModelIdListByPrisonId(2L);
+        System.out.println(modeIdListByPrisonId);
+//        System.out.println(prisonModelMapper.deleteRecord(2,3));
+//        System.out.println(prisonModelMapper.addRecord(new PrisonModel(3L,2L,3L)));
+//        System.out.println(prisonModelMapper.getModelIdSizeByPrisonId(2L));
+    }
+
+
+    @Autowired
+    AccessRecordMapper accessRecordMapper;
+    @Test
+    public void testAccessRecordMapper(){
+        System.out.println(accessRecordMapper.getNumberTodayAccess());
     }
 
 }
