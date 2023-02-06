@@ -62,7 +62,7 @@ public class PAdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("/prison/padmin")
     public CommonResult addPrisonAdmin(@Valid @RequestBody PrisonNameParam param) {
 

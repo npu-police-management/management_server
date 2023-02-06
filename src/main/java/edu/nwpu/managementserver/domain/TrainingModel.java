@@ -2,13 +2,18 @@ package edu.nwpu.managementserver.domain;
 
 import java.io.Serial;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
  * @TableName training_model
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TrainingModel implements Serializable {
     /**
      * 
@@ -28,7 +33,7 @@ public class TrainingModel implements Serializable {
     /**
      * 
      */
-    private Integer enable;
+    private Boolean enable;
 
     /**
      * 
