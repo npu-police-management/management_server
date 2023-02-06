@@ -11,6 +11,7 @@ import edu.nwpu.managementserver.vo.PageResult;
 import edu.nwpu.managementserver.vo.TrainingModelVO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,6 +25,7 @@ public class ModelController {
     @Autowired
     private TrainingModelService trainingModelService;
 
+    @PreAuthorize("hasAuthority('Admin')")
     @PostMapping("")
     public CommonResult addModel(@Valid @RequestBody ModelParam param) {
 
@@ -39,6 +41,7 @@ public class ModelController {
         );
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @PutMapping("/{modelId}")
     public CommonResult updateModel(@PathVariable String modelId, @RequestBody ModelParam param) {
 
@@ -46,6 +49,7 @@ public class ModelController {
         return CommonResult.success();
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @DeleteMapping("")
     public CommonResult deleteAllById(@RequestBody IdListParam param) {
 
@@ -53,6 +57,7 @@ public class ModelController {
         return CommonResult.success();
     }
 
+    @PreAuthorize("hasAuthority('Admin')")
     @GetMapping("")
     public CommonResult getAllByQuery(@Valid PagingQueryParam param) {
 
