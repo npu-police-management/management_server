@@ -10,6 +10,7 @@ import edu.nwpu.managementserver.vo.PoliceVO;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * @author Jiayi Zhu
@@ -46,6 +47,19 @@ public class PageTransformUtil {
 
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
         List<T> tList = query.apply(param);
+        PageInfo<T> tPageInfo = new PageInfo<>(tList);
+        return new PageResult<>(
+                (int)tPageInfo.getTotal(),
+                tList.stream().map(mapper).toList()
+        );
+    }
+
+    public static <T, R> PageResult<R> toViewPage(PagingQueryParam param,
+                                                  Supplier<List<T>> supplier,
+                                                  Function<T, R> mapper) {
+
+        PageHelper.startPage(param.getPageNum(), param.getPageSize());
+        List<T> tList = supplier.get();
         PageInfo<T> tPageInfo = new PageInfo<>(tList);
         return new PageResult<>(
                 (int)tPageInfo.getTotal(),

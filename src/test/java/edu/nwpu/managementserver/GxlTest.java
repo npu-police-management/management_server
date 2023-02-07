@@ -2,6 +2,7 @@ package edu.nwpu.managementserver;
 
 import edu.nwpu.managementserver.domain.Police;
 import edu.nwpu.managementserver.domain.PrisonModel;
+import edu.nwpu.managementserver.domain.TrainingModel;
 import edu.nwpu.managementserver.dto.PagingQueryForPrisonAdminParam;
 import edu.nwpu.managementserver.mapper.*;
 import edu.nwpu.managementserver.service.AccountService;
@@ -103,6 +104,13 @@ public class GxlTest {
 //        System.out.println(policeTrainingMapper.getNumberTodayFinish(2));
 //        System.out.println(policeTrainingMapper.getThreeDate(2));
         System.out.println(policeTrainingMapper.getWeeklyStatus(2));
+    }
+    @Autowired
+    TrainingModelMapper trainingModelMapper;
+    @Test
+    public void testTrainingModel(){
+        List<TrainingModel> modelListForPrisonAdmin = trainingModelMapper.getModelListForPrisonAdmin();
+        System.out.println(modelListForPrisonAdmin);
     }
 
 }

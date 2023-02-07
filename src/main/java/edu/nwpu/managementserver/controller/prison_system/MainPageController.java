@@ -4,6 +4,7 @@ import edu.nwpu.managementserver.dto.AccountUserDetails;
 import edu.nwpu.managementserver.mapper.AccessRecordMapper;
 import edu.nwpu.managementserver.mapper.PrisonModelMapper;
 import edu.nwpu.managementserver.service.*;
+import edu.nwpu.managementserver.vo.CommonResult;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageVO;
@@ -36,29 +37,29 @@ public class MainPageController {
     private PrisonAdminService prisonAdminService;
 
     @GetMapping("/mainPage")
-    public PrisonAdminMainPageVO mainPage( @AuthenticationPrincipal AccountUserDetails account){
+    public CommonResult mainPage(@AuthenticationPrincipal AccountUserDetails account){
         long account_id = account.getId();
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
-        PrisonAdminMainPageVO prisonAdminMainPageVO =new PrisonAdminMainPageVO();
+        PrisonAdminMainPageVO prisonAdminMainPageVO = new PrisonAdminMainPageVO();
         prisonAdminMainPageVO.setFinishTrainTimeWeekly(policeTrainingService.getNumberWeekFinish(prison_id)+"");
         prisonAdminMainPageVO.setFinishTrainTimeDaily(policeTrainingService.getNumberTodayFinish(prison_id)+"");
         prisonAdminMainPageVO.setWorkingModeNumber(prisonModelService.getTheOpeningModeSizeForPrison(prison_id)+"");
         prisonAdminMainPageVO.setLoginTimeDaily(accessRecordService.getNumberTodayAccess(prison_id)+"");
-        return prisonAdminMainPageVO;
+        return CommonResult.success(prisonAdminMainPageVO);
     }
 
     @GetMapping("/mainPage/dynamic")
-    public List<PrisonAdminMainPageDynamicVO> mainPageDynamic( @AuthenticationPrincipal AccountUserDetails account){
+    public CommonResult mainPageDynamic( @AuthenticationPrincipal AccountUserDetails account){
         long account_id = account.getId();
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
-        return policeTrainingService.getThreeDate(prison_id);
+        return CommonResult.success(policeTrainingService.getThreeDate(prison_id));
     }
 
     @GetMapping("/mainPage/stats")
-    public List<PrisonAdminMainPageStatsVO> mainPageStats(@AuthenticationPrincipal AccountUserDetails account){
+    public CommonResult mainPageStats(@AuthenticationPrincipal AccountUserDetails account){
         long account_id = account.getId();
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
-        return policeTrainingService.getWeeklyStatus(prison_id);
+        return CommonResult.success(policeTrainingService.getWeeklyStatus(prison_id));
     }
 
 
