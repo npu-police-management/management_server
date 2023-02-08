@@ -64,7 +64,7 @@
                pt.end_time as endTime
         from police_training as pt,police as p,training_model as t,account as a
         where pt.police_id = p.id and pt.model_id = t.id and p.account_id = a.id and
-            t.name = #{modelName} and p.prison_id = #{prisonId} and
+            t.name like concat('%',#{modelName},'%') and p.prison_id = #{prisonId} and
             (  p.name like concat('%',#{police},'%')or a.account_number like concat('%',#{police},'%') )
     </select>
 </mapper>
