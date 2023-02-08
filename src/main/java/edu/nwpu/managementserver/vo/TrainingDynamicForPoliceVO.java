@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrainingDynamicForPoliceVO {
-    private long id;
-    private long modeId;
+    private String id;
+    private String modeId;
     private String modeName;
     private String status;
     private String result;

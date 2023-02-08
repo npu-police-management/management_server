@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class TotalAssessUseByPrisonAdminVO {
-    private long id;
+    private String id;
     private String policeName;
     private int[] mentalPercentList;
     private boolean result;

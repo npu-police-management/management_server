@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TrainingDynamicVO {
-    private long id;
-    private long policeId;
+    private String id;
+    private String policeId;
     private String policeName;
-    private long modeId;
+    private String modeId;
     private String modeName;
     private String status;
     private String result;

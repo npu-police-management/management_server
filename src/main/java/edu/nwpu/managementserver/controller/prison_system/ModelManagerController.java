@@ -5,6 +5,7 @@ import edu.nwpu.managementserver.dto.AccountUserDetails;
 import edu.nwpu.managementserver.dto.PagingQueryForPrisonAdminParam;
 import edu.nwpu.managementserver.dto.PagingQueryParam;
 import edu.nwpu.managementserver.service.PrisonAdminService;
+import edu.nwpu.managementserver.service.PrisonModelService;
 import edu.nwpu.managementserver.service.TrainingModelService;
 import edu.nwpu.managementserver.util.PageTransformUtil;
 import edu.nwpu.managementserver.util.SnowflakeIdUtil;
@@ -33,11 +34,13 @@ public class ModelManagerController {
     @Autowired
     private TrainingModelService trainingModelService;
     @Autowired
-    private PrisonAdminService prisonAdminService
+    private PrisonAdminService prisonAdminService;
+    @Autowired
+    private PrisonModelService prisonModelService;
 
     @GetMapping("model")
     public CommonResult modelVOList(PagingQueryParam pagingQueryParam){
-		Function<TrainingModel,TrainingModelVO>  mapper = (trainingModel)->new TrainingModelVO(trainingModel.getId(),trainingModel.getName(),trainingModel.getDescription(),false,trainingModel.getPriority());
+        Function<TrainingModel,TrainingModelVO>  mapper = (trainingModel)->new TrainingModelVO(trainingModel.getId()+"",trainingModel.getName(),trainingModel.getDescription(),false,trainingModel.getPriority());
 	PageResult<TrainingModelVO> pageResult = PageTransformUtil.toViewPage(
 		pagingQueryParam,
 		trainingModelService::getTrainingModelForPrisonAdmin,

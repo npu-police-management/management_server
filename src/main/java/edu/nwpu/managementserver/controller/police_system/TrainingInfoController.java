@@ -5,7 +5,11 @@ import com.github.pagehelper.PageInfo;
 import edu.nwpu.managementserver.domain.Police;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
 import edu.nwpu.managementserver.dto.PagingQueryParam;
+import edu.nwpu.managementserver.service.PoliceService;
+import edu.nwpu.managementserver.service.PoliceTrainingService;
+import edu.nwpu.managementserver.service.TotalAssessService;
 import edu.nwpu.managementserver.vo.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,12 +29,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/backstage-management-service/police")
 public class TrainingInfoController {
+    @Autowired
+    private PoliceService policeService;
+    @Autowired
+    private PoliceTrainingService policeTrainingService;
+    @Autowired
+    private TotalAssessService totalAssessService;
     @GetMapping("query")
     public CommonResult TrainingInfoQuery(@RequestBody PagingQueryParam param, @AuthenticationPrincipal AccountUserDetails account){
 	long account_id = account.getId();
 	Police police = policeService.getPoliceByAccountId(account_id);
 	PageHelper.startPage(param.getPageNum(), param.getPageSize());
-	List<TrainingDynamicForPoliceVO> tList = policeModelService.getTrainingDynamicListForPolice(police.getId(),param.getQuery());
+	List<TrainingDynamicForPoliceVO> tList = policeTrainingService.getTrainingDynamicListForPolice(police.getId(),param.getQuery());
 	PageInfo<TrainingDynamicForPoliceVO> tPageInfo = new PageInfo<>(tList);
 	PageResult<TrainingDynamicForPoliceVO> result =  new PageResult<>((int)tPageInfo.getTotal(), tList);
 	return CommonResult.success(result);

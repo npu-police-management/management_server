@@ -18,4 +18,8 @@
         id,police_id,mental_percent_list,
         result,description,create_time,update_time
     </sql>
+
+    <select id="getLastTotalAssessForPolice" parameterType="long" resultMap="BaseResultMap">
+        select * from total_assess where police_id = #{policeId}
+    </select>
 </mapper>
