@@ -48,8 +48,12 @@ public class ModelManagerController {
      */
     @GetMapping("model")
     @PreAuthorize("hasAuthority('PrisonAdmin')")
-    public CommonResult modelVOList(PagingQueryParam pagingQueryParam){
-        Function<TrainingModel,TrainingModelVO>  mapper = (trainingModel)->new TrainingModelVO(trainingModel.getId()+"",trainingModel.getName(),trainingModel.getDescription(),false,trainingModel.getPriority());
+    public CommonResult modelVOList(PagingQueryParam pagingQueryParam,
+                                    @AuthenticationPrincipal AccountUserDetails account){
+        long account_id = account.getId();
+        long prisonId = prisonAdminService.getPrisonIdByAccountId(account_id);
+        Function<TrainingModel,TrainingModelVO>  mapper =
+                (trainingModel)->new TrainingModelVO(trainingModel.getId()+"",trainingModel.getName(),trainingModel.getDescription(),prisonModelService.exist(trainingModel.getId(),prisonId),trainingModel.getPriority());
 	PageResult<TrainingModelVO> pageResult = PageTransformUtil.toViewPage(
 		pagingQueryParam,
 		trainingModelService::getTrainingModelForPrisonAdmin,
