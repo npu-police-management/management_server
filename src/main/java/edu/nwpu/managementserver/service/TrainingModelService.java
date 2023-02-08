@@ -20,4 +20,6 @@ public interface TrainingModelService {
     List<TrainingModel> getTrainingModelForPrisonAdmin();
 
     List<String> getAllTrainingModelNames();
+
+
 }

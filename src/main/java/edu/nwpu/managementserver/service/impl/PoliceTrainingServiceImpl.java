@@ -5,6 +5,7 @@ import edu.nwpu.managementserver.service.PoliceTrainingService;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO;
 import edu.nwpu.managementserver.vo.TrainingDynamicForPoliceVO;
+import edu.nwpu.managementserver.vo.TrainingDynamicVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,10 @@ public class PoliceTrainingServiceImpl  implements PoliceTrainingService {
     @Override
     public List<TrainingDynamicForPoliceVO> getTrainingDynamicListForPolice(Long id, String query) {
 	return policeTrainingMapper.getTrainingDynamicListForPolice(id,query);
+    }
+
+    @Override
+    public List<TrainingDynamicVO> queryTrainingDynamicForPrisonAdmin(String police, String modelName,long prisonId) {
+	return policeTrainingMapper.queryTrainingDynamic(police,modelName,prisonId);
     }
 }

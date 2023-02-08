@@ -3,6 +3,7 @@ package edu.nwpu.managementserver.service;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO;
 import edu.nwpu.managementserver.vo.TrainingDynamicForPoliceVO;
+import edu.nwpu.managementserver.vo.TrainingDynamicVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface PoliceTrainingService {
     List<PrisonAdminMainPageStatsVO> getWeeklyStatus(long prisonId);
 
     List<TrainingDynamicForPoliceVO> getTrainingDynamicListForPolice(Long id, String query);
+
+    List<TrainingDynamicVO> queryTrainingDynamicForPrisonAdmin(String police, String modelName,long prisonId);
 }
