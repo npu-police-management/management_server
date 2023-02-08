@@ -66,10 +66,10 @@ public class ModelManagerController {
         return CommonResult.success();
     }
 
-    @GetMapping("trainDynamic")
-    public CommonResult trainDynamic(){
-        List<String> modelNameList = trainingModelService.getAllTrainingModelNames();
-        return CommonResult.success(modelNameList);
-    }
+//    @GetMapping("trainDynamic")
+//    public CommonResult trainDynamic(){
+//        List<String> modelNameList = trainingModelService.getTrainingModelNameForPrisonAdmin();
+//        return CommonResult.success(modelNameList);
+//    }
 
 }

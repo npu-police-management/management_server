@@ -14,6 +14,8 @@ import java.util.List;
 @Mapper
 public interface TrainingModelMapper {
     List<TrainingModel> getModelListForPrisonAdmin();
+
+    List<String> getTrainingModelNameForPrisonAdmin();
 }
 
 

@@ -19,7 +19,5 @@ import java.util.List;
 public interface TrainingModelService {
     List<TrainingModel> getTrainingModelForPrisonAdmin();
 
-    List<String> getAllTrainingModelNames();
-
-
+    List<String> getTrainingModelNameForPrisonAdmin();
 }

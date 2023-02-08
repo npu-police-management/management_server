@@ -50,6 +50,6 @@ public class PoliceTrainingServiceImpl  implements PoliceTrainingService {
 
     @Override
     public List<TrainingDynamicVO> queryTrainingDynamicForPrisonAdmin(String police, String modelName,long prisonId) {
-	return policeTrainingMapper.queryTrainingDynamic(police,modelName,prisonId);
+	return policeTrainingMapper.queryTrainingDynamicForPrisonAdmin(police,modelName,prisonId);
     }
 }

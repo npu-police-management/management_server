@@ -17,6 +17,9 @@
         enable,priority
     </sql>
     <select id="getModelListForPrisonAdmin" resultMap="BaseResultMap">
-        select * from dachaung.training_model where enable = 1;
+        select * from training_model where enable = 1;
+    </select>
+    <select id="getTrainingModelNameForPrisonAdmin" resultType="string">
+        select name from training_model where enable = 1;
     </select>
 </mapper>

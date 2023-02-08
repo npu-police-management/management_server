@@ -104,7 +104,8 @@ public class GxlTest {
 //        System.out.println(policeTrainingMapper.getNumberTodayFinish(2));
 //        System.out.println(policeTrainingMapper.getThreeDate(2));
 //        System.out.println(policeTrainingMapper.getWeeklyStatus(2));
-        System.out.println(policeTrainingMapper.getTrainingDynamicListForPolice(4423421L,"有"));
+//        System.out.println(policeTrainingMapper.getTrainingDynamicListForPolice(4423421L,"有"));
+        System.out.println(policeTrainingMapper.queryTrainingDynamicForPrisonAdmin("120","无氧运动心率控制训练",2));
     }
     @Autowired
     TrainingModelMapper trainingModelMapper;

@@ -39,7 +39,7 @@ public class PrisonTrainingDynamicController {
 
     @GetMapping("trainDynamic")
     public CommonResult trainDynamic(){
-	List<String> modelNameList = trainingModelService.getAllTrainingModelNames();
+	List<String> modelNameList = trainingModelService.getTrainingModelNameForPrisonAdmin();
 	return CommonResult.success(modelNameList);
     }
 

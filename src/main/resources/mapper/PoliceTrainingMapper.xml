@@ -43,9 +43,10 @@
     </select>
 
     <select id="getTrainingDynamicListForPolice" resultType="edu.nwpu.managementserver.vo.TrainingDynamicForPoliceVO">
-        select pt.id id,pt.model_id modelId,t.name modelName,pt.status status,pt.result result,pt.start_time startTime,pt.end_time endTime
+        select pt.id as id,pt.model_id as modelId,t.name as  modelName,pt.status as status,pt.result as result,
+               pt.start_time as startTime,pt.end_time as endTime
         from police_training pt,training_model t
-        where pt.police_id = #{id} and pt.model_id = t.id
+        where pt.police_id = #{id} and pt.model_id = t.id and
               ( t.id like concat('%',#{query},'%') or
                 t.name like concat('%',#{query},'%') or
                 t.description like concat('%',#{query},'%') or
