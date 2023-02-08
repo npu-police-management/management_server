@@ -9,6 +9,7 @@ import edu.nwpu.managementserver.dto.*;
 import edu.nwpu.managementserver.exception.ManagementException;
 import edu.nwpu.managementserver.service.AccountService;
 import edu.nwpu.managementserver.service.PoliceService;
+import edu.nwpu.managementserver.service.PrisonAdminService;
 import edu.nwpu.managementserver.service.PrisonService;
 import edu.nwpu.managementserver.util.PageTransformUtil;
 import edu.nwpu.managementserver.util.SnowflakeIdUtil;
@@ -29,9 +30,9 @@ import java.util.function.Function;
 /**
  * @author GengXuelong
  * @version 1.0
- * @time 2023/1/29 21:35
- * @email 3349495429@qq.com
- * @className com.nwpu.managementserver.controller.Prison.PoliceManageController
+ * &#064;time  2023/1/29 21:35
+ * &#064;email  3349495429@qq.com
+ * &#064;className  com.nwpu.managementserver.controller.Prison.PoliceManageController
  * @description:
  */
 @RestController
@@ -45,6 +46,8 @@ public class PoliceManageController {
     private AccountService accountService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    PrisonAdminService prisonAdminService;
 
     /**
      * @author GengXuelong
@@ -70,11 +73,8 @@ public class PoliceManageController {
     @GetMapping("/police/query")
     public CommonResult query(@Valid PagingQueryParam param, @AuthenticationPrincipal AccountUserDetails account){
         System.out.println("================>进入query");
-        //account = AccountUserDetails.of(new Account(2L,null,"",1));
         long account_id = account.getId();
-        System.out.println("account_id--->"+account_id);
-        long prison_id = policeService.getPrisonIdByAccountId(account_id);
-        System.out.println("prison_id----->"+prison_id);
+        long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
         PagingQueryForPrisonAdminParam pagingQueryForPrisonAdminParam = new PagingQueryForPrisonAdminParam(param,prison_id);
         Function<Police,PoliceVO> mapper =  police->new PoliceVO(police.getId()+"",police.getName(),(accountService.getById(police.getAccountId())).getAccountNumber(),police.getImageUrl());
         PageResult<PoliceVO> policeVOPageResult = PageTransformUtil.toViewPage(pagingQueryForPrisonAdminParam, policeService::queryList, mapper);
@@ -96,7 +96,7 @@ public class PoliceManageController {
         System.out.println(policeAddParam.getPoliceCode()+policeAddParam.getImageUrl()+policeAddParam.getName());
         System.out.println(account.getId()+account.getAccountNumber());
         try {
-            long prison_id = policeService.getPrisonIdByAccountId(account.getId());
+            long prison_id = prisonAdminService.getPrisonIdByAccountId(account.getId());
             Police police = new Police(SnowflakeIdUtil.nextId(),policeAddParam.getName(),policeAddParam.getImageUrl(),prison_id,null);
             AccountUserDetails add = accountService.add(policeAddParam.getPoliceCode(), policeAddParam.getPoliceCode(), 0, passwordEncoder::encode);
             police.setAccountId(add.getId());

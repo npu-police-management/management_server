@@ -51,4 +51,10 @@
         where name like concat('%', #{query,jdbcType=VARCHAR}, '%')
         or description like concat('%', #{query,jdbcType=VARCHAR}, '%')
     </select>
+    <select id="getModelListForPrisonAdmin" resultMap="BaseResultMap">
+        select * from training_model where enable = 1
+    </select>
+    <select id="getTrainingModelNameForPrisonAdmin" resultType="string">
+        select name from training_model where enable = 1
+    </select>
 </mapper>

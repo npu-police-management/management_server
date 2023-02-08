@@ -24,4 +24,47 @@
         from police_training
         where police_id = #{policeId,jdbcType=BIGINT}
     </select>
+    <select id="getNumberTodayFinish" parameterType="long" resultType="int">
+        select count(*) from police_training pt
+        where pt.end_time >= date_sub(current_date(),interval  1 day)
+        and pt.police_id in (select id from police where prison_id = #{prisonId})
+    </select>
+    <select id="getNumberWeekFinish" parameterType="long" resultType="int">
+        select count(*) from police_training pt
+        where pt.end_time >= date_sub(current_date(),interval  7 day)
+          and pt.police_id in (select id from police where prison_id = #{prisonId})
+    </select>
+    <select id="getThreeDate" resultType="edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO" parameterType="long">
+        select p.name policeName,t.name modelName,pt.end_time endTime from police_training pt,police p,training_model t
+        where pt.police_id = p.id and pt.model_id = t.id and p.id in (select id from police where prison_id = #{prisonId})
+        limit 3
+    </select>
+    <select id="getWeeklyStatus" resultType="edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO" parameterType="long">
+        select t.name modelName ,count(pt.id) numberOfPolice from police_training pt,training_model t
+        where pt.model_id = t.id
+          and pt.end_time >= date_sub(current_date(),interval 7 day)
+          and pt.police_id in (select id from police where prison_id = #{prisonId})
+        group by t.id
+    </select>
+
+    <select id="getTrainingDynamicListForPolice" resultType="edu.nwpu.managementserver.vo.TrainingDynamicForPoliceVO">
+        select pt.id as id,pt.model_id as modelId,t.name as  modelName,pt.status as status,pt.result as result,
+               pt.start_time as startTime,pt.end_time as endTime
+        from police_training pt,training_model t
+        where pt.police_id = #{id} and pt.model_id = t.id and
+              ( t.id like concat('%',#{query},'%') or
+                t.name like concat('%',#{query},'%') or
+                t.description like concat('%',#{query},'%') or
+                t.name like concat('%',#{query},'%') )
+    </select>
+
+    <select id="queryTrainingDynamicForPrisonAdmin" resultType="edu.nwpu.managementserver.vo.TrainingDynamicVO">
+        select pt.id as id,pt.police_id as policeId,p.name as policeName,t.id as modelId,
+               t.name  as modelName,pt.status as status,pt.result as result,pt.start_time as startTime ,
+               pt.end_time as endTime
+        from police_training as pt,police as p,training_model as t,account as a
+        where pt.police_id = p.id and pt.model_id = t.id and p.account_id = a.id and
+            t.name = #{modelName} and p.prison_id = #{prisonId} and
+            (  p.name like concat('%',#{police},'%')or a.account_number like concat('%',#{police},'%') )
+    </select>
 </mapper>

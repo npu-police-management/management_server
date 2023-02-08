@@ -13,4 +13,21 @@
     <sql id="Base_Column_List">
         id,prison_id,model_id
     </sql>
+
+    <select id = "getModelIdListByPrisonId" resultType="long" parameterType="long">
+        select model_id from prison_model where prison_id = #{prisonId}
+    </select>
+    <select id="getModelIdSizeByPrisonId" parameterType="long" resultType="int">
+        select count(*) from prison_model where prison_id = #{prisonId}
+    </select>
+    <insert id = "addRecord">
+        insert into prison_model value (#{id},#{prisonId},#{modelId})
+    </insert>
+    <delete id = "deleteRecord">
+        delete from prison_model where prison_id=#{prisonId} and model_id = #{modelId}
+    </delete>
+
+    <select id="exist" resultType="int">
+        select count(*) from prison_model where prison_id = #{prisonId} and model_id = #{modelId}
+    </select>
 </mapper>

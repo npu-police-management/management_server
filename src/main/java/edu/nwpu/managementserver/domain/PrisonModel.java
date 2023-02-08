@@ -2,13 +2,18 @@ package edu.nwpu.managementserver.domain;
 
 import java.io.Serial;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 
  * @TableName prison_model
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PrisonModel implements Serializable {
     /**
      * 

@@ -7,6 +7,9 @@ import edu.nwpu.managementserver.exception.BusinessException;
 import edu.nwpu.managementserver.mapper.TrainingModelMapper;
 import edu.nwpu.managementserver.service.TrainingModelService;
 import edu.nwpu.managementserver.util.SnowflakeIdUtil;
+import edu.nwpu.managementserver.domain.TrainingModel;
+import edu.nwpu.managementserver.mapper.TrainingModelMapper;
+import edu.nwpu.managementserver.service.TrainingModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -13,6 +13,7 @@ import java.util.List;
 */
 @Mapper
 public interface TrainingModelMapper {
+    List<TrainingModel> getModelListForPrisonAdmin();
 
     int insert(TrainingModel trainingModel);
 

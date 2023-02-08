@@ -15,4 +15,9 @@
         id,access_time,account_id,
         content
     </sql>
+    <select id="getNumberTodayAccess" parameterType="long" resultType="int">
+        select count(distinct account_id) from access_record
+        where access_time >= date_sub(current_date,interval 1 day )
+        and account_id in (select account_id from police where prison_id = #{prisonId})
+</select>
 </mapper>

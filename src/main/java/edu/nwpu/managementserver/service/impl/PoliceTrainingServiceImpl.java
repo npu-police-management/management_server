@@ -7,7 +7,16 @@ import edu.nwpu.managementserver.util.WeekUtil;
 import edu.nwpu.managementserver.vo.TrainingSituationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import edu.nwpu.managementserver.mapper.PoliceTrainingMapper;
+import edu.nwpu.managementserver.service.PoliceTrainingService;
+import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
+import edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO;
+import edu.nwpu.managementserver.vo.TrainingDynamicForPoliceVO;
+import edu.nwpu.managementserver.vo.TrainingDynamicVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,6 +30,9 @@ import static java.time.DayOfWeek.*;
  */
 @Service
 public class PoliceTrainingServiceImpl implements PoliceTrainingService {
+
+    @Autowired
+    PoliceTrainingMapper policeTrainingMapper;
 
     @Autowired
     private PoliceTrainingMapper policeTrainingMapper;
@@ -111,4 +123,34 @@ public class PoliceTrainingServiceImpl implements PoliceTrainingService {
         );
     }
 
+
+   @Override
+    public int getNumberTodayFinish(long prisonId) {
+	return policeTrainingMapper.getNumberTodayFinish(prisonId);
+    }
+
+    @Override
+    public int getNumberWeekFinish(long prisonId) {
+	return policeTrainingMapper.getNumberWeekFinish(prisonId);
+    }
+
+    @Override
+    public List<PrisonAdminMainPageDynamicVO> getThreeDate(long prisonId) {
+	return policeTrainingMapper.getThreeDate(prisonId);
+    }
+
+    @Override
+    public List<PrisonAdminMainPageStatsVO> getWeeklyStatus(long prisonId) {
+	return policeTrainingMapper.getWeeklyStatus(prisonId);
+    }
+
+    @Override
+    public List<TrainingDynamicForPoliceVO> getTrainingDynamicListForPolice(Long id, String query) {
+	return policeTrainingMapper.getTrainingDynamicListForPolice(id,query);
+    }
+
+    @Override
+    public List<TrainingDynamicVO> queryTrainingDynamicForPrisonAdmin(String police, String modelName,long prisonId) {
+	return policeTrainingMapper.queryTrainingDynamicForPrisonAdmin(police,modelName,prisonId);
+    }
 }
