@@ -26,4 +26,8 @@
     <delete id = "deleteRecord">
         delete from prison_model where prison_id=#{prisonId} and model_id = #{modelId}
     </delete>
+
+    <select id="exist" resultType="int">
+        select count(*) from prison_model where prison_id = #{prisonId} and model_id = #{modelId}
+    </select>
 </mapper>

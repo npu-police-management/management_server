@@ -17,4 +17,7 @@ public interface PrisonModelService {
     int addOne(PrisonModel prisonModel);
     int deleteOne(long prisonId, long modelId);
     List<Long> getModelIdListForPrisonId(long prisonId);
+
+    boolean exist(long modelId, long prison_id);
+
 }

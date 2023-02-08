@@ -40,4 +40,10 @@ public class PrisonModelServiceImpl implements PrisonModelService {
     public List<Long> getModelIdListForPrisonId(long prisonId) {
 	return prisonModelMapper.getModelIdListByPrisonId(prisonId);
     }
+
+    @Override
+    public boolean exist(long modelId, long prison_id) {
+	return prisonModelMapper.exist(modelId, prison_id) > 0;
+    }
+
 }

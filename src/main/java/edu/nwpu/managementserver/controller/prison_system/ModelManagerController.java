@@ -1,8 +1,8 @@
 package edu.nwpu.managementserver.controller.prison_system;
 
+import edu.nwpu.managementserver.domain.PrisonModel;
 import edu.nwpu.managementserver.domain.TrainingModel;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
-import edu.nwpu.managementserver.dto.PagingQueryForPrisonAdminParam;
 import edu.nwpu.managementserver.dto.PagingQueryParam;
 import edu.nwpu.managementserver.service.PrisonAdminService;
 import edu.nwpu.managementserver.service.PrisonModelService;
@@ -11,7 +11,6 @@ import edu.nwpu.managementserver.util.PageTransformUtil;
 import edu.nwpu.managementserver.util.SnowflakeIdUtil;
 import edu.nwpu.managementserver.vo.CommonResult;
 import edu.nwpu.managementserver.vo.PageResult;
-import edu.nwpu.managementserver.vo.PrisonAdminVO;
 import edu.nwpu.managementserver.vo.TrainingModelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -51,17 +50,17 @@ public class ModelManagerController {
 
 
     @PutMapping("/model/{id}")
-    public CommonResult modifyModel(@PathVariable("id")long id,@RequestParam("enable")boolean enable,
+    public CommonResult modifyModel(@PathVariable("id")long modelId,@RequestParam("enable")boolean enable,
 				    @AuthenticationPrincipal AccountUserDetails account){
 	long account_id = account.getId();
 	long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
         if(enable){
-            if(!prisonModelService.exist(id,prison_id)){
-		prisonModelService.addRecord(SnowflakeIdUtil.nextId(),id,prison_id);
+            if(!prisonModelService.exist(modelId,prison_id)){
+		prisonModelService.addOne(new PrisonModel(SnowflakeIdUtil.nextId(),prison_id,modelId));
 	    }
 	}else{
-	    if(prisonModelService.exist(id,prison_id)){
-		prisonModelService.remove(id,prison_id);
+	    if(prisonModelService.exist(modelId,prison_id)){
+		prisonModelService.deleteOne(prison_id,modelId);
 	    }
 	}
         return CommonResult.success();
@@ -69,7 +68,7 @@ public class ModelManagerController {
 
     @GetMapping("trainDynamic")
     public CommonResult trainDynamic(){
-        List<String> modelNameList = trainingModelService.getAllTraingModelNames();
+        List<String> modelNameList = trainingModelService.getAllTrainingModelNames();
         return CommonResult.success(modelNameList);
     }
 

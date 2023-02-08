@@ -18,6 +18,7 @@ public interface PrisonModelMapper {
     int getModelIdSizeByPrisonId(Long prisonId);
     int addRecord(PrisonModel prisonModel);
     int deleteRecord(@Value("prisonId")Long prisonId,@Value("modelId")Long modelId);
+    int exist(@Value("modelId") long modelId,@Value("prisonId") long prisonId);
 }
 
 

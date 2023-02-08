@@ -18,4 +18,6 @@ import java.util.List;
 @Service
 public interface TrainingModelService {
     List<TrainingModel> getTrainingModelForPrisonAdmin();
+
+    List<String> getAllTrainingModelNames();
 }
