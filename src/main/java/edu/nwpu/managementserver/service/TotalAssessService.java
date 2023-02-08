@@ -1,6 +1,10 @@
 package edu.nwpu.managementserver.service;
 
+import edu.nwpu.managementserver.domain.TotalAssess;
 import edu.nwpu.managementserver.vo.TotalAssessForPoliceVO;
+import edu.nwpu.managementserver.vo.TotalAssessUseByPrisonAdminVO;
+
+import java.util.List;
 
 /**
  * @author GengXuelong
@@ -12,4 +16,8 @@ import edu.nwpu.managementserver.vo.TotalAssessForPoliceVO;
  */
 public interface TotalAssessService {
     TotalAssessForPoliceVO getLastTotalAssessForPolice(Long id);
+
+    List<TotalAssess> queryTotalAssessLikelyByPrisonAdmin(String query, long prisonId);
+
+    void deleteByIdList(long[] longs);
 }

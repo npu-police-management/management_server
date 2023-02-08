@@ -9,6 +9,7 @@ import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +38,7 @@ public class MainPageController {
     private PrisonAdminService prisonAdminService;
 
     @GetMapping("/mainPage")
+    @PreAuthorize("hasAuthority('PrisonAdmin')")
     public CommonResult mainPage(@AuthenticationPrincipal AccountUserDetails account){
         long account_id = account.getId();
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
@@ -49,13 +51,21 @@ public class MainPageController {
     }
 
     @GetMapping("/mainPage/dynamic")
+    @PreAuthorize("hasAuthority('PrisonAdmin')")
     public CommonResult mainPageDynamic( @AuthenticationPrincipal AccountUserDetails account){
         long account_id = account.getId();
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
         return CommonResult.success(policeTrainingService.getThreeDate(prison_id));
     }
 
+    /**
+     * @author GengXuelong
+     * <p> 函数功能描述如下:
+     * @description:
+     *     本周本监所警员对各场景的完成人次，仅显示不为零的场景模型，且忽略超级管理员是否关闭了这个模型
+     */
     @GetMapping("/mainPage/stats")
+    @PreAuthorize("hasAuthority('PrisonAdmin')")
     public CommonResult mainPageStats(@AuthenticationPrincipal AccountUserDetails account){
         long account_id = account.getId();
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);

@@ -22,4 +22,29 @@
     <select id="getLastTotalAssessForPolice" parameterType="long" resultMap="BaseResultMap">
         select * from total_assess where police_id = #{policeId}
     </select>
+
+    <select id="queryTotalAssessLikelyByPrisonAdmin" resultMap="BaseResultMap">
+        select *
+        from total_assess
+        where police_id in (select id from police where prison_id = #{prisonId})
+        and (
+                    description like concat('%',#{query}, '%')
+                or
+                    police_id in (select p.id
+                                    from police p,account a
+                                    where p.account_id = a.id
+                                    and (p.name like concat('%', #{query}, '%') or
+                                        a.account_number like concat('%', #{query}, '%')
+                                        )
+                                    )
+            )
+    </select>
+    
+    <delete id="deleteByIdList" parameterType="long" >
+        delete from total_assess
+        where id in
+        <foreach item="item" index="index" collection="array"  open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

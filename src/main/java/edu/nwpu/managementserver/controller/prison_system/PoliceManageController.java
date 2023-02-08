@@ -30,9 +30,9 @@ import java.util.function.Function;
 /**
  * @author GengXuelong
  * @version 1.0
- * @time 2023/1/29 21:35
- * @email 3349495429@qq.com
- * @className com.nwpu.managementserver.controller.Prison.PoliceManageController
+ * &#064;time  2023/1/29 21:35
+ * &#064;email  3349495429@qq.com
+ * &#064;className  com.nwpu.managementserver.controller.Prison.PoliceManageController
  * @description:
  */
 @RestController

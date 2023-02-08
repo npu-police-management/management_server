@@ -19,8 +19,8 @@ public class TrainingDynamicVO {
     private String id;
     private String policeId;
     private String policeName;
-    private String modeId;
-    private String modeName;
+    private String modelId;
+    private String modelName;
     private String status;
     private String result;
     private String startTime;

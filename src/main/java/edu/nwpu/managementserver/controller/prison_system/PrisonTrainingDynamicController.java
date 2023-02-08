@@ -11,6 +11,7 @@ import edu.nwpu.managementserver.vo.CommonResult;
 import edu.nwpu.managementserver.vo.PageResult;
 import edu.nwpu.managementserver.vo.TrainingDynamicVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,15 +38,31 @@ public class PrisonTrainingDynamicController {
     @Autowired
     private PoliceTrainingService policeTrainingService;
 
+    /**
+     * @author GengXuelong
+     * <p> 函数功能描述如下:
+     * @description:
+     *     获得所有被超级管理员打开的训练模型的名字
+     *     无审核参数传入
+     */
     @GetMapping("trainDynamic")
+    @PreAuthorize("hasAuthority('PrisonAdmin')")
     public CommonResult trainDynamic(){
 	List<String> modelNameList = trainingModelService.getTrainingModelNameForPrisonAdmin();
 	return CommonResult.success(modelNameList);
     }
 
+
+    /**
+     * @author GengXuelong
+     * <p> 函数功能描述如下:
+     * @description:
+     *     作用： 通过输入警员模糊特征信息和模型准确全名，对本监所的警员关于该模型训练结果进行模糊查询
+     */
     @GetMapping("dynamic/query")
+    @PreAuthorize("hasAuthority('PrisonAdmin')")
     public CommonResult dynamicQuery(@AuthenticationPrincipal AccountUserDetails account,
-				     @RequestBody PagingQueryParamForTrainingDynamic param){
+				     PagingQueryParamForTrainingDynamic param){
 	long account_id = account.getId();
 	long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
 	PageHelper.startPage(param.getPageNum(), param.getPageSize());

@@ -1,8 +1,12 @@
 package edu.nwpu.managementserver.mapper;
 
 import edu.nwpu.managementserver.domain.TotalAssess;
-import edu.nwpu.managementserver.vo.TotalAssessForPoliceVO;
+import edu.nwpu.managementserver.vo.TotalAssessUseByPrisonAdminVO;
+import jakarta.validation.Valid;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.List;
 
 /**
 * @author ANO4679
@@ -14,6 +18,10 @@ import org.apache.ibatis.annotations.Mapper;
 public interface TotalAssessMapper {
 
     TotalAssess getLastTotalAssessForPolice(Long prisonId);
+
+    List<TotalAssess> queryTotalAssessLikelyByPrisonAdmin(@Value("query") String query, @Value("prisonId") long prisonId);
+
+    void deleteByIdList(long[] longs);
 }
 
 

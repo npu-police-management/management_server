@@ -3,9 +3,13 @@ package edu.nwpu.managementserver.service.impl;
 import edu.nwpu.managementserver.domain.TotalAssess;
 import edu.nwpu.managementserver.mapper.TotalAssessMapper;
 import edu.nwpu.managementserver.service.TotalAssessService;
+import edu.nwpu.managementserver.util.CommonUtils;
 import edu.nwpu.managementserver.vo.TotalAssessForPoliceVO;
+import edu.nwpu.managementserver.vo.TotalAssessUseByPrisonAdminVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author GengXuelong
@@ -21,14 +25,19 @@ public class TotalAssessServiceImpl implements TotalAssessService {
     private TotalAssessMapper totalAssessMapper;
     @Override
     public TotalAssessForPoliceVO getLastTotalAssessForPolice(Long id) {
-	TotalAssess totalAssess =  totalAssessMapper.getLastTotalAssessForPolice(id);
-	int[] ints = new int[6];
-	String intsString = totalAssess.getMentalPercentList();
-	intsString = intsString.substring(1,intsString.length()-1);
-        String[] split = intsString.split(",");
-        for (int i = 0; i < 6; i++) {
-            ints[0] =Integer.parseInt(split[0]);
-        }
-         return new TotalAssessForPoliceVO(totalAssess.getId(), ints, totalAssess.getResult(), totalAssess.getDescription(), totalAssess.getCreateTime().toString(), totalAssess.getUpdateTime().toString());
+	    TotalAssess totalAssess =  totalAssessMapper.getLastTotalAssessForPolice(id);
+        String intsString = totalAssess.getMentalPercentList();
+        int[] ints = CommonUtils.convertStringToIntArray(intsString);
+        return new TotalAssessForPoliceVO(totalAssess.getId(), ints, totalAssess.getResult(), totalAssess.getDescription(), totalAssess.getCreateTime().toString(), totalAssess.getUpdateTime().toString());
+    }
+
+    @Override
+    public List<TotalAssess> queryTotalAssessLikelyByPrisonAdmin(String query, long prisonId) {
+        return totalAssessMapper.queryTotalAssessLikelyByPrisonAdmin(query,prisonId);
+    }
+
+    @Override
+    public void deleteByIdList(long[] longs) {
+        totalAssessMapper.deleteByIdList(longs);
     }
 }

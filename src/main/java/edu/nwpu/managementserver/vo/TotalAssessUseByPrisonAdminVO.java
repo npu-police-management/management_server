@@ -1,5 +1,6 @@
 package edu.nwpu.managementserver.vo;
 
+import edu.nwpu.managementserver.domain.TotalAssess;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
