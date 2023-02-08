@@ -52,7 +52,7 @@ spring:
       username: ${var.db-conn.mysql.username}
       password: ${var.db-conn.mysql.password}
       encoding: UTF-8
-      mode: always
+#       mode: always
 
   jackson:
     # 日期序列化格式
