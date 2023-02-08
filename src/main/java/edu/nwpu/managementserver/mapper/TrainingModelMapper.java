@@ -13,7 +13,7 @@ import java.util.List;
 */
 @Mapper
 public interface TrainingModelMapper {
-    List<TrainingModel> getModelListForPrisonAdmin();
+    List<TrainingModel> getModelListForPrisonAdmin(String query);
 
     int insert(TrainingModel trainingModel);
 
@@ -26,6 +26,8 @@ public interface TrainingModelMapper {
     int deleteById(List<Long> idList);
 
     List<TrainingModel> getAllByQuery(String query);
+
+    List<String> getTrainingModelNameForPrisonAdmin();
 }
 
 

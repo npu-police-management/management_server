@@ -111,7 +111,7 @@ public class GxlTest {
     TrainingModelMapper trainingModelMapper;
     @Test
     public void testTrainingModel(){
-        List<TrainingModel> modelListForPrisonAdmin = trainingModelMapper.getModelListForPrisonAdmin();
+        List<TrainingModel> modelListForPrisonAdmin = trainingModelMapper.getModelListForPrisonAdmin("");
         System.out.println(modelListForPrisonAdmin);
     }
 

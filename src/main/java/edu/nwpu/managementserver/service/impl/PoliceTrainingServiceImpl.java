@@ -34,9 +34,6 @@ public class PoliceTrainingServiceImpl implements PoliceTrainingService {
     @Autowired
     PoliceTrainingMapper policeTrainingMapper;
 
-    @Autowired
-    private PoliceTrainingMapper policeTrainingMapper;
-
     @Override
     public TrainingSituationVO getTrainingSituation(long policeId) {
 
