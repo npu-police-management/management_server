@@ -26,6 +26,7 @@ public class TotalAssessServiceImpl implements TotalAssessService {
     @Override
     public TotalAssessForPoliceVO getLastTotalAssessForPolice(Long id) {
 	    TotalAssess totalAssess =  totalAssessMapper.getLastTotalAssessForPolice(id);
+        if(totalAssess==null) return null;
         String intsString = totalAssess.getMentalPercentList();
         int[] ints = CommonUtils.convertStringToIntArray(intsString);
         return new TotalAssessForPoliceVO(totalAssess.getId(), ints, totalAssess.getResult(), totalAssess.getDescription(), totalAssess.getCreateTime().toString(), totalAssess.getUpdateTime().toString());
