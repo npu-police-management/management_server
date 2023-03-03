@@ -58,4 +58,8 @@
         from prison_admin
         where id = #{id}
     </select>
+
+    <update id="updatePrisonAdminName">
+        update prison_admin set nickname = #{newNickname} where id = #{prisonAdminId}
+    </update>
 </mapper>

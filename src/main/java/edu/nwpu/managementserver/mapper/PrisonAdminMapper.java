@@ -2,6 +2,7 @@ package edu.nwpu.managementserver.mapper;
 
 import edu.nwpu.managementserver.domain.PrisonAdmin;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public interface PrisonAdminMapper {
     int deleteByPrisonId(List<Long> idList);
 
     List<Long> getPrisonIdByAccountId(long id);
+
+    int updatePrisonAdminName(@Value("prisonAdminId") long prisonAdminId,@Value("newNickname") String newNickname);
 }
 
 

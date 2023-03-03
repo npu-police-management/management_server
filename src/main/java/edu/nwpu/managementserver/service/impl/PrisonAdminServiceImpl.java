@@ -82,4 +82,9 @@ public class PrisonAdminServiceImpl implements PrisonAdminService {
         }
         return prison_id;
     }
+
+    @Override
+    public boolean updatePrisonAdminName(long prisonAdminId, String newNickname) {
+        return prisonAdminMapper.updatePrisonAdminName(prisonAdminId,newNickname)>0;
+    }
 }

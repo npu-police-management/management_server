@@ -19,4 +19,6 @@ public interface PrisonAdminService {
     void deleteById(List<Long> idList);
 
     long getPrisonIdByAccountId(long id);
+
+    boolean updatePrisonAdminName(long prisonAdminId, String newNickname);
 }
