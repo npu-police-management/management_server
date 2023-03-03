@@ -8,7 +8,7 @@ package edu.nwpu.managementserver.util;
  * @className CommonUitls
  * @description:
  */
-public class CommonUtils {
+public class ConvertStringToIntArrayUtils {
     public static int[] convertStringToIntArray(String intsString){
         int[] ints = new int[6];
         intsString = intsString.substring(1,intsString.length()-1);

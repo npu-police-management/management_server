@@ -8,7 +8,7 @@ import edu.nwpu.managementserver.dto.PagingQueryParam;
 import edu.nwpu.managementserver.service.PoliceService;
 import edu.nwpu.managementserver.service.PrisonAdminService;
 import edu.nwpu.managementserver.service.TotalAssessService;
-import edu.nwpu.managementserver.util.CommonUtils;
+import edu.nwpu.managementserver.util.ConvertStringToIntArrayUtils;
 import edu.nwpu.managementserver.vo.CommonResult;
 import edu.nwpu.managementserver.vo.PageResult;
 import edu.nwpu.managementserver.vo.TotalAssessUseByPrisonAdminVO;
@@ -57,7 +57,7 @@ public class PrisonTotalAssessController {
         Function<TotalAssess,TotalAssessUseByPrisonAdminVO>  mapper = totalAssess -> new TotalAssessUseByPrisonAdminVO(
                 totalAssess.getId()+"",
                 policeService.getPoliceById(totalAssess.getPoliceId()).getName(),
-                CommonUtils.convertStringToIntArray(totalAssess.getMentalPercentList()),
+                ConvertStringToIntArrayUtils.convertStringToIntArray(totalAssess.getMentalPercentList()),
                 totalAssess.getResult(),totalAssess.getDescription(),totalAssess.getCreateTime().toString(),totalAssess.getUpdateTime().toString());
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
