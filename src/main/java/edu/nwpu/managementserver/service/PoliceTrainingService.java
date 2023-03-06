@@ -31,4 +31,6 @@ public interface PoliceTrainingService {
     List<TrainingDynamicForPoliceVO> getTrainingDynamicListForPolice(Long id, String query);
 
     List<TrainingDynamicVO> queryTrainingDynamicForPrisonAdmin(String police, String modelName,long prisonId);
+
+    int addOne(PoliceTraining policeTraining);
 }

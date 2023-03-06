@@ -1,20 +1,31 @@
 package edu.nwpu.managementserver;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import edu.nwpu.managementserver.domain.Police;
+import edu.nwpu.managementserver.domain.PoliceTraining;
 import edu.nwpu.managementserver.domain.PrisonModel;
 import edu.nwpu.managementserver.domain.TrainingModel;
 import edu.nwpu.managementserver.dto.PagingQueryForPrisonAdminParam;
+import edu.nwpu.managementserver.dto.PagingQueryParam;
 import edu.nwpu.managementserver.mapper.*;
 import edu.nwpu.managementserver.service.AccountService;
 import edu.nwpu.managementserver.service.PoliceService;
+import edu.nwpu.managementserver.service.PoliceTrainingService;
+import edu.nwpu.managementserver.service.TrainingModelService;
+import edu.nwpu.managementserver.util.DataTrainingUtils;
 import edu.nwpu.managementserver.util.PageTransformUtil;
 import edu.nwpu.managementserver.util.RsaDecryptUtil;
+import edu.nwpu.managementserver.util.SnowflakeIdUtil;
+import edu.nwpu.managementserver.vo.CommonResult;
 import edu.nwpu.managementserver.vo.PageResult;
 import edu.nwpu.managementserver.vo.PoliceVO;
+import edu.nwpu.managementserver.vo.TrainingModelVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 
@@ -113,6 +124,38 @@ public class GxlTest {
     public void testTrainingModel(){
         List<TrainingModel> modelListForPrisonAdmin = trainingModelMapper.getModelListForPrisonAdmin("");
         System.out.println(modelListForPrisonAdmin);
+    }
+    @Autowired
+    PoliceTrainingService policeTrainingService;
+    @Test
+    public void train() {
+        long account_id = 120L;
+        long modelId = 111L;
+        Police police = policeService.getPoliceByAccountId(account_id);
+        int status = DataTrainingUtils.getStatus(police.getId(),modelId);
+        String result = DataTrainingUtils.getResult(police.getId(),modelId);
+        LocalDateTime startTime =  LocalDateTime.now();
+        LocalDateTime endTime = startTime.plusHours(1);
+        PoliceTraining policeTraining = new PoliceTraining(SnowflakeIdUtil.nextId(),police.getId(),modelId,startTime,endTime,status,result);
+        policeTrainingService.addOne(policeTraining);
+        System.out.println(CommonResult.success());
+    }
+    @Autowired
+    TrainingModelService trainingModelService;
+    @Test
+    public void train1(){
+        long account_id = 120;
+        PagingQueryParam param = new PagingQueryParam(1,4,"");
+        Police police = policeService.getPoliceByAccountId(account_id);
+//        List<TrainingModel> trainingModelForPrisonAdmin = trainingModelService.getTrainingModelForPrisonAdmin("");
+//        List<TrainingModel> collect = trainingModelForPrisonAdmin.stream().filter(trainingModel -> prisonModelService.exist(trainingModel.getId(), police.getPrisonId())).toList();
+        PageHelper.startPage(param.getPageNum(), param.getPageSize());
+        List<TrainingModel> trainingModels = trainingModelService.getTrainingModelForPolice(police.getPrisonId(),param.getQuery());
+        PageInfo<TrainingModel> tPageInfo = new PageInfo<>(trainingModels);
+        System.out.println(CommonResult.success(new PageResult<>(
+                (int)tPageInfo.getTotal(),
+                trainingModels.stream().map(trainingModel -> new TrainingModelVO(trainingModel.getId().toString(),trainingModel.getName(),trainingModel.getDescription(),true,trainingModel.getPriority())).toList()
+        )));
     }
 
 }
