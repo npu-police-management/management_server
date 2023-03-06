@@ -150,4 +150,9 @@ public class PoliceTrainingServiceImpl implements PoliceTrainingService {
     public List<TrainingDynamicVO> queryTrainingDynamicForPrisonAdmin(String police, String modelName,long prisonId) {
 	return policeTrainingMapper.queryTrainingDynamicForPrisonAdmin(police,modelName,prisonId);
     }
+
+    @Override
+    public int addOne(PoliceTraining policeTraining) {
+        return policeTrainingMapper.addOne(policeTraining);
+    }
 }

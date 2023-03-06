@@ -11,4 +11,11 @@ package edu.nwpu.managementserver.util;
  */
 public class DataTrainingUtils {
 
+    public static int getStatus(Long id, long modelId) {
+        return 1;
+    }
+
+    public static String getResult(Long id, long modelId) {
+        return "总体正常";
+    }
 }

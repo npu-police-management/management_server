@@ -32,6 +32,8 @@ public interface PoliceTrainingMapper {
     List<TrainingDynamicVO> queryTrainingDynamicForPrisonAdmin(@Value("police") String police,@Value("modelName") String modelName,@Value("prisonId") long prisonId);
 
     List<PoliceTraining> getByPoliceId(Long policeId);
+
+    int addOne(PoliceTraining policeTraining);
 }
 
 

@@ -64,4 +64,9 @@
     <select id="getTrainingModelNameForPrisonAdmin" resultType="string">
         select name from training_model where enable = 1
     </select>
+    <select id="getModelListForPolice" resultMap="BaseResultMap">
+        select * from training_model where
+            name like concat('%',#{query},'%') and description like concat('%',#{query},'%') and
+            id in (select model_id from prison_model where prison_id = #{prisonId})
+    </select>
 </mapper>

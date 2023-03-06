@@ -29,4 +29,6 @@ public interface TrainingModelService {
     List<TrainingModel> getTrainingModelForPrisonAdmin(String query);
 
     List<String> getTrainingModelNameForPrisonAdmin();
+
+    List<TrainingModel> getTrainingModelForPolice(Long prisonId, String query);
 }

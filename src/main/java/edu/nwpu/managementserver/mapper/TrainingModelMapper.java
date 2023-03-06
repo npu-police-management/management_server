@@ -2,6 +2,7 @@ package edu.nwpu.managementserver.mapper;
 
 import edu.nwpu.managementserver.domain.TrainingModel;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -28,6 +29,8 @@ public interface TrainingModelMapper {
     List<TrainingModel> getAllByQuery(String query);
 
     List<String> getTrainingModelNameForPrisonAdmin();
+
+    List<TrainingModel> getModelListForPolice(@Value("prisonId") Long prisonId,@Value("query") String query);
 }
 
 

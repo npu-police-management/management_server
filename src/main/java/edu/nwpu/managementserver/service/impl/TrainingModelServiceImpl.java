@@ -103,4 +103,9 @@ public class TrainingModelServiceImpl implements TrainingModelService {
     public List<String> getTrainingModelNameForPrisonAdmin() {
         return trainingModelMapper.getTrainingModelNameForPrisonAdmin();
     }
+
+    @Override
+    public List<TrainingModel> getTrainingModelForPolice(Long prisonId, String query) {
+        return trainingModelMapper.getModelListForPolice(prisonId,query);
+    }
 }

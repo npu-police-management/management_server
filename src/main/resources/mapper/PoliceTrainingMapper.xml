@@ -67,4 +67,8 @@
             t.name like concat('%',#{modelName},'%') and p.prison_id = #{prisonId} and
             (  p.name like concat('%',#{police},'%')or a.account_number like concat('%',#{police},'%') )
     </select>
+
+    <insert id="addOne" parameterType="policeTraining">
+        insert into police_training value (#{id},#{policeId},#{modelId},#{startTime},#{endTime},#{status},#{result})
+    </insert>
 </mapper>
