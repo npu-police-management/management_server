@@ -29,8 +29,10 @@ public class PageViewFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
 //        log.info("");
-        String info = request.getRequestURI();
         if ("GET".equals(request.getMethod())) {
+            String uri = request.getRequestURI();
+            String id = request.getRequestedSessionId();
+            String info = id + " " + uri;
             pageViewService.saveOneView(info);
         }
 
