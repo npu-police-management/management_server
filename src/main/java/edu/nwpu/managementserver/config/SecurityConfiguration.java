@@ -4,6 +4,7 @@ import edu.nwpu.managementserver.commen.LogFilter;
 import edu.nwpu.managementserver.component.JwtAuthenticationEntryPoint;
 import edu.nwpu.managementserver.component.filter.ExceptionFilter;
 import edu.nwpu.managementserver.component.filter.JwtAuthenticationFilter;
+import edu.nwpu.managementserver.component.filter.PageViewFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +37,9 @@ public class SecurityConfiguration {
     private UserDetailsService userDetailsService;
 
     private LogFilter logFilter;
+
+    @Autowired
+    private PageViewFilter pageViewFilter;
 
     @Autowired
     public void setAuthenticationEntryPoint(JwtAuthenticationEntryPoint authenticationEntryPoint) {
@@ -92,6 +96,7 @@ public class SecurityConfiguration {
                 .authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(pageViewFilter, JwtAuthenticationFilter.class)
                 .addFilterBefore(logFilter, JwtAuthenticationFilter.class)
                 .addFilterBefore(exceptionFilter, LogFilter.class)
                 .build();

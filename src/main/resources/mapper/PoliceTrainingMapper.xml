@@ -71,4 +71,20 @@
     <insert id="addOne" parameterType="policeTraining">
         insert into police_training value (#{id},#{policeId},#{modelId},#{startTime},#{endTime},#{status},#{result})
     </insert>
+    <select id="getTrainingDynamicOrderByTimeDesc" resultType="edu.nwpu.managementserver.vo.AdminDynamicVO">
+        select p.name as policeName, tm.name as modelName, pt.start_time as startTime, pt.end_time as endTime
+        from police_training as pt, police as p, training_model as tm
+        where pt.police_id = p.id and pt.model_id = tm.id
+        order by pt.start_time desc
+    </select>
+    <select id="getWeekTrainingCounts" resultType="java.lang.Integer">
+        select count(id)
+        from police_training
+        where YEARWEEK(date_format(start_time,'%Y-%m-%d'),1) = YEARWEEK(now(),1)
+    </select>
+    <select id="getTodayTrainingCounts" resultType="java.lang.Integer">
+        select count(id)
+        from police_training
+        where TO_DAYS(start_time) = TO_DAYS(NOW())
+    </select>
 </mapper>

@@ -1,19 +1,12 @@
 package edu.nwpu.managementserver.mapper;
 
-import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
-import edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO;
-import edu.nwpu.managementserver.vo.TrainingDynamicForPoliceVO;
-import edu.nwpu.managementserver.vo.TrainingDynamicVO;
+import edu.nwpu.managementserver.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
 import edu.nwpu.managementserver.domain.PoliceTraining;
-import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
-
 /**
 * @author Faust
 * @description 针对表【police_training】的数据库操作Mapper
@@ -34,6 +27,12 @@ public interface PoliceTrainingMapper {
     List<PoliceTraining> getByPoliceId(Long policeId);
 
     int addOne(PoliceTraining policeTraining);
+
+    List<AdminDynamicVO> getTrainingDynamicOrderByTimeDesc();
+
+    Integer getWeekTrainingCounts();
+
+    Integer getTodayTrainingCounts();
 }
 
 

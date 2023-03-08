@@ -1,6 +1,7 @@
 package edu.nwpu.managementserver.service.impl;
 
 import edu.nwpu.managementserver.domain.TotalAssess;
+import edu.nwpu.managementserver.dto.TotalAssessDTO;
 import edu.nwpu.managementserver.mapper.TotalAssessMapper;
 import edu.nwpu.managementserver.service.TotalAssessService;
 import edu.nwpu.managementserver.util.ConvertStringToIntArrayUtils;
@@ -39,5 +40,18 @@ public class TotalAssessServiceImpl implements TotalAssessService {
     @Override
     public void deleteByIdList(long[] longs) {
         totalAssessMapper.deleteByIdList(longs);
+    }
+
+    @Override
+    public List<TotalAssessDTO> getAssessByPrisonId(Long prisonId) {
+
+        var r = totalAssessMapper.getAllByPrisonId(prisonId);
+        System.out.println("-----------------------");
+        for (var i : r) {
+            System.out.println(i.getName());
+            System.out.println(i.getDescription());
+            System.out.println(i.getMentalPercentList());
+        }
+        return r;
     }
 }

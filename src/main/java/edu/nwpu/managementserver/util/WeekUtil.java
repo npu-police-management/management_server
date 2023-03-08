@@ -1,5 +1,7 @@
 package edu.nwpu.managementserver.util;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -48,11 +50,8 @@ public class WeekUtil {
             case SATURDAY -> {
                 return monday.with(TemporalAdjusters.next(DayOfWeek.SATURDAY));
             }
-            case SUNDAY -> {
-                return monday.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
-            }
             default -> {
-                return null;
+                return monday.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
             }
         }
     }
