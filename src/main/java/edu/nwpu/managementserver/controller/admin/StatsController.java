@@ -3,10 +3,9 @@ package edu.nwpu.managementserver.controller.admin;
 import edu.nwpu.managementserver.constant.CodeEnum;
 import edu.nwpu.managementserver.exception.BusinessException;
 import edu.nwpu.managementserver.service.PageViewService;
-import edu.nwpu.managementserver.service.PoliceService;
 import edu.nwpu.managementserver.service.PoliceTrainingService;
 import edu.nwpu.managementserver.service.TotalAssessService;
-import edu.nwpu.managementserver.util.CommonUtils;
+import edu.nwpu.managementserver.util.ConvertStringToIntArrayUtils;
 import edu.nwpu.managementserver.vo.CommonResult;
 import edu.nwpu.managementserver.vo.StatsVO;
 import edu.nwpu.managementserver.vo.TotalAssessUseByPrisonAdminVO;
@@ -66,7 +65,7 @@ public class StatsController {
                 .map(totalAssess -> new TotalAssessUseByPrisonAdminVO(
                         totalAssess.getId(),
                         totalAssess.getName(),
-                        CommonUtils.convertStringToIntArray(totalAssess.getMentalPercentList()),
+                        ConvertStringToIntArrayUtils.convertStringToIntArray(totalAssess.getMentalPercentList()),
                         totalAssess.isResult(),
                         totalAssess.getDescription(),
                         totalAssess.getCreateTime(),
