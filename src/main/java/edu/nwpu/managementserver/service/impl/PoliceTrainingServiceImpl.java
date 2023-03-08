@@ -4,22 +4,13 @@ import edu.nwpu.managementserver.domain.PoliceTraining;
 import edu.nwpu.managementserver.mapper.PoliceTrainingMapper;
 import edu.nwpu.managementserver.service.PoliceTrainingService;
 import edu.nwpu.managementserver.util.WeekUtil;
-import edu.nwpu.managementserver.vo.TrainingSituationVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import edu.nwpu.managementserver.mapper.PoliceTrainingMapper;
-import edu.nwpu.managementserver.service.PoliceTrainingService;
-import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
-import edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO;
-import edu.nwpu.managementserver.vo.TrainingDynamicForPoliceVO;
-import edu.nwpu.managementserver.vo.TrainingDynamicVO;
+import edu.nwpu.managementserver.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static edu.nwpu.managementserver.util.WeekUtil.getCurrentDayOfWeek;
 import static java.time.DayOfWeek.*;
@@ -108,6 +99,18 @@ public class PoliceTrainingServiceImpl implements PoliceTrainingService {
     }
 
     @Override
+    public Integer weekTrainingCounts() {
+
+        return policeTrainingMapper.getWeekTrainingCounts();
+    }
+
+    @Override
+    public Integer todayTrainingCounts() {
+
+        return policeTrainingMapper.getTodayTrainingCounts();
+    }
+
+    @Override
     public boolean isTraining(long policeId) {
 
         LocalDateTime currentTime = LocalDateTime.now();
@@ -120,6 +123,13 @@ public class PoliceTrainingServiceImpl implements PoliceTrainingService {
         );
     }
 
+    @Override
+    public List<AdminDynamicVO> getDynamic() {
+
+        List<AdminDynamicVO> adminDynamicVOList = policeTrainingMapper.getTrainingDynamicOrderByTimeDesc();
+        return adminDynamicVOList.size() <= 3 ?
+                adminDynamicVOList : adminDynamicVOList.subList(0, 3);
+    }
 
    @Override
     public int getNumberTodayFinish(long prisonId) {

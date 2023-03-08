@@ -39,7 +39,17 @@
                                     )
             )
     </select>
-    
+    <select id="getAllByPrisonId" resultType="edu.nwpu.managementserver.dto.TotalAssessDTO">
+        select ta.id, po.name,
+               ta.mental_percent_list as mentalPercentList,
+               ta.result, ta.description,
+               ta.create_time as createTime,
+               ta.update_time as updateTime
+        from total_assess as ta, police as po
+        where po.id = ta.police_id
+        and po.prison_id = #{prisonId}
+    </select>
+
     <delete id="deleteByIdList" parameterType="long" >
         delete from total_assess
         where id in
