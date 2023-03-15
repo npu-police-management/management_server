@@ -1,6 +1,9 @@
 package edu.nwpu.managementserver.service.impl;
 
+import edu.nwpu.managementserver.constant.CodeEnum;
+import edu.nwpu.managementserver.constant.TrainingStatusEnum;
 import edu.nwpu.managementserver.domain.PoliceTraining;
+import edu.nwpu.managementserver.exception.BusinessException;
 import edu.nwpu.managementserver.mapper.PoliceTrainingMapper;
 import edu.nwpu.managementserver.service.PoliceTrainingService;
 import edu.nwpu.managementserver.util.WeekUtil;
@@ -121,6 +124,36 @@ public class PoliceTrainingServiceImpl implements PoliceTrainingService {
                     policeTraining.getStartTime().isBefore(currentTime)
                 && policeTraining.getEndTime().isAfter(currentTime)
         );
+    }
+
+    @Override
+    public void pauseTraining(long trainingId) {
+
+        int status = policeTrainingMapper.getStatus(trainingId);
+        if (status == TrainingStatusEnum.Training.getValue()) {
+            policeTrainingMapper.setStatus(trainingId,
+                                           TrainingStatusEnum.Paused.getValue());
+        } else if (status == TrainingStatusEnum.Paused.getValue()) {
+            policeTrainingMapper.setStatus(trainingId,
+                                           TrainingStatusEnum.Training.getValue());
+        }
+    }
+
+    @Override
+    public void cancelTraining(long trainingId) {
+
+        policeTrainingMapper.deleteById(trainingId);
+    }
+
+    @Override
+    public PoliceTraining stopTraining(long trainingId) {
+
+        PoliceTraining policeTraining = policeTrainingMapper.getById(trainingId);
+        if (policeTraining == null) {
+            throw new BusinessException(CodeEnum.NotFound, "不存在该训练记录");
+        }
+        policeTrainingMapper.setStatus(trainingId, TrainingStatusEnum.Finished.getValue());
+        return policeTraining;
     }
 
     @Override

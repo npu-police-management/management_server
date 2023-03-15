@@ -1,5 +1,9 @@
 package edu.nwpu.managementserver.util;
 
+import edu.nwpu.managementserver.constant.TrainingStatusEnum;
+
+import java.util.Random;
+
 /**
  * @author GengXuelong
  * @version 1.0
@@ -12,10 +16,14 @@ package edu.nwpu.managementserver.util;
 public class DataTrainingUtils {
 
     public static int getStatus(Long id, long modelId) {
-        return 1;
+        return TrainingStatusEnum.Training.getValue();
     }
 
     public static String getResult(Long id, long modelId) {
-        return "总体正常";
+
+        Random random = new Random();
+        if (random.nextBoolean())
+            return "总体正常";
+        else return "存在问题";
     }
 }

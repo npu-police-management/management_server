@@ -23,6 +23,8 @@ public interface TotalAssessMapper {
     void deleteByIdList(long[] longs);
 
     List<TotalAssessDTO> getAllByPrisonId(Long prisonId);
+
+    int insert(TotalAssess totalAssess);
 }
 
 

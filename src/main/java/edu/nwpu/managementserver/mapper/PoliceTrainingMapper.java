@@ -33,6 +33,16 @@ public interface PoliceTrainingMapper {
     Integer getWeekTrainingCounts();
 
     Integer getTodayTrainingCounts();
+
+    int setStatus(long id, int status);
+
+    int setResultInt(long id, String result);
+
+    Integer getStatus(long id);
+
+    int deleteById(long id);
+
+    PoliceTraining getById(long id);
 }
 
 

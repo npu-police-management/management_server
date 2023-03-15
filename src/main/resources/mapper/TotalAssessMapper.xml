@@ -18,6 +18,11 @@
         id,police_id,mental_percent_list,
         result,description,create_time,update_time
     </sql>
+    <insert id="insert">
+        insert <include refid="Base_Column_List"/>
+        into total_assess
+        value (#{id}, #{policeId}, #{mentalPercentList}, #{result}, #{description}, #{createTime}, #{updateTime})
+    </insert>
 
     <select id="getLastTotalAssessForPolice" parameterType="long" resultMap="BaseResultMap">
         select * from total_assess where police_id = #{policeId}
