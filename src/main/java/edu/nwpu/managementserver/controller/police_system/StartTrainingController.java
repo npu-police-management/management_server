@@ -92,7 +92,7 @@ public class StartTrainingController {
     }
 
     @PreAuthorize("hasAuthority('Police')")
-    @DeleteMapping ("/training/{trainingId}")
+    @DeleteMapping("/training/{trainingId}")
     public CommonResult cancelTraining(@PathVariable Long trainingId) {
 
         policeTrainingService.cancelTraining(trainingId);
@@ -101,7 +101,7 @@ public class StartTrainingController {
     }
 
     @PreAuthorize("hasAuthority('Police')")
-    @PostMapping ("/training/{trainingId}")
+    @GetMapping("/training/{trainingId}")
     public CommonResult stopTraining(@PathVariable Long trainingId) {
 
         PoliceTraining policeTraining = policeTrainingService.stopTraining(trainingId);

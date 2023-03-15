@@ -64,9 +64,9 @@ public class TotalAssessServiceImpl implements TotalAssessService {
         Random r = new Random();
         StringBuilder s = new StringBuilder("[");
         for (int i = 0; i < 5; i++) {
-            s.append(r.nextInt() % 100).append(",");
+            s.append(Math.abs(r.nextInt() % 100)).append(",");
         }
-        s.append(r.nextInt() % 100).append("]");
+        s.append(Math.abs(r.nextInt() % 100)).append("]");
         TotalAssess totalAssess = new TotalAssess(
                 SnowflakeIdUtil.nextId(),
                 policeId,

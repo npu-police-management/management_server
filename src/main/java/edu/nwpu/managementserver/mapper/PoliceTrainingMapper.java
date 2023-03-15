@@ -4,6 +4,7 @@ import edu.nwpu.managementserver.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import edu.nwpu.managementserver.domain.PoliceTraining;
@@ -36,7 +37,9 @@ public interface PoliceTrainingMapper {
 
     int setStatus(long id, int status);
 
-    int setResultInt(long id, String result);
+    int setResult(long id, String result);
+
+    int setEndTime(long id, LocalDateTime endTime);
 
     Integer getStatus(long id);
 
