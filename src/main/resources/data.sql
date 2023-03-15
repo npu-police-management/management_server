@@ -3,7 +3,7 @@ VALUES (1, 'root', '$2a$10$ke1f7hBqyTkYzPpaXY0ACeZ.CaxNs675edbx5Q.l7VB18xykS4uEG
 # 密码为: root;
 
 INSERT INTO `admin`(`id`, `nickname`, `account_id`)
-VALUES (1, 'RooT', '1');
+VALUES (1, 'RooT', 1);
 
 
 # 插入警员数据, 测试用;

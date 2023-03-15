@@ -152,7 +152,9 @@ public class PoliceTrainingServiceImpl implements PoliceTrainingService {
         if (policeTraining == null) {
             throw new BusinessException(CodeEnum.NotFound, "不存在该训练记录");
         }
+        System.out.println(policeTraining.getPoliceId());
         policeTrainingMapper.setStatus(trainingId, TrainingStatusEnum.Finished.getValue());
+        policeTrainingMapper.setEndTime(trainingId, LocalDateTime.now());
         return policeTraining;
     }
 

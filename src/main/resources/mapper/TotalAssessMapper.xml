@@ -19,8 +19,7 @@
         result,description,create_time,update_time
     </sql>
     <insert id="insert">
-        insert <include refid="Base_Column_List"/>
-        into total_assess
+        insert into total_assess (id, police_id, mental_percent_list, result, description, create_time, update_time)
         value (#{id}, #{policeId}, #{mentalPercentList}, #{result}, #{description}, #{createTime}, #{updateTime})
     </insert>
 

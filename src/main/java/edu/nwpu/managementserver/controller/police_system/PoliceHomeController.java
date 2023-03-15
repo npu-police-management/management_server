@@ -52,13 +52,14 @@ public class PoliceHomeController {
     public CommonResult dynamic(@AuthenticationPrincipal
                                     AccountUserDetails account) {
 
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Police police = policeService.getPoliceByAccountId(account.getId());
         List<PoliceDynamicVO> dynamicVOList =
                 policeTrainingService.getDynamic(police.getId())
                         .stream().map(policeTraining -> new PoliceDynamicVO(
                                 trainingModelService.getById(policeTraining.getModelId()).getName(),
-                                policeTraining.getStartTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                                policeTraining.getEndTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                                policeTraining.getStartTime().format(fmt),
+                                policeTraining.getEndTime().format(fmt)
                         )).toList();
         return CommonResult.success(dynamicVOList);
     }
