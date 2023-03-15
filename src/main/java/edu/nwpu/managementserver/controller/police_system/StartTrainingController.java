@@ -7,10 +7,7 @@ import edu.nwpu.managementserver.domain.PoliceTraining;
 import edu.nwpu.managementserver.domain.TrainingModel;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
 import edu.nwpu.managementserver.dto.PagingQueryParam;
-import edu.nwpu.managementserver.service.PoliceService;
-import edu.nwpu.managementserver.service.PoliceTrainingService;
-import edu.nwpu.managementserver.service.PrisonModelService;
-import edu.nwpu.managementserver.service.TrainingModelService;
+import edu.nwpu.managementserver.service.*;
 import edu.nwpu.managementserver.util.DataTrainingUtils;
 import edu.nwpu.managementserver.util.PageTransformUtil;
 import edu.nwpu.managementserver.util.SnowflakeIdUtil;
@@ -45,6 +42,10 @@ public class StartTrainingController {
     private TrainingModelService trainingModelService;
     @Autowired
     private PoliceTrainingService policeTrainingService;
+
+    @Autowired
+    private TotalAssessService totalAssessService;
+
     /**
      * @author GengXuelong
      * <p> 函数功能描述如下:
@@ -62,7 +63,7 @@ public class StartTrainingController {
         LocalDateTime endTime = startTime.plusHours(1);
         PoliceTraining policeTraining = new PoliceTraining(SnowflakeIdUtil.nextId(),police.getId(),modelId,startTime,endTime,status,result);
         policeTrainingService.addOne(policeTraining);
-        return CommonResult.success();
+        return CommonResult.success(policeTraining.getId().toString());
     }
 
     @PreAuthorize("hasAuthority('Police')")
@@ -79,5 +80,32 @@ public class StartTrainingController {
                 (int)tPageInfo.getTotal(),
                 trainingModels.stream().map(trainingModel -> new TrainingModelVO(trainingModel.getId().toString(),trainingModel.getName(),trainingModel.getDescription(),true,trainingModel.getPriority())).toList()
         ));
+    }
+
+    @PreAuthorize("hasAuthority('Police')")
+    @PutMapping("/training/{trainingId}")
+    public CommonResult pauseTraining(@PathVariable Long trainingId) {
+
+        policeTrainingService.pauseTraining(trainingId);
+
+        return CommonResult.success();
+    }
+
+    @PreAuthorize("hasAuthority('Police')")
+    @DeleteMapping ("/training/{trainingId}")
+    public CommonResult cancelTraining(@PathVariable Long trainingId) {
+
+        policeTrainingService.cancelTraining(trainingId);
+
+        return CommonResult.success();
+    }
+
+    @PreAuthorize("hasAuthority('Police')")
+    @PostMapping ("/training/{trainingId}")
+    public CommonResult stopTraining(@PathVariable Long trainingId) {
+
+        PoliceTraining policeTraining = policeTrainingService.stopTraining(trainingId);
+        totalAssessService.addResult(policeTraining.getPoliceId(), policeTraining.getResult());;
+        return CommonResult.success();
     }
 }

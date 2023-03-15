@@ -22,4 +22,7 @@ public interface TotalAssessService {
     void deleteByIdList(long[] longs);
 
     List<TotalAssessDTO> getAssessByPrisonId(Long prisonId);
+
+    void addResult(long policeId,
+                   String result);
 }

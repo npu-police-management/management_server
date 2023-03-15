@@ -19,6 +19,20 @@
         start_time,end_time,status,
         result
     </sql>
+    <update id="setStatus">
+        update police_training
+        set status = #{status}
+        where id = #{id}
+    </update>
+    <update id="setResultInt">
+        update police_training
+        set result = #{result}
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from police_training
+        where id = #{id}
+    </delete>
     <select id="getByPoliceId" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/>
         from police_training
@@ -86,5 +100,15 @@
         select count(id)
         from police_training
         where TO_DAYS(start_time) = TO_DAYS(NOW())
+    </select>
+    <select id="getStatus" resultType="java.lang.Integer">
+        select status
+        from police_training
+        where id = #{id}
+    </select>
+    <select id="getById" resultType="edu.nwpu.managementserver.domain.PoliceTraining">
+        select  <include refid="Base_Column_List"/>
+        from police_training
+        where id = #{id}
     </select>
 </mapper>

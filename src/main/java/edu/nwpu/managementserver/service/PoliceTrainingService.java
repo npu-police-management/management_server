@@ -24,6 +24,12 @@ public interface PoliceTrainingService {
 
     boolean isTraining(long policeId);
 
+    void pauseTraining(long trainingId);
+
+    void cancelTraining(long trainingId);
+
+    PoliceTraining stopTraining(long trainingId);
+
     List<AdminDynamicVO> getDynamic();
 
     int getNumberTodayFinish(long prisonId);

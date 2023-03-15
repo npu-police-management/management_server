@@ -5,11 +5,14 @@ import edu.nwpu.managementserver.dto.TotalAssessDTO;
 import edu.nwpu.managementserver.mapper.TotalAssessMapper;
 import edu.nwpu.managementserver.service.TotalAssessService;
 import edu.nwpu.managementserver.util.ConvertStringToIntArrayUtils;
+import edu.nwpu.managementserver.util.SnowflakeIdUtil;
 import edu.nwpu.managementserver.vo.TotalAssessForPoliceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author GengXuelong
@@ -53,5 +56,26 @@ public class TotalAssessServiceImpl implements TotalAssessService {
             System.out.println(i.getMentalPercentList());
         }
         return r;
+    }
+
+    @Override
+    public void addResult(long policeId, String result) {
+
+        Random r = new Random();
+        StringBuilder s = new StringBuilder("[");
+        for (int i = 0; i < 5; i++) {
+            s.append(r.nextInt() % 100).append(",");
+        }
+        s.append(r.nextInt() % 100).append("]");
+        TotalAssess totalAssess = new TotalAssess(
+                SnowflakeIdUtil.nextId(),
+                policeId,
+                s.toString(),
+                true,
+                result,
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
+        totalAssessMapper.insert(totalAssess);
     }
 }
