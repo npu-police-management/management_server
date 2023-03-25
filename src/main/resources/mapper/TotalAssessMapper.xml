@@ -24,7 +24,7 @@
     </insert>
 
     <select id="getLastTotalAssessForPolice" parameterType="long" resultMap="BaseResultMap">
-        select * from total_assess where police_id = #{policeId}
+        select * from total_assess where police_id = #{policeId} order by create_time desc limit 1
     </select>
 
     <select id="queryTotalAssessLikelyByPrisonAdmin" resultMap="BaseResultMap">
