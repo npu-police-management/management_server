@@ -1,6 +1,7 @@
 package edu.nwpu.managementserver.commen;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.nwpu.managementserver.component.ExceptionFormatter;
 import edu.nwpu.managementserver.exception.ManagementException;
 import edu.nwpu.managementserver.vo.CommonResult;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,13 +33,8 @@ import static edu.nwpu.managementserver.constant.CodeEnum.*;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    private ObjectMapper objectMapper;
-
     @Autowired
-    public void setObjectMapper(ObjectMapper objectMapper) {
-
-        this.objectMapper = objectMapper;
-    }
+    private ExceptionFormatter formatter;
 
     /**
      * 参数校验失败的异常处理器
@@ -49,7 +45,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public CommonResult handleBindException(BindException e, HttpServletRequest request) {
         String message = formatBindException(e);
-        log.warn(formatException(e, request, message, false));
+        log.warn(formatter.formatException(e, message, false));
         return CommonResult.badRequest(RequestError, message);
     }
 
@@ -60,7 +56,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public CommonResult handleMethodNotAllowed(Exception e, HttpServletRequest request) {
-        log.warn(formatException(e, request, null, false));
+        log.warn(formatter.formatException(e, null, false));
         return CommonResult.badRequest(RequestError, "请求方式不支持");
     }
 
@@ -71,7 +67,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ServletRequestBindingException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public CommonResult handleBadRequest(Exception e, HttpServletRequest request) {
-        log.warn(formatException(e, request, null, false));
+        log.warn(formatter.formatException(e, null, false));
         return CommonResult.badRequest(RequestError, "请求格式不对");
     }
 
@@ -81,14 +77,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public CommonResult handleNotFoundException(NoHandlerFoundException e, HttpServletRequest request) {
-        log.warn(formatException(e, request, null, false));
+        log.warn(formatter.formatException(e, null, false));
         return CommonResult.notFound(NotFound, "请求URL不存在");
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
     public CommonResult handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
-        log.warn(formatException(e, request, null, false));
+        log.warn(formatter.formatException(e, null, false));
         return CommonResult.forbidden(Forbidden, e.getMessage());
     }
 
@@ -126,7 +122,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ManagementException.class)
     public CommonResult handleBusinessException(ManagementException e, HttpServletRequest request) {
-        log.warn(formatException(e, request, null, true));
+        log.warn(formatter.formatException(e, null, true));
         return CommonResult.failure(e);
     }
 
@@ -137,25 +133,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public CommonResult handleException(Exception e, HttpServletRequest request) {
-        log.warn(formatException(e, request, null, true));
+        log.error(formatter.formatException(e, null, true));
 //        e.printStackTrace();
         return CommonResult.internalServerError(ServerError, "服务器内部错误");
-    }
-
-
-    /**
-     * 把异常信息格式化成自己喜欢的格式，这个方法用于格式化Exception
-     */
-    @SneakyThrows
-    public String formatException(Exception e, HttpServletRequest request, String message, boolean stackRequired) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("(异常)")
-                .append("<类型>").append(e.getClass())
-                .append("<信息>").append(message != null ? message : e.getMessage());
-        if (stackRequired) {
-            sb.append("<堆栈>").append(objectMapper.writeValueAsString(e));
-        }
-        return sb.toString();
     }
 
 

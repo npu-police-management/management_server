@@ -93,8 +93,6 @@ spring:
 mybatis:
   mapper-locations: mapper/*.xml
   type-aliases-package: edu.nwpu.managementserver.domain
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 pagehelper:
   auto-dialect: on
