@@ -71,17 +71,16 @@ public class PrisonTotalAssessController {
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
         List<TotalAssess> tList = totalAssessService.queryTotalAssessLikelyByPrisonAdmin(param.getQuery(),prison_id);
-        PageInfo<TotalAssess> tPageInfo = new PageInfo<>(tList);
 
         if (filter != null) {
             if (filter.equals("normal")) {
-                tPageInfo = new PageInfo<>(tList.stream().filter(totalAssess -> !totalAssess.getResult()).toList());
+                tList = tList.stream().filter(totalAssess -> !totalAssess.getResult()).toList();
             }
             if (filter.equals("abnormal")) {
-                tPageInfo = new PageInfo<>(tList.stream().filter(TotalAssess::getResult).toList());
+                tList = tList.stream().filter(TotalAssess::getResult).toList();
             }
         }
-
+        PageInfo<TotalAssess> tPageInfo = new PageInfo<>(tList);
         PageResult<TotalAssessUseByPrisonAdminVO> result =  new PageResult<>((int)tPageInfo.getTotal(), tList.stream().map(mapper).toList());
 
         return CommonResult.success(result);
