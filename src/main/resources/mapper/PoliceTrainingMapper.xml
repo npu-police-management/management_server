@@ -75,6 +75,7 @@
                 t.name like concat('%',#{query},'%') or
                 t.description like concat('%',#{query},'%') or
                 t.name like concat('%',#{query},'%') )
+        order by pt.start_time desc
     </select>
 
     <select id="queryTrainingDynamicForPrisonAdmin" resultType="edu.nwpu.managementserver.vo.TrainingDynamicVO">
@@ -85,6 +86,7 @@
         where pt.police_id = p.id and pt.model_id = t.id and p.account_id = a.id and
             t.name like concat('%',#{modelName},'%') and p.prison_id = #{prisonId} and
             (  p.name like concat('%',#{police},'%')or a.account_number like concat('%',#{police},'%') )
+        order by pt.start_time desc
     </select>
 
     <insert id="addOne" parameterType="policeTraining">

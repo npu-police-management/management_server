@@ -24,6 +24,6 @@ public class DataTrainingUtils {
         Random random = new Random();
         if (random.nextBoolean())
             return "总体正常";
-        else return "存在问题";
+        else return "总体异常";
     }
 }

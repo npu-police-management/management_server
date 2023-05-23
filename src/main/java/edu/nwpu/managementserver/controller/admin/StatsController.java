@@ -1,11 +1,13 @@
 package edu.nwpu.managementserver.controller.admin;
 
 import edu.nwpu.managementserver.constant.CodeEnum;
+import edu.nwpu.managementserver.constant.FormatConstant;
 import edu.nwpu.managementserver.exception.BusinessException;
 import edu.nwpu.managementserver.service.PageViewService;
 import edu.nwpu.managementserver.service.PoliceTrainingService;
 import edu.nwpu.managementserver.service.TotalAssessService;
 import edu.nwpu.managementserver.util.ConvertStringToIntArrayUtils;
+import edu.nwpu.managementserver.util.ResultConversionUtil;
 import edu.nwpu.managementserver.vo.CommonResult;
 import edu.nwpu.managementserver.vo.StatsVO;
 import edu.nwpu.managementserver.vo.TotalAssessUseByPrisonAdminVO;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
+import static edu.nwpu.managementserver.constant.FormatConstant.FMT;
+import static edu.nwpu.managementserver.util.ResultConversionUtil.*;
 
 /**
  * @author Jiayi Zhu
@@ -66,10 +71,10 @@ public class StatsController {
                         totalAssess.getId(),
                         totalAssess.getName(),
                         ConvertStringToIntArrayUtils.convertStringToIntArray(totalAssess.getMentalPercentList()),
-                        totalAssess.isResult(),
+                        resToStr(totalAssess.isResult()),
                         totalAssess.getDescription(),
-                        totalAssess.getCreateTime(),
-                        totalAssess.getUpdateTime()
+                        totalAssess.getCreateTime().format(FMT),
+                        totalAssess.getUpdateTime().format(FMT)
                 )).toList();
         return CommonResult.success(totalAssessList);
     }

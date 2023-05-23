@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class TotalAssessForPoliceVO {
     private long id;
     private int[] mentalPercentList;
-    private boolean result;
+    private String result;
     private String description;
     private String createTime;
     private String updateTime;

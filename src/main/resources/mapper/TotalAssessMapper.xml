@@ -53,6 +53,11 @@
         where po.id = ta.police_id
         and po.prison_id = #{prisonId}
     </select>
+    <select id="abnormalCount" resultType="java.lang.Integer">
+        select count(DISTINCT ta.police_id)
+        from total_assess ta, police p
+        where ta.police_id = p.id and p.prison_id = #{prisonId} and ta.result = true
+    </select>
 
     <delete id="deleteByIdList" parameterType="long" >
         delete from total_assess

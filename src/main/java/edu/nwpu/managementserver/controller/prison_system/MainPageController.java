@@ -1,12 +1,8 @@
 package edu.nwpu.managementserver.controller.prison_system;
 
 import edu.nwpu.managementserver.dto.AccountUserDetails;
-import edu.nwpu.managementserver.mapper.AccessRecordMapper;
-import edu.nwpu.managementserver.mapper.PrisonModelMapper;
 import edu.nwpu.managementserver.service.*;
 import edu.nwpu.managementserver.vo.CommonResult;
-import edu.nwpu.managementserver.vo.PrisonAdminMainPageDynamicVO;
-import edu.nwpu.managementserver.vo.PrisonAdminMainPageStatsVO;
 import edu.nwpu.managementserver.vo.PrisonAdminMainPageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,8 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author GengXuelong
@@ -37,6 +31,9 @@ public class MainPageController {
     @Autowired
     private PrisonAdminService prisonAdminService;
 
+    @Autowired
+    private TotalAssessService totalAssessService;
+
     @GetMapping("/mainPage")
     @PreAuthorize("hasAuthority('PrisonAdmin')")
     public CommonResult mainPage(@AuthenticationPrincipal AccountUserDetails account){
@@ -46,7 +43,8 @@ public class MainPageController {
         prisonAdminMainPageVO.setFinishTrainTimeWeekly(policeTrainingService.getNumberWeekFinish(prison_id)+"");
         prisonAdminMainPageVO.setFinishTrainTimeDaily(policeTrainingService.getNumberTodayFinish(prison_id)+"");
         prisonAdminMainPageVO.setWorkingModeNumber(prisonModelService.getTheOpeningModeSizeForPrison(prison_id)+"");
-        prisonAdminMainPageVO.setLoginTimeDaily(accessRecordService.getNumberTodayAccess(prison_id)+"");
+        prisonAdminMainPageVO.setAbnormalCount(String.valueOf(totalAssessService.abnormalCount(prison_id)));
+        // prisonAdminMainPageVO.setLoginTimeDaily(accessRecordService.getNumberTodayAccess(prison_id)+"");
         return CommonResult.success(prisonAdminMainPageVO);
     }
 

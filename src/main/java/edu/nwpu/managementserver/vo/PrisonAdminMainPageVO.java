@@ -18,6 +18,6 @@ import lombok.NoArgsConstructor;
 public class PrisonAdminMainPageVO {
     private String workingModeNumber;
     private String finishTrainTimeDaily;
-    private String loginTimeDaily;
+    private String abnormalCount;
     private String finishTrainTimeWeekly;
 }

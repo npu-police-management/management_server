@@ -2,6 +2,7 @@ package edu.nwpu.managementserver.controller.prison_system;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import edu.nwpu.managementserver.constant.FormatConstant;
 import edu.nwpu.managementserver.domain.TotalAssess;
 import edu.nwpu.managementserver.dto.AccountUserDetails;
 import edu.nwpu.managementserver.dto.PagingQueryParam;
@@ -21,6 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+
+import static edu.nwpu.managementserver.constant.FormatConstant.FMT;
+import static edu.nwpu.managementserver.util.ResultConversionUtil.*;
 
 /**
  * @author GengXuelong
@@ -58,7 +62,10 @@ public class PrisonTotalAssessController {
                 totalAssess.getId()+"",
                 policeService.getPoliceById(totalAssess.getPoliceId()).getName(),
                 ConvertStringToIntArrayUtils.convertStringToIntArray(totalAssess.getMentalPercentList()),
-                totalAssess.getResult(),totalAssess.getDescription(),totalAssess.getCreateTime().toString(),totalAssess.getUpdateTime().toString());
+                resToStr(totalAssess.getResult()),
+                totalAssess.getDescription(),
+                totalAssess.getCreateTime().format(FMT),
+                totalAssess.getUpdateTime().format(FMT));
         long prison_id = prisonAdminService.getPrisonIdByAccountId(account_id);
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
         List<TotalAssess> tList = totalAssessService.queryTotalAssessLikelyByPrisonAdmin(param.getQuery(),prison_id);

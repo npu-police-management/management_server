@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 import static edu.nwpu.managementserver.util.WeekUtil.getCurrentDayOfWeek;
 import static java.time.DayOfWeek.*;
@@ -188,12 +189,31 @@ public class PoliceTrainingServiceImpl implements PoliceTrainingService {
 
     @Override
     public List<TrainingDynamicForPoliceVO> getTrainingDynamicListForPolice(Long id, String query) {
-	return policeTrainingMapper.getTrainingDynamicListForPolice(id,query);
+
+        List<TrainingDynamicForPoliceVO> list = policeTrainingMapper.getTrainingDynamicListForPolice(id, query);
+        try {
+            for (TrainingDynamicForPoliceVO trainingDynamic : list) {
+                Integer v = Integer.valueOf(trainingDynamic.getStatus());
+                trainingDynamic.setStatus(TrainingStatusEnum.nameOf(v));
+            }
+        } catch (NumberFormatException | NoSuchElementException e) {
+            throw new BusinessException(CodeEnum.RequestError, "训练状态出错");
+        }
+        return list;
     }
 
     @Override
     public List<TrainingDynamicVO> queryTrainingDynamicForPrisonAdmin(String police, String modelName,long prisonId) {
-	return policeTrainingMapper.queryTrainingDynamicForPrisonAdmin(police,modelName,prisonId);
+        List<TrainingDynamicVO> list = policeTrainingMapper.queryTrainingDynamicForPrisonAdmin(police,modelName,prisonId);
+        try {
+            for (TrainingDynamicVO trainingDynamicVO : list) {
+                Integer v = Integer.valueOf(trainingDynamicVO.getStatus());
+                trainingDynamicVO.setStatus(TrainingStatusEnum.nameOf(v));
+            }
+        } catch (NumberFormatException | NoSuchElementException e) {
+            throw new BusinessException(CodeEnum.RequestError, "训练状态出错");
+        }
+        return list;
     }
 
     @Override

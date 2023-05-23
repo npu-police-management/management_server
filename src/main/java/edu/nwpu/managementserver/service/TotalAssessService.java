@@ -25,4 +25,6 @@ public interface TotalAssessService {
 
     void addResult(long policeId,
                    String result);
+
+    int abnormalCount(Long prisonId);
 }

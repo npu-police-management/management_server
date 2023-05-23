@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * @author Jiayi Zhu
  * 2023/3/8
@@ -18,6 +20,6 @@ public class TotalAssessDTO {
     private String mentalPercentList;
     private boolean result;
     private String description;
-    private String createTime;
-    private String updateTime;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 }

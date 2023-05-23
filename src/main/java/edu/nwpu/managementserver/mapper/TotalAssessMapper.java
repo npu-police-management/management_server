@@ -25,6 +25,8 @@ public interface TotalAssessMapper {
     List<TotalAssessDTO> getAllByPrisonId(Long prisonId);
 
     int insert(TotalAssess totalAssess);
+
+    int abnormalCount(Long prisonId);
 }
 
 

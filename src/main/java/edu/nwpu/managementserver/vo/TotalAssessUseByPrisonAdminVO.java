@@ -20,7 +20,7 @@ public class TotalAssessUseByPrisonAdminVO {
     private String id;
     private String policeName;
     private int[] mentalPercentList;
-    private boolean result;
+    private String result;
     private String description;
     private String createTime;
     private String updateTime;

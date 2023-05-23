@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+import static edu.nwpu.managementserver.constant.FormatConstant.FMT;
+import static edu.nwpu.managementserver.util.ResultConversionUtil.*;
+
 /**
  * @author GengXuelong
  * @version 1.0
@@ -32,7 +35,11 @@ public class TotalAssessServiceImpl implements TotalAssessService {
         if(totalAssess==null) return null;
         String intsString = totalAssess.getMentalPercentList();
         int[] ints = ConvertStringToIntArrayUtils.convertStringToIntArray(intsString);
-        return new TotalAssessForPoliceVO(totalAssess.getId(), ints, totalAssess.getResult(), totalAssess.getDescription(), totalAssess.getCreateTime().toString(), totalAssess.getUpdateTime().toString());
+        return new TotalAssessForPoliceVO(totalAssess.getId(), ints,
+                                          resToStr(totalAssess.getResult()),
+                                          totalAssess.getDescription(),
+                                          totalAssess.getCreateTime().format(FMT),
+                                          totalAssess.getUpdateTime().format(FMT));
     }
 
     @Override
@@ -77,5 +84,11 @@ public class TotalAssessServiceImpl implements TotalAssessService {
                 LocalDateTime.now()
         );
         totalAssessMapper.insert(totalAssess);
+    }
+
+    @Override
+    public int abnormalCount(Long prisonId) {
+
+        return abnormalCount(prisonId);
     }
 }
