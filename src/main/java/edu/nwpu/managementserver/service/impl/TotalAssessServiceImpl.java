@@ -89,6 +89,6 @@ public class TotalAssessServiceImpl implements TotalAssessService {
     @Override
     public int abnormalCount(Long prisonId) {
 
-        return abnormalCount(prisonId);
+        return totalAssessMapper.abnormalCount(prisonId);
     }
 }

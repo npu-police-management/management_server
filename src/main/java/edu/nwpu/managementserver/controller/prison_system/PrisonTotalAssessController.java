@@ -16,6 +16,8 @@ import edu.nwpu.managementserver.vo.TotalAssessUseByPrisonAdminVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -56,7 +58,7 @@ public class PrisonTotalAssessController {
     @GetMapping("totalAssess")
     @PreAuthorize("hasAuthority('PrisonAdmin')")
     public CommonResult totalAssessQuery(@AuthenticationPrincipal AccountUserDetails account,
-                                    PagingQueryParam param){
+                                    PagingQueryParam param, String filter){
         long account_id = account.getId();
         Function<TotalAssess,TotalAssessUseByPrisonAdminVO>  mapper = totalAssess -> new TotalAssessUseByPrisonAdminVO(
                 totalAssess.getId()+"",
@@ -70,7 +72,18 @@ public class PrisonTotalAssessController {
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
         List<TotalAssess> tList = totalAssessService.queryTotalAssessLikelyByPrisonAdmin(param.getQuery(),prison_id);
         PageInfo<TotalAssess> tPageInfo = new PageInfo<>(tList);
+
+        if (filter != null) {
+            if (filter.equals("normal")) {
+                tPageInfo = new PageInfo<>(tList.stream().filter(totalAssess -> !totalAssess.getResult()).toList());
+            }
+            if (filter.equals("abnormal")) {
+                tPageInfo = new PageInfo<>(tList.stream().filter(TotalAssess::getResult).toList());
+            }
+        }
+
         PageResult<TotalAssessUseByPrisonAdminVO> result =  new PageResult<>((int)tPageInfo.getTotal(), tList.stream().map(mapper).toList());
+
         return CommonResult.success(result);
     }
 
